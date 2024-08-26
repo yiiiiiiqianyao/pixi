@@ -13,6 +13,19 @@ Tickers provide periodic callbacks based on a clock. Your game update logic will
 - @pixi/app Application
 The Application is a simple helper that wraps a Loader, Ticker and Renderer into a single, convenient easy-to-use object.
 
+- @pixi/assets Assets
+    1. load single
+    - Textures (avif, webp, png, jpg, gif)
+    - Sprite sheets (json)
+    - Bitmap fonts (xml, fnt, txt)
+    - Web fonts (ttf, woff, woff2)
+    - Json files (json)
+    - Text files (txt)
+    2. load manifest
+    - https://pixijs.com/7.x/guides/components/assets#loading-multiple-assets
+    3. background load
+    - PIXI.Assets.backgroundLoad(...) PIXI.Assets.backgroundLoadBundle(...)
+
 - @pixi/interaction Interaction
 PixiJS supports both touch and mouse-based interaction - making objects clickable, firing hover events, etc.
 

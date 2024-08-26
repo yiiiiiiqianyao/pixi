@@ -11,18 +11,17 @@ export class Game {
         const suffix = '.png';
         const textureUrl = path + suffix;
 
-        const texture = await Assets.load<Texture>(textureUrl);        
-        const bunny = new Sprite(texture);
+        await Assets.load<Texture>(textureUrl);        
+        const bunny = new Sprite(Assets.get(textureUrl));
 
         // Setup the position of the bunny
         bunny.x = application.renderer.width / 2;
         bunny.y = application.renderer.height / 2;
 
         // Rotate around the center
-        bunny.anchor.x = 0.5;
-        bunny.anchor.y = 0.5;
-
+        bunny.anchor.set(0.5, 0.5);
         bunny.interactive = true;
+        bunny.eventMode = 'passive';
         bunny.onclick = () => {
             console.log('bunny click')
         }
@@ -35,6 +34,5 @@ export class Game {
             // each frame we spin the bunny around a bit
             bunny.rotation += 0.01;
         });
-        // application.ticker
     }
 }
