@@ -22,6 +22,11 @@ export class Game {
         bunny.anchor.x = 0.5;
         bunny.anchor.y = 0.5;
 
+        bunny.interactive = true;
+        bunny.onclick = () => {
+            console.log('bunny click')
+        }
+
         // Add the bunny to the scene we are building
         application.stage.addChild(bunny as any);
 
@@ -30,5 +35,6 @@ export class Game {
             // each frame we spin the bunny around a bit
             bunny.rotation += 0.01;
         });
+        // application.ticker
     }
 }

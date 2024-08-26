@@ -9,7 +9,7 @@
 
 ## 待完成
 - 初始化
-- 帧同步计算
+- 帧同步设置 sync （ticker.minFPS/ticker.maxFPS）
 - 帧率计算
 - drawCall 统计
 - EventEmitter 事件系统
@@ -25,6 +25,8 @@
     - howlerjs https://howlerjs.com/
 
 - 游戏地图模块 TileMap
+
+- culling 渲染的剔除（sprite.renderable = false;）
 
 ## 已完成
 

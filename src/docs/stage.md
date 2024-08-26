@@ -1,0 +1,1 @@
+The stage is simply a Container that is the root of the scene graph.Every child of the stage container will be rendered every frame.
