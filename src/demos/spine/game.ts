@@ -37,11 +37,9 @@ export class Game {
         // Add the bunny to the scene we are building
         application.stage.addChild(bunny as any);
 
-        // Listen for frame updates
         let elapsed = 0;
         application.ticker.add((delta) => {
             elapsed += delta;
-            // each frame we spin the bunny around a bit
             bunny.transform.position.y = application.renderer.height / 2 + Math.sin(elapsed / 5) * 32;
         });
     }
