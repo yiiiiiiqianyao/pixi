@@ -54,5 +54,19 @@ The Application is a simple helper that wraps a Loader, Ticker and Renderer into
 # @pixi/interaction Interaction
 PixiJS supports both touch and mouse-based interaction - making objects clickable, firing hover events, etc.
 
+## eventMode
+- none      similar to CSS's pointer-events: none
+- passive   使用后表示事件监听不会调用 preventDefault() 有助于改善滑动等动作的体验
+- auto      Does not emit events and but is hit tested if parent is interactive. 
+- static    Emit events and is hit tested. Useful for objects like buttons that do not move.
+- dynamic   Emits events and is hit tested. This is useful for elements that independently moving or animating.
+
+## Event Types
+pixi support event types
+https://pixijs.com/7.x/guides/components/interaction#event-types
+- pointercancel
+- pointerdown
+...
+
 # @pixi/accessibility Accessibility
 Woven through our display system is a rich set of tools for enabling keyboard and screen-reader accessibility.

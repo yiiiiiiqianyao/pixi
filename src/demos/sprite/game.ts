@@ -1,8 +1,16 @@
 import { Application, Assets, Sprite, Texture } from 'pixi.js';
+import * as PIXI from 'pixi.js'
 export class Game {
     private application: Application;
-    constructor(application: Application) {
-        this.application = application;
+    constructor(canvas: HTMLCanvasElement, width: number, height: number) {
+        this.application = new PIXI.Application({
+            width,
+            height,
+            backgroundColor: '#fff',
+            forceCanvas: true, // 在高版本的 pixi.js 中使用 forceCanvas 需要引入 pixi.js-legacy
+            // NOTE 建议传入 canvas 实例 避免在 react 更新的时候重复创建
+            view: canvas,
+        })        
     }
     async start() {
         const { application } = this;
@@ -21,10 +29,10 @@ export class Game {
         // Rotate around the center
         bunny.anchor.set(0.5, 0.5);
         bunny.interactive = true;
-        bunny.eventMode = 'passive';
         bunny.onclick = () => {
             console.log('bunny click')
         }
+        bunny.eventMode = 'passive';
 
         // Add the bunny to the scene we are building
         application.stage.addChild(bunny as any);
@@ -34,5 +42,9 @@ export class Game {
             // each frame we spin the bunny around a bit
             bunny.rotation += 0.01;
         });
+    }
+
+    destroy() {
+        this.application.destroy();
     }
 }
