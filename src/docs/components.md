@@ -68,5 +68,8 @@ https://pixijs.com/7.x/guides/components/interaction#event-types
 - pointerdown
 ...
 
+## background.interactiveChildren = false
+设置子树节点都不参与交互
+
 # @pixi/accessibility Accessibility
 Woven through our display system is a rich set of tools for enabling keyboard and screen-reader accessibility.
