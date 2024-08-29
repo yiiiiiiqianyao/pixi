@@ -10,7 +10,7 @@ export class Game {
             forceCanvas: true, // 在高版本的 pixi.js 中使用 forceCanvas 需要引入 pixi.js-legacy
             // NOTE 建议传入 canvas 实例 避免在 react 更新的时候重复创建
             view: canvas,
-        })        
+        })
     }
     async start() {
         const { application } = this;
@@ -19,7 +19,8 @@ export class Game {
         const suffix = '.png';
         const textureUrl = path + suffix;
 
-        await Assets.load<Texture>(textureUrl);        
+        await Assets.load<Texture>(textureUrl);  
+        // Sprite.from()      
         const bunny = new Sprite(Assets.get(textureUrl));
 
         // Setup the position of the bunny
