@@ -7,3 +7,10 @@
 
 # https://pixijs.io/customize/
 - Pixi.js custiomize export tools
+
+# https://renderhjs.net/shoebox/
+# https://www.codeandweb.com/texturepacker
+- Pixi.js spritesheets tools
+
+# https://fontfaceobserver.com/
+- 字体文件加载
