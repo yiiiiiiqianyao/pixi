@@ -13,4 +13,5 @@ html, body, #root, #routerContent {
 }
 a {
   margin: 5px;
+  user-select: none;
 }

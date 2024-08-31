@@ -33,7 +33,6 @@ export class Game {
         bunny.onclick = () => {
             console.log('bunny click')
         }
-        bunny.eventMode = 'passive';
 
         // Add the bunny to the scene we are building
         application.stage.addChild(bunny as any);

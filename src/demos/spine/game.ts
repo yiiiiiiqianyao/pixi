@@ -1,5 +1,7 @@
+
 import { Application, Assets, Sprite, Texture } from 'pixi.js';
 import * as PIXI from 'pixi.js'
+import { Spine } from 'pixi-spine';
 export class Game {
     private application: Application;
     constructor(canvas: HTMLCanvasElement, width: number, height: number) {
@@ -18,8 +20,7 @@ export class Game {
         const path = 'https://mdn.alipayobjects.com/huamei_cwajh0/afts/img/A*-1OBQqkRftkAAAAAAAAAAAAADn19AQ/original';
         const suffix = '.png';
         const textureUrl = path + suffix;
-
-        await Assets.load<Texture>(textureUrl);        
+        await Assets.load<Texture>(textureUrl);
         const bunny = new Sprite(Assets.get(textureUrl));
 
         // Setup the position of the bunny
@@ -32,11 +33,17 @@ export class Game {
         bunny.onclick = () => {
             console.log('bunny click')
         }
-        bunny.eventMode = 'passive';
-
-        // Add the bunny to the scene we are building
         application.stage.addChild(bunny as any);
 
+        // 目前使用 pixi-spine 4.x 版本，只支持加载 3.x 版本的 spine 文件
+         const spineUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/uri/file/as/2/cwajh0/4/mp/qvHq0Xj3g6XSXASd/spineboy/spineboy.json';
+        const { spineData } = await Assets.load(spineUrl);
+        const spineBoy = new Spine(spineData);
+        spineBoy.state.setAnimation(0, 'walk', true);
+        spineBoy.x = application.renderer.width / 2;
+        spineBoy.y = application.renderer.height;
+        application.stage.addChild(spineBoy as PIXI.DisplayObject);
+         
         let elapsed = 0;
         application.ticker.add((delta) => {
             elapsed += delta;
