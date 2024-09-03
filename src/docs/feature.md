@@ -14,6 +14,48 @@
 - drawCall 统计
 - EventEmitter 事件系统
 - tween/popmotion 补间动画系统
+使用 tween 实现（帧同步）
+```js
+export function tweenA2BNumber(
+  a: number,
+  b: number,
+  duration: number,
+  onUpdate: (value: number) => void,
+  onComplete = () => {},
+  easing = easeInOut,
+) {
+  const { stop } = animate({
+    from: a,
+    to: b,
+    duration,
+    ease: easing,
+    onUpdate,
+    onComplete,
+  });
+  return stop;
+}
+
+// vec2 tween
+export function tweenA2BVec2(
+  a: IVec2,
+  b: IVec2,
+  duration: number,
+  onUpdate: (value: IVec2) => void,
+  onComplete = () => {},
+  easing = easeInOut,
+) {
+  const { stop } = animate({
+    from: a,
+    to: b,
+    duration,
+    ease: easing,
+    onUpdate,
+    onComplete,
+  });
+  return stop;
+}
+```
+
 - widget/viewport 窗口系统
     - 可以参考 pixi-viewport 插件 
     - github https://github.com/davidfig/pixi-viewport
