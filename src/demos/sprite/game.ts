@@ -17,6 +17,10 @@ export class Game {
     }
     async start() {
         const { application } = this;
+        console.info('PIXI.RENDERER_TYPE.UNKNOWN', PIXI.RENDERER_TYPE.UNKNOWN);
+        console.info('PIXI.RENDERER_TYPE.WEBGL', PIXI.RENDERER_TYPE.WEBGL);
+        console.info('PIXI.RENDERER_TYPE.CANVAS', PIXI.RENDERER_TYPE.CANVAS);
+        console.info('app.renderer.type', application.renderer.type);
         await this.loadTextureResource();
 
         this.initBackground();
