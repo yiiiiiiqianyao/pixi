@@ -25,6 +25,8 @@ export class Game {
 
         this.initBackground();
 
+        PIXI.Assets.load('https://pixijs.com/assets/spritesheet/fighter.json')
+
         const number = new Sprite(TexturePool.getTexture(numberTextureUrl));
         number.x = application.renderer.width / 2;
         number.y = application.renderer.height / 2;

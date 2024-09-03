@@ -10,7 +10,10 @@
 
 ## spritesheets
 
-- https://pixijs.com/assets/spritesheet/0123456789.json
+`spritesheet` 的 `json` 文件和要加载的 `image` 图片通常在同一目录下
+- https://pixijs.com/assets/spritesheet/fighter.json
+- https://pixijs.com/assets/spritesheet/fighter.png
+- demo https://codesandbox.io/p/sandbox/happy-haze-2f4wh7?file=%2Fsrc%2Findex.js&utm_medium=sandpack
 ```js
 // Create object to store sprite sheet data
 const atlasData = {
