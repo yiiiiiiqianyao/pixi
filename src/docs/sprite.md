@@ -5,6 +5,8 @@
   let sprite = PIXI.Sprite.from('sample.png');
   app.stage.addChild(sprite);
 ```
+## support suffix
+- avif, webp, png, jpg, gif
 
 ## spritesheets
 
