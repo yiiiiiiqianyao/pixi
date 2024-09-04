@@ -69,6 +69,13 @@ export function tweenA2BVec2(
     - howlerjs https://howlerjs.com/
 
 - 游戏地图模块 TileMap
+  - https://github.com/pixijs/tilemap
+  PixiJS	PixiJS Tilemap Kit
+  v4.x	v1.x
+  v5.x	v2.x
+  v6.x	v3.x
+  v7.x	v4.x
+  v8.x	v5.x
 
 - culling 渲染的剔除（sprite.renderable = false;）
 
