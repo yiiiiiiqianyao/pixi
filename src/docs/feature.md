@@ -8,6 +8,8 @@
 - 页面单实例（标准）
 
 ## 待完成
+- debug
+  - 游戏环境信息输出 RenderType、pixi version、view size、dpr、etc
 - 初始化
 - 帧同步设置 sync （ticker.minFPS/ticker.maxFPS）
 - 帧率计算

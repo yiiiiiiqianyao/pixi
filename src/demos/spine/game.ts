@@ -30,7 +30,7 @@ export class Game {
         // Rotate around the center
         bunny.anchor.set(0.5, 0.5);
         bunny.interactive = true;
-        bunny.onclick = () => {
+        bunny.onpointerdown = () => {
             console.log('bunny click')
         }
         application.stage.addChild(bunny as any);

@@ -14,6 +14,9 @@
 - https://pixijs.com/assets/spritesheet/fighter.json
 - https://pixijs.com/assets/spritesheet/fighter.png
 - demo https://codesandbox.io/p/sandbox/happy-haze-2f4wh7?file=%2Fsrc%2Findex.js&utm_medium=sandpack
+
+- 代理 http://183.129.161.21:5099/yqy/static/fighter.png
+-       http://183.129.161.21:5099/yqy/static/fighter.json
 ```js
 // Create object to store sprite sheet data
 const atlasData = {
