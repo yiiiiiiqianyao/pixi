@@ -1,0 +1,2 @@
+export const backgroundTextureUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/afts/img/A*o0z7RIJSIA8AAAAAAAAAAAAADn19AQ/original';
+export const numberTextureUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/afts/img/A*-1OBQqkRftkAAAAAAAAAAAAADn19AQ/original';
