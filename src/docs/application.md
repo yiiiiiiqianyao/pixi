@@ -41,3 +41,19 @@ Ticker.shared.add(tickerUpdateCallback);
 // ...之后不再需要时
 Ticker.shared.remove(tickerUpdateCallback);
 ```
+
+### setup loop
+
+```js
+// Setup rendering loop
+PIXI.Ticker.shared.add(() => renderer.render(stage));
+```
+
+## destroy
+```js
+// 销毁应用
+app.destroy();
+
+// 连同 canvas 元素一起销毁
+app.destroy(true);
+```

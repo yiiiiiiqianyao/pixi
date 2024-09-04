@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import SpritePage from './components/sprite';
 import SpinePage from './components/spine';
 import HomePage from './components/home';
+import TileMapPage from './components/tilemap';
 
 function App() {
   return (
@@ -15,16 +16,14 @@ function App() {
             <Link to="/">home</Link>
             <Link to="/sprite">sprite</Link>
             <Link to="/spine">spine</Link>
+            <Link to="/tilemap">tilemap</Link>
           </div>
         
           <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/sprite" element={<SpritePage/>} />
             <Route path="/spine" element={<SpinePage/>} />
-            {/* 可以添加更多路由规则 */}
-            
-            {/* 如果没有匹配到任何路由，可以设置一个404页面 */}
-            {/* <Route component={NotFound} /> */}
+            <Route path="/tilemap" element={<TileMapPage/>} />            
           </Routes>
         </div>
       </Router>

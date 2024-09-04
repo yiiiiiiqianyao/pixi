@@ -52,6 +52,6 @@ export class Game {
     }
 
     destroy() {
-        this.application.destroy();
+        this.application.destroy(true);
     }
 }

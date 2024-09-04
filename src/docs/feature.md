@@ -67,6 +67,7 @@ export function tweenA2BVec2(
     - 可以使用 pixi sound 或者 howlerjs 插件
     - pixi sound https://github.com/pixijs/sound
     - howlerjs https://howlerjs.com/
+- 视频模块
 
 - 游戏地图模块 TileMap
   - https://github.com/pixijs/tilemap
