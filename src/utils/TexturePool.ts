@@ -7,12 +7,13 @@ interface ITextureParams {
 
 function isSuffixSupport(url: string) {
     // avif, webp, png, jpg, gif
+    let isSupport = false;
     ['.avif', '.webp', '.png', '.jpg', '.gif'].forEach(suffix => {
         if(url.endsWith(suffix)) {
-            return true;
+            isSupport = true;
         }
     })
-    return false;
+    return isSupport;
 }
 
 export class TexturePool {
@@ -21,7 +22,8 @@ export class TexturePool {
     static async loadTexture(url: string, params: ITextureParams = {}) { 
         const { suffix = '.jpg' } = params;    
         let textureURL = url;   
-        if(!isSuffixSupport(textureURL)) {
+        const isSupport = isSuffixSupport(textureURL);
+        if(!isSupport) {
             textureURL += suffix;
         }
         TexturePool.textureMap.set(url, textureURL);

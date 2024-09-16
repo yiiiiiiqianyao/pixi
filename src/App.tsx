@@ -5,6 +5,7 @@ import SpritePage from './components/sprite';
 import SpinePage from './components/spine';
 import HomePage from './components/home';
 import TileMapPage from './components/tilemap';
+import ParticlePage from './components/particle';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Link to="/sprite">sprite</Link>
             <Link to="/spine">spine</Link>
             <Link to="/tilemap">tilemap</Link>
+            <Link to="/particle">particle</Link>
           </div>
         
           <Routes>
@@ -24,6 +26,7 @@ function App() {
             <Route path="/sprite" element={<SpritePage/>} />
             <Route path="/spine" element={<SpinePage/>} />
             <Route path="/tilemap" element={<TileMapPage/>} />            
+            <Route path="/particle" element={<ParticlePage/>} /> 
           </Routes>
         </div>
       </Router>

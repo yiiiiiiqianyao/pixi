@@ -1,0 +1,2 @@
+export const backgroundTextureUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/afts/img/A*o0z7RIJSIA8AAAAAAAAAAAAADn19AQ/original';
+export const numberTextureUrl = 'https://lf3-static.bytednsdoc.com/obj/eden-cn/vhfuhpxpf/pixijs/particle/particle.png';
