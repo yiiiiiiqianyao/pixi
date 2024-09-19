@@ -2,9 +2,12 @@
 import { Application, Assets, Sprite, Texture } from 'pixi.js';
 import * as PIXI from 'pixi.js'
 import { Spine } from 'pixi-spine';
+import { isWebGLSupported } from '../../utils/isWebGLSupported';
 export class Game {
     private application: Application;
     constructor(canvas: HTMLCanvasElement, width: number, height: number) {
+        const isSupported = isWebGLSupported();
+        console.log('is webgl supported', isSupported);
         this.application = new PIXI.Application({
             width,
             height,

@@ -1,3 +1,16 @@
+## env
+`pixijs` 提供了 `isWebGLSupported` 方法让用户判断当前环境是否支持 `webgl`
+
+```js
+if (PIXI.utils.isWebGLSupported()) {
+    console.log('WebGL is supported');
+    // 可以在这里进行基于WebGL的PixiJS初始化和操作
+} else {
+    console.log('WebGL is not supported');
+    // 可以考虑使用PixiJS的其他渲染器（如canvas）或者采取其他措施
+}
+```
+
 ## init 
 
 ```js
