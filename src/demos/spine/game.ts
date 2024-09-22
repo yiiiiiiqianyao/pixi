@@ -1,5 +1,5 @@
 
-import { Application, Assets, Sprite, Texture } from 'pixi.js';
+import { Application, Assets, Text } from 'pixi.js';
 import * as PIXI from 'pixi.js'
 import { Spine } from 'pixi-spine';
 import { isWebGLSupported } from '../../utils/isWebGLSupported';
@@ -19,39 +19,50 @@ export class Game {
     }
     async start() {
         const { application } = this;
-        // load the texture we need
-        const path = 'https://mdn.alipayobjects.com/huamei_cwajh0/afts/img/A*-1OBQqkRftkAAAAAAAAAAAAADn19AQ/original';
-        const suffix = '.png';
-        const textureUrl = path + suffix;
-        await Assets.load<Texture>(textureUrl);
-        const bunny = new Sprite(Assets.get(textureUrl));
+        const { width, height } = application.renderer;
 
-        // Setup the position of the bunny
-        bunny.x = application.renderer.width / 2;
-        bunny.y = application.renderer.height / 2;
-
-        // Rotate around the center
-        bunny.anchor.set(0.5, 0.5);
-        bunny.interactive = true;
-        bunny.onpointerdown = () => {
-            console.log('bunny click')
-        }
-        application.stage.addChild(bunny as any);
-
-        // 目前使用 pixi-spine 4.x 版本，只支持加载 3.x 版本的 spine 文件
-         const spineUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/uri/file/as/2/cwajh0/4/mp/qvHq0Xj3g6XSXASd/spineboy/spineboy.json';
-        const { spineData } = await Assets.load(spineUrl);
-        const spineBoy = new Spine(spineData);
-        spineBoy.state.setAnimation(0, 'walk', true);
-        spineBoy.x = application.renderer.width / 2;
-        spineBoy.y = application.renderer.height;
-        application.stage.addChild(spineBoy as PIXI.DisplayObject);
-         
-        let elapsed = 0;
-        application.ticker.add((delta) => {
-            elapsed += delta;
-            bunny.transform.position.y = application.renderer.height / 2 + Math.sin(elapsed / 5) * 32;
+        const introudceText = new Text('Please click SpineBoy to switch animate!', {
+            wordWrap: true,
+            wordWrapWidth: width * 0.8, // 设置合适的宽度，当文本超过这个宽度时自动换行
         });
+        introudceText.x = width / 2;
+        introudceText.y = 64;
+        introudceText.anchor.set(0.5, 0);
+        application.stage.addChild(introudceText as PIXI.DisplayObject);
+
+        let currentSpineTrack = 0;
+        // 目前使用 pixi-spine 4.x 版本，只支持加载 3.x 版本的 spine 文件
+        const spineUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/uri/file/as/2/cwajh0/4/mp/qvHq0Xj3g6XSXASd/spineboy/spineboy.json';
+        const { spineData } = await Assets.load(spineUrl);        
+        const spineBoy = new Spine(spineData);
+        const spineHeight = spineBoy.getBounds().height;
+        const animations = spineBoy.skeleton.data.animations;
+        spineBoy.state.setAnimation(currentSpineTrack, animations[currentSpineTrack].name, true);
+        spineBoy.x = width / 2;
+        spineBoy.y = height;
+
+        const currentAnimateText = new Text(animations[0].name, {
+            fontSize: 48,
+            fontFamily: "Chalkduster",
+        });
+        currentAnimateText.x = width / 2;
+        currentAnimateText.y = height - spineHeight - 32;
+        currentAnimateText.anchor.set(0.5, 0.5);
+        application.stage.addChild(currentAnimateText as PIXI.DisplayObject);
+
+        spineBoy.interactive = true;
+        spineBoy.on('pointerdown', () => {
+            if(currentSpineTrack === 0) {
+                currentSpineTrack = 1;      
+            } else {
+                currentSpineTrack = 0;        
+            }
+            const animate = animations[currentSpineTrack].name;
+            currentAnimateText.text = animate;
+            spineBoy.state.setAnimation(0, animate, true);          
+        })
+
+        application.stage.addChild(spineBoy as PIXI.DisplayObject);
     }
 
     destroy() {
