@@ -156,6 +156,7 @@ export class Game {
     }
 
     destroy() {
-        this.application.destroy(true);
+        // Note: 在 测试项目中不需要移除 canvas， removeView 为 false
+        this.application.destroy(false);
     }
 }

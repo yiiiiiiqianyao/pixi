@@ -32,6 +32,7 @@ export class Game {
 
         let currentSpineTrack = 0;
         // 目前使用 pixi-spine 4.x 版本，只支持加载 3.x 版本的 spine 文件
+        // 新版本支持 spine 4.x
         const spineUrl = 'https://mdn.alipayobjects.com/huamei_cwajh0/uri/file/as/2/cwajh0/4/mp/qvHq0Xj3g6XSXASd/spineboy/spineboy.json';
         const { spineData } = await Assets.load(spineUrl);        
         const spineBoy = new Spine(spineData);
@@ -66,6 +67,7 @@ export class Game {
     }
 
     destroy() {
-        this.application.destroy(true);
+        // Note: 在 测试项目中不需要移除 canvas， removeView 为 false
+        this.application.destroy(false);
     }
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import '../game/gameComponent.css';
 import 'pixi.js-legacy';
-import { Game } from "../demos/sprite/game";
+import { Game } from "../demos/graphic/game";
 
-const SpritePage = () => {
+const GraphicPage = () => {
     const gameWrapRef = useRef<null | HTMLDivElement>(null);
     const canvasRef = useRef<null | HTMLCanvasElement>(null);
-    useEffect(() => {
+    useEffect(() => {       
         const container = gameWrapRef.current!;        
         const canvas = canvasRef.current as  HTMLCanvasElement;
         const game = new Game(canvas, container.clientWidth, container.clientHeight);
@@ -22,4 +22,4 @@ const SpritePage = () => {
         <canvas ref={canvasRef} />
     </div>
 }
-export default React.memo(SpritePage);
+export default React.memo(GraphicPage);

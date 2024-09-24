@@ -12,7 +12,10 @@ const SpinePage = () => {
         const game = new Game(canvas, container.clientWidth, container.clientHeight);
         game.start();
         return () => {
-            game.destroy();
+            // 在 demo 中延迟一帧销毁，避免热更新报错
+            requestAnimationFrame(() => {
+                game.destroy();
+            })
         }
     }, [])
     return <div ref={gameWrapRef} className='_game_wrap'>
