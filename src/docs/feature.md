@@ -7,6 +7,9 @@
 - 兼容 canvas 降级，使用 pixi.js-legacy 版本，功能开发的时候固定版本
 - 页面单实例（标准）
 
+## 项目搭建
+- 引入 storybook（https://storybook.js.org/） 方便调试 demo
+
 ## 待完成
 - debug
   - 游戏环境信息输出 RenderType、pixi version、view size、dpr、etc
