@@ -1,6 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three';
 import { Debug, Proton } from './particle';
+import { Span } from './particle/span.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
@@ -84,7 +85,7 @@ export class SceneManager {
     createEmitter(scene: THREE.Scene, proton: Proton) {
         const emitter = new Proton.Emitter();
         
-        emitter.rate = new Proton.Rate(new Proton.Span(4, 8), new Proton.Span(.2, .5));
+        emitter.rate = new Proton.Rate(new Span(4, 8), new Span(.2, .5));
         emitter.addInitialize(new Proton.Mass(1));
         emitter.addInitialize(new Proton.Radius(100));
         emitter.addInitialize(new Proton.Life(2, 4));

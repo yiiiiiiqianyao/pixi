@@ -1,5 +1,9 @@
 // @ts-nocheck
 import * as THREE from 'three';
+import { Util } from './util.js';
+import { Span } from './span.js';
+import { MathUtils } from './mathUtils.js';
+import { PUID } from './puid.js';
 /**
  * @name Proton is a particle engine for three.js
  *
@@ -10,8 +14,8 @@ import * as THREE from 'three';
  */
 export class Proton {
     constructor(preParticles, integrationType) {
-        this.preParticles = Proton.Util.initValue(preParticles, Proton.POOL_MAX);
-        this.integrationType = Proton.Util.initValue(integrationType, Proton.EULER);
+        this.preParticles = Util.initValue(preParticles, Proton.POOL_MAX);
+        this.integrationType = Util.initValue(integrationType, Proton.EULER);
 
         this.emitters = [];
         this.renderers = [];
@@ -133,92 +137,92 @@ Proton.bindEmtterEvent = false;
 
 
 
-    // EventDispatcher
-    function EventDispatcher() {
-        this.initialize();
-    };
+// EventDispatcher
+function EventDispatcher() {
+    this.initialize();
+};
 
-    EventDispatcher.initialize = function(target) {
-        target.addEventListener = p.addEventListener;
-        target.removeEventListener = p.removeEventListener;
-        target.removeAllEventListeners = p.removeAllEventListeners;
-        target.hasEventListener = p.hasEventListener;
-        target.dispatchEvent = p.dispatchEvent;
-    };
+EventDispatcher.initialize = function(target) {
+    target.addEventListener = p.addEventListener;
+    target.removeEventListener = p.removeEventListener;
+    target.removeAllEventListeners = p.removeAllEventListeners;
+    target.hasEventListener = p.hasEventListener;
+    target.dispatchEvent = p.dispatchEvent;
+};
 
-    var p = EventDispatcher.prototype;
+var p = EventDispatcher.prototype;
 
-    p._listeners = null;
+p._listeners = null;
 
-    p.initialize = function() {};
-    p.addEventListener = function(type, listener) {
-        if (!this._listeners) {
-            this._listeners = {};
-        } else {
-            this.removeEventListener(type, listener);
-        }
+p.initialize = function() {};
+p.addEventListener = function(type, listener) {
+    if (!this._listeners) {
+        this._listeners = {};
+    } else {
+        this.removeEventListener(type, listener);
+    }
 
-        if (!this._listeners[type]) this._listeners[type] = []
-        this._listeners[type].push(listener);
+    if (!this._listeners[type]) this._listeners[type] = []
+    this._listeners[type].push(listener);
 
-        return listener;
-    };
+    return listener;
+};
 
-    p.removeEventListener = function(type, listener) {
-        if (!this._listeners) return;
-        if (!this._listeners[type]) return;
+p.removeEventListener = function(type, listener) {
+    if (!this._listeners) return;
+    if (!this._listeners[type]) return;
 
-        var arr = this._listeners[type];
-        for (var i = 0, l = arr.length; i < l; i++) {
-            if (arr[i] === listener) {
-                if (l === 1) {
-                    delete(this._listeners[type]);
-                }
-                // allows for faster checks.
-                else {
-                    arr.splice(i, 1);
-                }
-                break;
+    var arr = this._listeners[type];
+    for (var i = 0, l = arr.length; i < l; i++) {
+        if (arr[i] === listener) {
+            if (l === 1) {
+                delete(this._listeners[type]);
             }
-        }
-    };
-
-    p.removeAllEventListeners = function(type) {
-        if (!type)
-            this._listeners = null;
-        else if (this._listeners)
-            delete(this._listeners[type]);
-    };
-
-    p.dispatchEvent = function(eventName, eventTarget) {
-        var ret = false,
-            listeners = this._listeners;
-
-        if (eventName && listeners) {
-            var arr = listeners[eventName];
-            if (!arr) return ret;
-
-            arr = arr.slice();
-            // to avoid issues with items being removed or added during the dispatch
-
-            var handler, i = arr.length;
-            while (i--) {
-                var handler = arr[i];
-                ret = ret || handler(eventTarget);
+            // allows for faster checks.
+            else {
+                arr.splice(i, 1);
             }
-            
+            break;
         }
+    }
+};
 
-        return !!ret;
-    };
+p.removeAllEventListeners = function(type) {
+    if (!type)
+        this._listeners = null;
+    else if (this._listeners)
+        delete(this._listeners[type]);
+};
 
-    p.hasEventListener = function(type) {
-        var listeners = this._listeners;
-        return !!(listeners && listeners[type]);
-    };
+p.dispatchEvent = function(eventName, eventTarget) {
+    var ret = false,
+        listeners = this._listeners;
 
-    EventDispatcher.initialize(Proton.prototype);
-    Proton.EventDispatcher = EventDispatcher;
+    if (eventName && listeners) {
+        var arr = listeners[eventName];
+        if (!arr) return ret;
+
+        arr = arr.slice();
+        // to avoid issues with items being removed or added during the dispatch
+
+        var handler, i = arr.length;
+        while (i--) {
+            var handler = arr[i];
+            ret = ret || handler(eventTarget);
+        }
+        
+    }
+
+    return !!ret;
+};
+
+p.hasEventListener = function(type) {
+    var listeners = this._listeners;
+    return !!(listeners && listeners[type]);
+};
+
+EventDispatcher.initialize(Proton.prototype);
+Proton.EventDispatcher = EventDispatcher;
 
     Particle.ID = 0;
 
@@ -238,7 +242,7 @@ Proton.bindEmtterEvent = false;
         this.id = 'particle_' + Particle.ID++;
         this.name = 'Particle';
         this.reset("init");
-        Proton.Util.setPrototypeByObj(this, pOBJ);
+        Util.setPrototypeByObj(this, pOBJ);
     }
 
     Particle.prototype = {
@@ -314,7 +318,7 @@ Proton.bindEmtterEvent = false;
 
                 this.rotation.clear();
 
-                Proton.Util.destroyObject(this.transform);
+                Util.destroyObject(this.transform);
                 this.removeAllBehaviours();
             }
 
@@ -362,7 +366,7 @@ Proton.bindEmtterEvent = false;
         },
 
         removeAllBehaviours: function() {
-            Proton.Util.destroyArray(this.behaviours);
+            Util.destroyArray(this.behaviours);
         },
 
         /**
@@ -379,114 +383,9 @@ Proton.bindEmtterEvent = false;
 
     Proton.Particle = Particle;
 
-    var Util = Util || {
-        initValue: function(value, defaults) {
-            var value = (value !== null && value !== undefined) ? value : defaults;
-            return value;
-        },
 
-        isArray: function(value) {
-            return Object.prototype.toString.call(value) === '[object Array]';
-        },
 
-        destroyArray: function(array) {
-            array.length = 0;
-        },
 
-        destroyObject: function(obj) {
-            for (var o in obj) delete obj[o];
-        },
-
-        isUndefined: function() {
-            for (var id in arguments) {
-                var arg = arguments[id];
-                if (arg !== undefined)
-                    return false;
-            }
-
-            return true;
-        },
-
-        setVectorByObj: function(target, pOBJ) {
-            if (pOBJ["x"] !== undefined) target.p.x = pOBJ["x"];
-            if (pOBJ["y"] !== undefined) target.p.y = pOBJ["y"];
-            if (pOBJ["z"] !== undefined) target.p.z = pOBJ["z"];
-
-            if (pOBJ["vx"] !== undefined) target.v.x = pOBJ["vx"];
-            if (pOBJ["vy"] !== undefined) target.v.y = pOBJ["vy"];
-            if (pOBJ["vz"] !== undefined) target.v.z = pOBJ["vz"];
-
-            if (pOBJ["ax"] !== undefined) target.a.x = pOBJ["ax"];
-            if (pOBJ["ay"] !== undefined) target.a.y = pOBJ["ay"];
-            if (pOBJ["az"] !== undefined) target.a.z = pOBJ["az"];
-
-            if (pOBJ["p"] !== undefined) target.p.copy(pOBJ["p"]);
-            if (pOBJ["v"] !== undefined) target.v.copy(pOBJ["v"]);
-            if (pOBJ["a"] !== undefined) target.a.copy(pOBJ["a"]);
-
-            if (pOBJ["position"] !== undefined) target.p.copy(pOBJ["position"]);
-            if (pOBJ["velocity"] !== undefined) target.v.copy(pOBJ["velocity"]);
-            if (pOBJ["accelerate"] !== undefined) target.a.copy(pOBJ["accelerate"]);
-        },
-
-        //set prototype
-        setPrototypeByObj: function(target, proObj, filters) {
-            for (var key in proObj) {
-                if (target.hasOwnProperty(key)) {
-                    if (filters) {
-                        if (filters.indexOf(key) < 0) target[key] = Util._getValue(proObj[key]);
-                    } else {
-                        target[key] = Util._getValue(proObj[key]);
-                    }
-                }
-            }
-
-            return target;
-        },
-
-        _getValue: function(pan) {
-            if (pan instanceof Span)
-                return pan.getValue();
-            else
-                return pan;
-        },
-
-        inherits: function(subClass, superClass) {
-            subClass._super_ = superClass;
-            if (Object['create']) {
-                subClass.prototype = Object.create(superClass.prototype, {
-                    constructor: { value: subClass }
-                });
-            } else {
-                var F = function() {};
-                F.prototype = superClass.prototype;
-                subClass.prototype = new F();
-                subClass.prototype.constructor = subClass;
-            }
-        }
-    };
-
-    Proton.Util = Util;
-
-    var PUID = PUID || {
-        _id: 0,
-        _uids: {},
-        id: function(obj) {
-            for (var id in this._uids) {
-                if (this._uids[id] == obj) return id;
-            }
-
-            var nid = "PUID_" + (this._id++);
-            this._uids[nid] = obj;
-            return nid;
-        },
-
-        hash: function(str) {
-            return;
-        }
-    }
-
-    Proton.PUID = PUID;
 
     var ColorUtil = ColorUtil || {
         getRGB: function(color) {
@@ -562,12 +461,12 @@ Proton.bindEmtterEvent = false;
             return function(img) {
                 if (img instanceof THREE.Texture) {
                     return img;
-                } else if (typeof img == "string") {
-                    var id = Proton.PUID.hash(img);
+                } else if (typeof img === "string") {
+                    var id = PUID.hash(img);
                     if (!store[id]) store[id] = new THREE.Texture(img);;
                     return store[id];
                 } else if (img instanceof Image) {
-                    var id = Proton.PUID.hash(img.src);
+                    var id = PUID.hash(img.src);
                     if (!store[id]) store[id] = new THREE.Texture(img);;
                     return store[id];
                 }
@@ -586,7 +485,7 @@ Proton.bindEmtterEvent = false;
         create: function(obj) {
             this.cID++;
 
-            if (typeof obj == "function")
+            if (typeof obj === "function")
                 return new obj;
             else
                 return obj.clone();
@@ -601,7 +500,7 @@ Proton.bindEmtterEvent = false;
         },
 
         get: function(obj) {
-            var p, puid = obj.__puid || Proton.PUID.id(obj);
+            var p, puid = obj.__puid || PUID.id(obj);
             if (this.list[puid] && this.list[puid].length > 0)
                 p = this.list[puid].pop();
             else
@@ -631,74 +530,8 @@ Proton.bindEmtterEvent = false;
 
     Proton.Pool = Pool;
 
-    var MathUtils = {
-        randomAToB: function(a, b, INT) {
-            if (!INT)
-                return a + Math.random() * (b - a);
-            else
-                return ((Math.random() * (b - a)) >> 0) + a;
-        },
-        randomFloating: function(center, f, INT) {
-            return MathUtils.randomAToB(center - f, center + f, INT);
-        },
-
-        randomZone: function(display) {
-
-        },
-
-        degreeTransform: function(a) {
-            return a * Proton.PI / 180;
-        },
-
-        toColor16: function getRGB(num) {
-            return "#" + num.toString(16);
-        },
-
-        randomColor: function() {
-            return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
-        },
-
-        lerp: function(a, b, energy) {
-            return b + (a - b) * energy
-        },
-
-        getNormal: function(v, n) {
-            if (v.x == 0 && v.y == 0) {
-                if (v.z == 0)
-                    n.set(1, 0, 1);
-                else
-                    n.set(1, 1, -v.y / v.z);
-            } else {
-                if (v.x == 0)
-                    n.set(1, 0, 1);
-                else
-                    n.set(-v.y / v.x, 1, 1);
-            }
-
-            return n.normalize();
-        },
-
-        /** 
-         * Rodrigues' Rotation Formula 
-         * https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
-         * v′ = vcos(θ) + k(k⋅v)(1−cos(θ)) + (k*v)sin(θ)
-         */
-        axisRotate: function(v0, v, k, tha) {
-            var cos = Math.cos(tha);
-            var sin = Math.sin(tha);
-            var p = k.dot(v) * (1 - cos);
-
-            v0.copy(k);
-            v0.cross(v).scalar(sin);
-            v0.addValue(v.x * cos, v.y * cos, v.z * cos);
-            v0.addValue(k.x * p, k.y * p, k.z * p);
-        }
-    }
-
-    Proton.MathUtils = MathUtils;
-
     var Integration = function(type) {
-        this.type = Proton.Util.initValue(type, Proton.EULER);
+        this.type = Util.initValue(type, Proton.EULER);
     }
 
     Integration.prototype = {
@@ -1194,51 +1027,9 @@ Proton.bindEmtterEvent = false;
 
     Proton.Quaternion = Quaternion;
 
-     /**
-     * Span Class. Get a random Number from a to b. Or from c-a to c+b
-     * @param {Number|Array} a - min number
-     * @param {Number} b - max number
-     * @param {Number} center - the center's z value  
-     * @example 
-     * var span = new Proton.Span(0,30);
-     * or
-     * var span = new Proton.Span(["#fff","#ff0","#000"]);
-     * or
-     * var span = new Proton.Span(5,1,"center");
-     * @extends {Zone}
-     * @constructor
-     */
-     function Span(a, b, center) {
-        this._isArray = false;
 
-        if (Proton.Util.isArray(a)) {
-            this._isArray = true;
-            this.a = a;
-        } else {
-            this.a = Proton.Util.initValue(a, 1);
-            this.b = Proton.Util.initValue(b, this.a);
-            this._center = Proton.Util.initValue(center, false);
-        }
-    }
 
-    /**
-     * Span.getValue function
-     * @name get a random Number from a to b. Or get a random Number from c-a to c+b
-     * @param {number} INT or int
-     * @return {number} a random Number
-     */
-    Span.prototype = {
-        getValue: function(INT) {
-            if (this._isArray) {
-                return this.a[(this.a.length * Math.random()) >> 0];
-            } else {
-                if (!this._center)
-                    return Proton.MathUtils.randomAToB(this.a, this.b, INT);
-                else
-                    return Proton.MathUtils.randomFloating(this.a, this.b, INT);
-            }
-        }
-    }
+
 
     /**
      * Proton.createSpan function
@@ -1261,7 +1052,6 @@ Proton.bindEmtterEvent = false;
         }
     }
 
-    Proton.Span = Span;
 
      /**
      * ArraySpan name get a random Color from a colors array
@@ -1275,10 +1065,10 @@ Proton.bindEmtterEvent = false;
      */
 
      function ArraySpan(colors) {
-        this._arr = Proton.Util.isArray(colors) ? colors : [colors];
+        this._arr = Util.isArray(colors) ? colors : [colors];
     }
 
-    Proton.Util.inherits(ArraySpan, Proton.Span);
+    Util.inherits(ArraySpan, Span);
 
     /**
      * getValue function
@@ -1288,8 +1078,8 @@ Proton.bindEmtterEvent = false;
     ArraySpan.prototype.getValue = function() {
         var color = this._arr[(this._arr.length * Math.random()) >> 0];
         
-        if (color == 'random' || color == 'Random')
-            return Proton.MathUtils.randomColor();
+        if (color === 'random' || color === 'Random')
+            return MathUtils.randomColor();
         else
             return color;
     }
@@ -1325,7 +1115,7 @@ Proton.bindEmtterEvent = false;
          * @type {String} id
          */
         this.id = 'Behaviour_' + Behaviour.id++;
-        this.life = Proton.Util.initValue(life, Infinity);
+        this.life = Util.initValue(life, Infinity);
 
         /**
          * The behaviour's decaying trend, for example Proton.easeOutQuart;
@@ -1333,7 +1123,7 @@ Proton.bindEmtterEvent = false;
          * @type {String}
          * @default Proton.easeLinear
          */
-        this.easing = Proton.Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+        this.easing = Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
         this.age = 0;
         this.energy = 1;
         /**
@@ -1364,8 +1154,8 @@ Proton.bindEmtterEvent = false;
          * @param {String} this behaviour's easing
          */
         reset: function(life, easing) {
-            this.life = Proton.Util.initValue(life, Infinity);
-            this.easing = Proton.Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+            this.life = Util.initValue(life, Infinity);
+            this.easing = Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
         },
         /**
          * Normalize a force by 1:100;
@@ -1438,8 +1228,8 @@ Proton.bindEmtterEvent = false;
      */
      
     function Rate(numPan, timePan) {
-        this.numPan = Proton.createSpan(Proton.Util.initValue(numPan, 1));
-        this.timePan = Proton.createSpan(Proton.Util.initValue(timePan, 1));
+        this.numPan = Proton.createSpan(Util.initValue(numPan, 1));
+        this.timePan = Proton.createSpan(Util.initValue(timePan, 1));
 
         this.startTime = 0;
         this.nextTime = 0;
@@ -1458,7 +1248,7 @@ Proton.bindEmtterEvent = false;
             if (this.startTime >= this.nextTime) {
                 this.init();
 
-                if (this.numPan.b == 1) {
+                if (this.numPan.b === 1) {
                     if (this.numPan.getValue("Float") > 0.5)
                         return 1;
                     else
@@ -1497,7 +1287,7 @@ Proton.bindEmtterEvent = false;
 
     var InitializeUtil = {
 
-        initialize: function(emitter, particle, initializes) {
+        initialize(emitter, particle, initializes) {
             var i = initializes.length;
             while (i--) {
                 var initialize = initializes[i];
@@ -1509,14 +1299,11 @@ Proton.bindEmtterEvent = false;
 
             InitializeUtil.bindEmitter(emitter, particle);
         },
-
-        //////////////////////init//////////////////////
-        init: function(emitter, particle, initialize) {
-            Proton.Util.setPrototypeByObj(particle, initialize);
-            Proton.Util.setVectorByObj(particle, initialize);
+        init(emitter, particle, initialize) {
+            Util.setPrototypeByObj(particle, initialize);
+            Util.setVectorByObj(particle, initialize);
         },
-
-        bindEmitter: function(emitter, particle) {
+        bindEmitter(emitter, particle) {
             if (emitter.bindEmitter) {
                 particle.p.add(emitter.p);
                 particle.v.add(emitter.v);
@@ -1546,9 +1333,9 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Life, Proton.Initialize);
+    Util.inherits(Life, Proton.Initialize);
     Life.prototype.initialize = function(target) {
-        if (this.lifePan.a == Infinity || this.lifePan.a == "infi")
+        if (this.lifePan.a === Infinity || this.lifePan.a === "infi")
             target.life = Infinity;
         else
             target.life = this.lifePan.getValue();
@@ -1573,7 +1360,7 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Position, Proton.Initialize);
+    Util.inherits(Position, Proton.Initialize);
     Position.prototype.reset = function() {
         if (!this.zones) this.zones = [];
         else this.zones.length = 0;
@@ -1624,7 +1411,7 @@ Proton.bindEmtterEvent = false;
         this.name = "Velocity";
     }
 
-    Proton.Util.inherits(Velocity, Proton.Initialize);
+    Util.inherits(Velocity, Proton.Initialize);
 
     Velocity.prototype.reset = function(a, b, c) {
         //[vector,tha]
@@ -1664,13 +1451,13 @@ Proton.bindEmtterEvent = false;
             tha = this.tha * Math.random();
             this._useV && this.dirVec.copy(this.dir).scalar(this.radiusPan.getValue());
 
-            Proton.MathUtils.getNormal(this.dirVec, normal);
+            MathUtils.getNormal(this.dirVec, normal);
             v.copy(this.dirVec).applyAxisAngle(normal, tha);
             v.applyAxisAngle(this.dirVec.normalize(), Math.random() * Proton.PI * 2);
 
-            //use  axisRotate methods
-            //Proton.MathUtils.axisRotate(this.v1, this.dirVec, normal, tha);
-            //Proton.MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * Proton.PI * 2);
+            // use  axisRotate methods
+            // MathUtils.axisRotate(this.v1, this.dirVec, normal, tha);
+            // MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * Proton.PI * 2);
             target.v.copy(v);
             return this;
         };
@@ -1697,7 +1484,7 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Mass, Proton.Initialize);
+    Util.inherits(Mass, Proton.Initialize);
     Mass.prototype.initialize = function(target) {
         target.mass = this.massPan.getValue();
     };
@@ -1721,8 +1508,7 @@ Proton.bindEmtterEvent = false;
         this.radius = Proton.createSpan(a, b, c);
     }
 
-
-    Proton.Util.inherits(Radius, Proton.Initialize);
+    Util.inherits(Radius, Proton.Initialize);
     Radius.prototype.reset = function(a, b, c) {
         this.radius = Proton.createSpan(a, b, c);
     };
@@ -1738,10 +1524,9 @@ Proton.bindEmtterEvent = false;
         Body._super_.call(this);
         this.body = Proton.createArraySpan(body);
         this.w = w;
-        this.h = Proton.Util.initValue(h, this.w);
+        this.h = Util.initValue(h, this.w);
     }
-
-    Proton.Util.inherits(Body, Proton.Initialize);
+    Util.inherits(Body, Proton.Initialize);
 
     Body.prototype.initialize = function(particle) {
         var body = this.body.getValue();
@@ -1770,7 +1555,7 @@ Proton.bindEmtterEvent = false;
         this.name = "Force";
     }
 
-    Proton.Util.inherits(Force, Proton.Behaviour);
+    Util.inherits(Force, Proton.Behaviour);
     Force.prototype.reset = function(fx, fy, fz) {
         this.force = this.normalizeForce(new Proton.Vector3D(fx, fy, fz));
         this.force.id = Math.random();
@@ -1785,9 +1570,9 @@ Proton.bindEmtterEvent = false;
 
     function Attraction(targetPosition, force, radius, life, easing) {
 		Attraction._super_.call(this, life, easing);
-		this.targetPosition = Proton.Util.initValue(targetPosition, new Proton.Vector3D);
-		this.radius = Proton.Util.initValue(radius, 1000);
-		this.force = Proton.Util.initValue(this.normalizeValue(force), 100);
+		this.targetPosition = Util.initValue(targetPosition, new Proton.Vector3D);
+		this.radius = Util.initValue(radius, 1000);
+		this.force = Util.initValue(this.normalizeValue(force), 100);
 		this.radiusSq = this.radius * this.radius
 		this.attractionForce = new Proton.Vector3D();
 		this.lengthSq = 0;
@@ -1795,11 +1580,11 @@ Proton.bindEmtterEvent = false;
 	}
 
 
-	Proton.Util.inherits(Attraction, Proton.Behaviour);
+	Util.inherits(Attraction, Proton.Behaviour);
 	Attraction.prototype.reset = function(targetPosition, force, radius, life, easing) {
-		this.targetPosition = Proton.Util.initValue(targetPosition, new Proton.Vector3D);
-		this.radius = Proton.Util.initValue(radius, 1000);
-		this.force = Proton.Util.initValue(this.normalizeValue(force), 100);
+		this.targetPosition = Util.initValue(targetPosition, new Proton.Vector3D);
+		this.radius = Util.initValue(radius, 1000);
+		this.force = Util.initValue(this.normalizeValue(force), 100);
 		this.radiusSq = this.radius * this.radius
 		this.attractionForce = new Proton.Vector3D();
 		this.lengthSq = 0;
@@ -1836,7 +1621,7 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(RandomDrift, Proton.Behaviour);
+    Util.inherits(RandomDrift, Proton.Behaviour);
     RandomDrift.prototype.reset = function(driftX, driftY, driftZ, delay, life, easing) {
         this.randomFoce = this.normalizeForce(new Proton.Vector3D(driftX, driftY, driftZ));
         this.delayPan = Proton.createSpan(delay || .03);
@@ -1849,9 +1634,9 @@ Proton.bindEmtterEvent = false;
 
         this.time += time;
         if (this.time >= this.delayPan.getValue()) {
-            var ax = Proton.MathUtils.randomAToB(-this.randomFoce.x, this.randomFoce.x);
-            var ay = Proton.MathUtils.randomAToB(-this.randomFoce.y, this.randomFoce.y);
-            var az = Proton.MathUtils.randomAToB(-this.randomFoce.z, this.randomFoce.z);
+            var ax = MathUtils.randomAToB(-this.randomFoce.x, this.randomFoce.x);
+            var ay = MathUtils.randomAToB(-this.randomFoce.y, this.randomFoce.y);
+            var az = MathUtils.randomAToB(-this.randomFoce.z, this.randomFoce.z);
             particle.a.addValue(ax, ay, az);
             this.time = 0;
         };
@@ -1866,7 +1651,7 @@ Proton.bindEmtterEvent = false;
 	}
 
 
-	Proton.Util.inherits(Repulsion, Proton.Attraction);
+	Util.inherits(Repulsion, Proton.Attraction);
 	Repulsion.prototype.reset = function(targetPosition, force, radius, life, easing) {
 		Repulsion._super_.prototype.reset.call(this, targetPosition, force, radius, life, easing);
 		this.force *= -1;
@@ -1878,7 +1663,7 @@ Proton.bindEmtterEvent = false;
         this.name = "Gravity";
     }
 
-    Proton.Util.inherits(Gravity, Proton.Force);
+    Util.inherits(Gravity, Proton.Force);
 
     Gravity.prototype.reset = function(g, life, easing) {
         Gravity._super_.prototype.reset.call(this, 0, -g, 0, life, easing);
@@ -1900,7 +1685,7 @@ Proton.bindEmtterEvent = false;
         this.name = "Collision";
     }
 
-    Proton.Util.inherits(Collision, Proton.Behaviour);
+    Util.inherits(Collision, Proton.Behaviour);
     Collision.prototype.reset = function(emitter, useMass, callback, life, easing) {
         this.emitter = emitter;
         this.useMass = useMass;
@@ -1918,7 +1703,7 @@ Proton.bindEmtterEvent = false;
         var i = particles.length;
         while (i--) {
             otherParticle = particles[i];
-            if (otherParticle == particle) continue;
+            if (otherParticle === particle) continue;
             
             this.delta.copy(otherParticle.p).sub(particle.p);
             lengthSq = this.delta.lengthSq();
@@ -1953,10 +1738,10 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(CrossZone, Proton.Behaviour);
+    Util.inherits(CrossZone, Proton.Behaviour);
     CrossZone.prototype.reset = function(a, b, life, easing) {
         var zone, crossType;
-        if (typeof a == "string") {
+        if (typeof a === "string") {
             crossType = a;
             zone = b;
         } else {
@@ -1965,7 +1750,7 @@ Proton.bindEmtterEvent = false;
         }
         
         this.zone = zone;
-        this.zone.crossType = Proton.Util.initValue(crossType, "dead");
+        this.zone.crossType = Util.initValue(crossType, "dead");
         if (life)
             CrossZone._super_.prototype.reset.call(this, life, easing);
     }
@@ -1996,14 +1781,14 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Alpha, Proton.Behaviour);
+    Util.inherits(Alpha, Proton.Behaviour);
     Alpha.prototype.reset = function(a, b, life, easing) {
-        if (b == null || b == undefined)
+        if (b === null || b === undefined)
             this._same = true;
         else
             this._same = false;
 
-        this.a = Proton.createSpan(Proton.Util.initValue(a, 1));
+        this.a = Proton.createSpan(Util.initValue(a, 1));
         this.b = Proton.createSpan(b);
         life && Alpha._super_.prototype.reset.call(this, life, easing);
     }
@@ -2020,7 +1805,7 @@ Proton.bindEmtterEvent = false;
     Alpha.prototype.applyBehaviour = function(particle, time, index) {
         Alpha._super_.prototype.applyBehaviour.call(this, particle, time, index);
 
-        particle.alpha = Proton.MathUtils.lerp(particle.transform.alphaA, particle.transform.alphaB, this.energy);
+        particle.alpha = MathUtils.lerp(particle.transform.alphaA, particle.transform.alphaB, this.energy);
         if (particle.alpha < 0.002) particle.alpha = 0;
     };
 
@@ -2040,14 +1825,14 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Scale, Proton.Behaviour);
+    Util.inherits(Scale, Proton.Behaviour);
     Scale.prototype.reset = function(a, b, life, easing) {
-        if (b == null || b == undefined)
+        if (b === null || b === undefined)
             this._same = true;
         else
             this._same = false;
 
-        this.a = Proton.createSpan(Proton.Util.initValue(a, 1));
+        this.a = Proton.createSpan(Util.initValue(a, 1));
         this.b = Proton.createSpan(b);
 
         life && Scale._super_.prototype.reset.call(this, life, easing);
@@ -2065,7 +1850,7 @@ Proton.bindEmtterEvent = false;
 
     Scale.prototype.applyBehaviour = function(particle, time, index) {
         Scale._super_.prototype.applyBehaviour.call(this, particle, time, index);
-        particle.scale = Proton.MathUtils.lerp(particle.transform.scaleA, particle.transform.scaleB, this.energy);
+        particle.scale = MathUtils.lerp(particle.transform.scaleA, particle.transform.scaleB, this.energy);
 
         if (particle.scale < 0.0005) particle.scale = 0;
         particle.radius = particle.transform.oldRadius * particle.scale;
@@ -2088,15 +1873,15 @@ Proton.bindEmtterEvent = false;
         this.name = "Rotate";
     }
 
-    Proton.Util.inherits(Rotate, Proton.Behaviour);
+    Util.inherits(Rotate, Proton.Behaviour);
     Rotate.prototype.reset = function(a, b, c, life, easing) {
         this.a = a || 0;
         this.b = b || 0;
         this.c = c || 0;
 
-        if (a === undefined || a == "same") {
+        if (a === undefined || a === "same") {
             this._type = "same";
-        } else if (b == undefined) {
+        } else if (b === undefined) {
             this._type = "set";
         } else if (c === undefined) {
             this._type = "to";
@@ -2134,10 +1919,10 @@ Proton.bindEmtterEvent = false;
 
     Rotate.prototype._setRotation = function(vec3, value) {
         vec3 = vec3 || new Proton.Vector3D;
-        if (value == "random") {
-            var x = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
-            var y = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
-            var z = Proton.MathUtils.randomAToB(-Proton.PI, Proton.PI);
+        if (value === "random") {
+            var x = MathUtils.randomAToB(-Proton.PI, Proton.PI);
+            var y = MathUtils.randomAToB(-Proton.PI, Proton.PI);
+            var z = MathUtils.randomAToB(-Proton.PI, Proton.PI);
             vec3.set(x, y, z);
         } else if (value instanceof Proton.Vector3D) {
             vec3.copy(value);
@@ -2160,11 +1945,10 @@ Proton.bindEmtterEvent = false;
                 break;
 
             case "to":
-                particle.rotation.x = Proton.MathUtils.lerp(particle.transform.fR.x, particle.transform.tR.x, this.energy);
-                particle.rotation.y = Proton.MathUtils.lerp(particle.transform.fR.y, particle.transform.tR.y, this.energy);
-                particle.rotation.z = Proton.MathUtils.lerp(particle.transform.fR.z, particle.transform.tR.z, this.energy);
+                particle.rotation.x = MathUtils.lerp(particle.transform.fR.x, particle.transform.tR.x, this.energy);
+                particle.rotation.y = MathUtils.lerp(particle.transform.fR.y, particle.transform.tR.y, this.energy);
+                particle.rotation.z = MathUtils.lerp(particle.transform.fR.z, particle.transform.tR.z, this.energy);
                 break;
-
             case "add":
                 particle.rotation.add(particle.transform.addR);
                 break;
@@ -2186,9 +1970,9 @@ Proton.bindEmtterEvent = false;
     }
 
 
-    Proton.Util.inherits(Color, Proton.Behaviour);
+    Util.inherits(Color, Proton.Behaviour);
     Color.prototype.reset = function(a, b, life, easing) {
-        if (b == null || b == undefined)
+        if (b === null || b === undefined)
             this._same = true;
         else
             this._same = false;
@@ -2212,9 +1996,9 @@ Proton.bindEmtterEvent = false;
         Color._super_.prototype.applyBehaviour.call(this, particle, time, index);
 
         if (!this._same) {
-            particle.color.r = Proton.MathUtils.lerp(particle.transform.colorA.r, particle.transform.colorB.r, this.energy) ;
-            particle.color.g = Proton.MathUtils.lerp(particle.transform.colorA.g, particle.transform.colorB.g, this.energy) ;
-            particle.color.b = Proton.MathUtils.lerp(particle.transform.colorA.b, particle.transform.colorB.b, this.energy) ;
+            particle.color.r = MathUtils.lerp(particle.transform.colorA.r, particle.transform.colorB.r, this.energy) ;
+            particle.color.g = MathUtils.lerp(particle.transform.colorA.g, particle.transform.colorB.g, this.energy) ;
+            particle.color.b = MathUtils.lerp(particle.transform.colorA.b, particle.transform.colorB.b, this.energy) ;
         } else {
             particle.color.r = particle.transform.colorA.r;
             particle.color.g = particle.transform.colorA.g;
@@ -2237,7 +2021,7 @@ Proton.bindEmtterEvent = false;
         this.name = "Spring";
     }
 
-    Proton.Util.inherits(Spring, Proton.Behaviour);
+    Util.inherits(Spring, Proton.Behaviour);
     Spring.prototype.reset = function(x, y, z, spring, friction) {
         if (!this.pos)
             this.pos = new Proton.Vector3D(x, y, z);
@@ -2297,7 +2081,7 @@ Proton.bindEmtterEvent = false;
     };
     Emitter.ID = 0;
 
-    Proton.Util.inherits(Emitter, Proton.Particle);
+    Util.inherits(Emitter, Proton.Particle);
     Proton.EventDispatcher.initialize(Emitter.prototype);
 
     /**
@@ -2308,10 +2092,10 @@ Proton.bindEmtterEvent = false;
      */
     Emitter.prototype.emit = function(totalEmitTimes, life) {
         this.currentEmitTime = 0;
-        this.totalEmitTimes = Proton.Util.initValue(totalEmitTimes, Infinity);
+        this.totalEmitTimes = Util.initValue(totalEmitTimes, Infinity);
 
-        if (life == true || life == 'life' || life == 'destroy') {
-            this.life = totalEmitTimes == 'once' ? 1 : this.totalEmitTimes;
+        if (life === true || life === 'life' || life === 'destroy') {
+            this.life = totalEmitTimes === 'once' ? 1 : this.totalEmitTimes;
         } else if (!isNaN(life)) {
             this.life = life;
         }
@@ -2392,7 +2176,7 @@ Proton.bindEmtterEvent = false;
      * @method removeInitializers
      */
     Emitter.prototype.removeInitializers = function() {
-        Proton.Util.destroyArray(this.initializes);
+        Util.destroyArray(this.initializes);
     };
     /**
      * add the Behaviour to particles;
@@ -2419,7 +2203,7 @@ Proton.bindEmtterEvent = false;
      * @method removeAllBehaviours
      */
     Emitter.prototype.removeAllBehaviours = function() {
-        Proton.Util.destroyArray(this.behaviours);
+        Util.destroyArray(this.behaviours);
     };
 
     Emitter.prototype.integrate = function(time) {
@@ -2438,7 +2222,7 @@ Proton.bindEmtterEvent = false;
     };
 
     Emitter.prototype.emitting = function(time) {
-        if (this.totalEmitTimes == 'once') {
+        if (this.totalEmitTimes === 'once') {
             var i = this.rate.getValue(99999);
             if (i > 0) this.cID = i;
             while (i--) this.createParticle();
@@ -2481,14 +2265,14 @@ Proton.bindEmtterEvent = false;
         var behaviours = this.behaviours;
 
         if (initialize) {
-            if (Proton.Util.isArray(initialize))
+            if (Util.isArray(initialize))
                 initializes = initialize;
             else
                 initializes = [initialize];
         }
 
         if (behaviour) {
-            if (Proton.Util.isArray(behaviour))
+            if (Util.isArray(behaviour))
                 behaviours = behaviour;
             else
                 behaviours = [behaviour];
@@ -2509,7 +2293,7 @@ Proton.bindEmtterEvent = false;
         this.energy = 0;
         this.totalEmitTimes = -1;
 
-        if (this.particles.length == 0) {
+        if (this.particles.length === 0) {
             this.removeInitializers();
             this.removeAllBehaviours();
 
@@ -2533,7 +2317,7 @@ Proton.bindEmtterEvent = false;
         BehaviourEmitter._super_.call(this, pObj);
     };
 
-    Proton.Util.inherits(BehaviourEmitter, Proton.Emitter);
+    Util.inherits(BehaviourEmitter, Proton.Emitter);
     /**
      * add the Behaviour to emitter;
      *
@@ -2585,8 +2369,8 @@ Proton.bindEmtterEvent = false;
      * @param {Object} pObj the parameters object;
      */
     function FollowEmitter(mouseTarget, ease, pObj) {
-        this.mouseTarget = Proton.Util.initValue(mouseTarget, window);
-        this.ease = Proton.Util.initValue(ease, .7);
+        this.mouseTarget = Util.initValue(mouseTarget, window);
+        this.ease = Util.initValue(ease, .7);
         this._allowEmitting = false;
         this.mouse = new Proton.Vector3D();
         this.initEventHandler();
@@ -2594,7 +2378,7 @@ Proton.bindEmtterEvent = false;
         FollowEmitter._super_.call(this, pObj);
     };
 
-    Proton.Util.inherits(FollowEmitter, Proton.Emitter);
+    Util.inherits(FollowEmitter, Proton.Emitter);
     FollowEmitter.prototype.initEventHandler = function() {
         var self = this;
         this.mousemoveHandler = function(e) {
@@ -2854,12 +2638,10 @@ Proton.bindEmtterEvent = false;
         this._body = new THREE.Mesh(
             new THREE.BoxGeometry(50, 50, 50),
             new THREE.MeshLambertMaterial({ color: "#ff0000" })
-        );
-        
+        );   
         this.name = "MeshRender";
     }
-
-    Proton.Util.inherits(MeshRender, Proton.BaseRender);
+    Util.inherits(MeshRender, Proton.BaseRender);
 
     MeshRender.prototype.onProtonUpdate = function() {};
 
@@ -2871,7 +2653,7 @@ Proton.bindEmtterEvent = false;
             
             //set material
             if (particle.useAlpha || particle.useColor) {
-                particle.target.material.__puid = Proton.PUID.id(particle.body.material);;
+                particle.target.material.__puid = PUID.id(particle.body.material);;
                 particle.target.material = this._materialPool.get(particle.target.material);
             }
         }
@@ -2923,7 +2705,7 @@ Proton.bindEmtterEvent = false;
         this.name = "SpriteRender";
     }
 
-    Proton.Util.inherits(SpriteRender, Proton.MeshRender);
+    Util.inherits(SpriteRender, Proton.MeshRender);
 
     SpriteRender.prototype.scale = function(particle) {
         particle.target.scale.set(particle.scale * particle.radius, particle.scale * particle.radius, 1);
@@ -2939,22 +2721,11 @@ Proton.bindEmtterEvent = false;
         this.name = "CustomRender";
     }
 
-    Proton.Util.inherits(CustomRender, Proton.BaseRender);
-
+    Util.inherits(CustomRender, Proton.BaseRender);
     CustomRender.prototype.onProtonUpdate = function() {};
-
-    CustomRender.prototype.onParticleCreated = function(particle) {
-        
-    };
-
-    CustomRender.prototype.onParticleUpdate = function(particle) {
-        
-    };
-
-    CustomRender.prototype.onParticleDead = function(particle) {
-        
-    };
-
+    CustomRender.prototype.onParticleCreated = function(particle) {};
+    CustomRender.prototype.onParticleUpdate = function(particle) {};
+    CustomRender.prototype.onParticleDead = function(particle) {};
     Proton.CustomRender = CustomRender;
 
      /**
@@ -3064,7 +2835,7 @@ Proton.bindEmtterEvent = false;
         constructor(a, b, c, d) {
             var x, y, z, r;
             super()
-            if (Proton.Util.isUndefined(b, c, d)) {
+            if (Util.isUndefined(b, c, d)) {
                 x = y = z = 0;
                 r = (a || 100);
             } else {
@@ -3143,8 +2914,7 @@ Proton.bindEmtterEvent = false;
         constructor(a, b, c) {
             var x, y, z;
             super();
-    
-            if (Proton.Util.isUndefined(a, b, c)) {
+            if (Util.isUndefined(a, b, c)) {
                 x = y = z = 0;
             } else {
                 x = a;
@@ -3191,12 +2961,10 @@ Proton.bindEmtterEvent = false;
         constructor(a, b, c, d, e, f) {
             super();
             var x, y, z, w, h, d;
-            
-    
-            if (Proton.Util.isUndefined(b, c, d, e, f)) {
+            if (Util.isUndefined(b, c, d, e, f)) {
                 x = y = z = 0;
                 w = h = d = (a || 100);
-            } else if (Proton.Util.isUndefined(d, e, f)) {
+            } else if (Util.isUndefined(d, e, f)) {
                 x = y = z = 0;
                 w = a;
                 h = b;
@@ -3209,22 +2977,20 @@ Proton.bindEmtterEvent = false;
                 h = e;
                 d = f;
             }
-    
             this.x = x;
             this.y = y;
             this.z = z;
             this.width = w;
             this.height = h;
             this.depth = d;
-    
             //
             this.friction = 0.85;
             this.max = 6;
         }
         getPosition() {
-            this.vector.x = this.x + Proton.MathUtils.randomAToB(-.5, .5) * this.width;
-            this.vector.y = this.y + Proton.MathUtils.randomAToB(-.5, .5) * this.height;
-            this.vector.z = this.z + Proton.MathUtils.randomAToB(-.5, .5) * this.depth;
+            this.vector.x = this.x + MathUtils.randomAToB(-.5, .5) * this.width;
+            this.vector.y = this.y + MathUtils.randomAToB(-.5, .5) * this.height;
+            this.vector.z = this.z + MathUtils.randomAToB(-.5, .5) * this.depth;
             return this.vector;
         }
     
@@ -3491,12 +3257,9 @@ Proton.bindEmtterEvent = false;
         this.points = ps;
         this.name = "PointsRender";
     }
+    Util.inherits(PointsRender, Proton.BaseRender);
 
-    Proton.Util.inherits(PointsRender, Proton.BaseRender);
-
-    PointsRender.prototype.onProtonUpdate = function() {
-        
-    };
+    PointsRender.prototype.onProtonUpdate = function() {};
 
     PointsRender.prototype.onParticleCreated = function(particle) {
         if (!particle.target) {

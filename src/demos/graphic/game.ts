@@ -19,6 +19,7 @@ export class Game {
     }
     async start() {
         const { application } = this;
+        console.log('application', application);
         await this.loadTextureResource();
         this.initBackground();
         // TODO: pixi default graphics
