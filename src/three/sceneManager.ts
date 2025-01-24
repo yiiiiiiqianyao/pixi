@@ -1,8 +1,10 @@
 // @ts-nocheck
 import * as THREE from 'three';
-import { Debug, Proton } from './particle';
-import { Span } from './particle/span.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Proton, BoxZone } from './particle';
+import { Span } from './particle/span.js';
+import { CustomRender } from './particle/render.js';
+import { Debug } from './particle/debug.js';
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
     proton!: Proton
@@ -56,7 +58,7 @@ export class SceneManager {
         proton.addEmitter(this.createEmitter(scene, proton));
 
         //add custom renderer
-        var renderer = new Proton.CustomRender();
+        var renderer = new CustomRender();
         renderer.onParticleCreated = function(p) {
             //p.target = mesh.clone();
             p.target = this.targetPool.get(mesh);
@@ -96,7 +98,7 @@ export class SceneManager {
         emitter.addBehaviour(new Proton.Scale(1, .1));
         emitter.addBehaviour(new Proton.G(6));
 
-        var zone = new Proton.BoxZone(600);
+        var zone = new BoxZone(600);
         zone.friction = 0.95;
         zone.max = 7;
         emitter.addBehaviour(new Proton.CrossZone(zone, "bound"));

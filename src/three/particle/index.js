@@ -1348,7 +1348,7 @@ Proton.EventDispatcher = EventDispatcher;
      * Position is init particle's Position
      * @param {Zone} zone - the Position zone
      * @example 
-     * var Position = new Proton.Position(new Proton.PointZone(30,100,0));
+     * var Position = new Proton.Position(new PointZone(30,100,0));
      * or
      * var Position = new Proton.Position(Infinity);
      * @extends {Proton.Initialize}
@@ -2578,155 +2578,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     Proton.ease = ease;
 
-    function BaseRender() { this.name = "BaseRender"; }
 
-    BaseRender.prototype = {
-        init: function(proton) {
-            var self = this;
-            this.proton = proton;
-            
-            this.proton.addEventListener("PROTON_UPDATE", function(proton) {
-                self.onProtonUpdate.call(self, proton);
-            });
-
-            this.proton.addEventListener("PARTICLE_CREATED", function(particle) {
-                self.onParticleCreated.call(self, particle);
-            });
-
-            this.proton.addEventListener("PARTICLE_UPDATE", function(particle) {
-                self.onParticleUpdate.call(self, particle);
-            });
-
-            this.proton.addEventListener("PARTICLE_DEAD", function(particle) {
-                self.onParticleDead.call(self, particle);
-            });
-        },
-
-        remove: function(proton) {
-            // this.proton.removeEventListener("PROTON_UPDATE", this.onProtonUpdate);
-            // this.proton.removeEventListener("PARTICLE_CREATED", this.onParticleCreated);
-            // this.proton.removeEventListener("PARTICLE_UPDATE", this.onParticleUpdate);
-            // this.proton.removeEventListener("PARTICLE_DEAD", this.onParticleDead);
-            this.proton = null;
-        },
-
-        onParticleCreated: function(particle) {
-
-        },
-
-        onParticleUpdate: function(particle) {
-
-        },
-
-        onParticleDead: function(particle) {
-
-        },
-
-        onProtonUpdate: function(proton) {
-
-        }
-    }
-
-    Proton.BaseRender = BaseRender;
-
-    function MeshRender(container) {
-        MeshRender._super_.call(this);
-        this.container = container;
-
-        this._targetPool = new Proton.Pool();
-        this._materialPool = new Proton.Pool();
-        this._body = new THREE.Mesh(
-            new THREE.BoxGeometry(50, 50, 50),
-            new THREE.MeshLambertMaterial({ color: "#ff0000" })
-        );   
-        this.name = "MeshRender";
-    }
-    Util.inherits(MeshRender, Proton.BaseRender);
-
-    MeshRender.prototype.onProtonUpdate = function() {};
-
-    MeshRender.prototype.onParticleCreated = function(particle) {
-        if (!particle.target) {
-            //set target
-            if (!particle.body) particle.body = this._body;
-            particle.target = this._targetPool.get(particle.body);
-            
-            //set material
-            if (particle.useAlpha || particle.useColor) {
-                particle.target.material.__puid = PUID.id(particle.body.material);;
-                particle.target.material = this._materialPool.get(particle.target.material);
-            }
-        }
-
-        if (particle.target) {
-            particle.target.position.copy(particle.p);
-            this.container.add(particle.target);
-        }
-    };
-
-    MeshRender.prototype.onParticleUpdate = function(particle) {
-        if (particle.target) {
-            particle.target.position.copy(particle.p);
-            particle.target.rotation.set(particle.rotation.x, particle.rotation.y, particle.rotation.z);
-            this.scale(particle);
-
-            if (particle.useAlpha) {
-                particle.target.material.opacity = particle.alpha;
-                particle.target.material.transparent = true;
-            }
-
-            if (particle.useColor) {
-                particle.target.material.color.copy(particle.color);
-            }
-        }
-    };
-
-    MeshRender.prototype.scale = function(particle) {
-        particle.target.scale.set(particle.scale, particle.scale, particle.scale);
-    }
-
-    MeshRender.prototype.onParticleDead = function(particle) {
-        if (particle.target) {
-            if (particle.useAlpha || particle.useColor)
-                this._materialPool.expire(particle.target.material);
-
-            this._targetPool.expire(particle.target);
-            this.container.remove(particle.target);
-            particle.target = null;
-        }
-    };
-
-    Proton.MeshRender = MeshRender;
-
-    function SpriteRender(container) {
-        SpriteRender._super_.call(this, container);
-
-        this._body = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0xffffff }));
-        this.name = "SpriteRender";
-    }
-
-    Util.inherits(SpriteRender, Proton.MeshRender);
-
-    SpriteRender.prototype.scale = function(particle) {
-        particle.target.scale.set(particle.scale * particle.radius, particle.scale * particle.radius, 1);
-    };
-
-    Proton.SpriteRender = SpriteRender;
-
-    function CustomRender() {
-        CustomRender._super_.call(this);
-        this.targetPool = new Proton.Pool();
-        this.materialPool = new Proton.Pool();
-        
-        this.name = "CustomRender";
-    }
-
-    Util.inherits(CustomRender, Proton.BaseRender);
-    CustomRender.prototype.onProtonUpdate = function() {};
-    CustomRender.prototype.onParticleCreated = function(particle) {};
-    CustomRender.prototype.onParticleUpdate = function(particle) {};
-    CustomRender.prototype.onParticleDead = function(particle) {};
-    Proton.CustomRender = CustomRender;
 
      /**
      * Zone is a base class.
@@ -2779,7 +2631,7 @@ Proton.EventDispatcher = EventDispatcher;
      * @extends {Zone}
      * @constructor
      */
-    class LineZone extends Zone {
+    export class LineZone extends Zone {
         constructor(x1, y1, z1, x2, y2, z2) {
             super();
             if (x1 instanceof Proton.Vector3D) {
@@ -2831,7 +2683,7 @@ Proton.EventDispatcher = EventDispatcher;
      * @extends {Proton.Zone}
      * @constructor
      */
-    class SphereZone extends Zone {
+    export class SphereZone extends Zone {
         constructor(a, b, c, d) {
             var x, y, z, r;
             super()
@@ -2896,7 +2748,6 @@ Proton.EventDispatcher = EventDispatcher;
             }
         }
     }
-    Proton.SphereZone = SphereZone;
 
     /**
      * PointZone is a point zone
@@ -2904,13 +2755,13 @@ Proton.EventDispatcher = EventDispatcher;
      * @param {Number} y - the center's y value
      * @param {Number} z - the center's z value  
      * @example 
-     * var pointZone = new Proton.PointZone(0,30,10);
+     * var pointZone = new PointZone(0,30,10);
      * or
-     * var pointZone = new Proton.PointZone(new Proton.Vector3D(0,30,10));
+     * var pointZone = new PointZone(new Proton.Vector3D(0,30,10));
      * @extends {Zone}
      * @constructor
      */
-    class PointZone extends Zone {
+    export class PointZone extends Zone {
         constructor(a, b, c) {
             var x, y, z;
             super();
@@ -2940,7 +2791,6 @@ Proton.EventDispatcher = EventDispatcher;
             }
         }   
     }
-    Proton.PointZone = PointZone;
 
     /**
      * BoxZone is a box zone
@@ -2951,13 +2801,13 @@ Proton.EventDispatcher = EventDispatcher;
      * @param {Number} h - the Box's height 
      * @param {Number} d - the Box's depth 
      * @example 
-     * var boxZone = new Proton.BoxZone(0,0,0,50,50,50);
+     * var boxZone = new BoxZone(0,0,0,50,50,50);
      * or
-     * var boxZone = new Proton.BoxZone(new Proton.Proton.Vector3D(0,0,0), 50, 50, 50);
+     * var boxZone = new BoxZone(new Proton.Proton.Vector3D(0,0,0), 50, 50, 50);
      * @extends {Proton.Zone}
      * @constructor
      */
-    class BoxZone extends Zone {
+    export class BoxZone extends Zone {
         constructor(a, b, c, d, e, f) {
             super();
             var x, y, z, w, h, d;
@@ -3069,8 +2919,6 @@ Proton.EventDispatcher = EventDispatcher;
         }
     }
 
-    Proton.BoxZone = BoxZone;
-
     /**
      * ScreenZone is a 3d line zone
      * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object
@@ -3080,13 +2928,13 @@ Proton.EventDispatcher = EventDispatcher;
      * @param {Number} y2 - the line's end point of y value 
      * @param {Number} z2 - the line's end point of z value 
      * @example 
-     * var lineZone = new Proton.ScreenZone(0,0,0,100,100,0);
+     * var lineZone = new ScreenZone(0,0,0,100,100,0);
      * or
-     * var lineZone = new Proton.ScreenZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
+     * var lineZone = new ScreenZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
      * @extends {Zone}
      * @constructor
      */
-    class ScreenZone extends Zone {
+    export class ScreenZone extends Zone {
         constructor(camera, renderer, dis, dir) {
             super();
 
@@ -3174,7 +3022,6 @@ Proton.EventDispatcher = EventDispatcher;
             }
         }
     }
-    Proton.ScreenZone = ScreenZone;
 
     /**
      * MeshZone is a threejs mesh zone
@@ -3182,14 +3029,14 @@ Proton.EventDispatcher = EventDispatcher;
      * @example 
      * var geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
      * var cylinder = new THREE.Mesh( geometry, material );
-     * var meshZone = new Proton.MeshZone(geometry);
+     * var meshZone = new MeshZone(geometry);
      * or
-     * var meshZone = new Proton.MeshZone(cylinder);
-     * @extends {Proton.Zone}
+     * var meshZone = new MeshZone(cylinder);
+     * @extends {Zone}
      * @constructor
      */
 
-    class MeshZone extends Zone {
+    export class MeshZone extends Zone {
         constructor(geometry, scale) {
             super();
             // THREE.Geometry => THREE.BufferGeometry 在 Three.js 较新的版本中，Geometry 已被弃用，取而代之的是 BufferGeometry
@@ -3217,203 +3064,4 @@ Proton.EventDispatcher = EventDispatcher;
             }
         }
     }
-    Proton.MeshZone = MeshZone;
 
-    
-
-    function Box(x, y, z, w, h, d) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.width = w;
-        this.height = h;
-        this.depth = d;
-        this.bottom = this.y + this.height;
-        this.right = this.x + this.width;
-        this.right = this.x + this.width;
-    }
-
-
-    Box.prototype = {
-        contains: function(x, y, z) {
-            if (
-                x <= this.right &&
-                x >= this.x &&
-                y <= this.bottom &&
-                y >= this.y &&
-                z <= this.depth &&
-                z >= this.z
-            )
-                return true
-            else
-                return false
-        }
-    }
-
-    Proton.Box = Box;
-
-    function PointsRender(ps) {
-        PointsRender._super_.call(this);
-        this.points = ps;
-        this.name = "PointsRender";
-    }
-    Util.inherits(PointsRender, Proton.BaseRender);
-
-    PointsRender.prototype.onProtonUpdate = function() {};
-
-    PointsRender.prototype.onParticleCreated = function(particle) {
-        if (!particle.target) {
-            particle.target = new THREE.Vector3();
-        }
-
-        particle.target.copy(particle.p);
-        this.points.geometry.vertices.push(particle.target);
-    };
-
-    PointsRender.prototype.onParticleUpdate = function(particle) {
-        if (particle.target) {
-            particle.target.copy(particle.p);
-        }
-    };
-
-    PointsRender.prototype.onParticleDead = function(particle) {
-        if (particle.target) {
-            var index = this.points.geometry.vertices.indexOf(particle.target);
-            if (index > -1)
-                this.points.geometry.vertices.splice(index, 1);
-            
-            particle.target = null;
-        }
-    };
-
-    Proton.PointsRender = PointsRender;
-
-
-export var Debug = Debug || {
-    addEventListener: function(proton, fun) {
-        proton.addEventListener("PROTON_UPDATE", function(e) {
-            fun(e);
-        });
-    },
-
-    drawZone: function(proton, container, zone) {
-        var geometry, material, mesh;
-
-        if (zone instanceof PointZone) {
-            geometry = new THREE.SphereGeometry(15);
-        } else if (zone instanceof LineZone) {
-
-        } else if (zone instanceof BoxZone) {
-            geometry = new THREE.BoxGeometry(zone.width, zone.height, zone.depth);
-        } else if (zone instanceof SphereZone) {
-            geometry = new THREE.SphereGeometry(zone.radius, 10, 10);
-        } else if (zone instanceof MeshZone) {
-            // THREE.Geometry => THREE.BufferGeometry 在 Three.js 较新的版本中，Geometry 已被弃用，取而代之的是 BufferGeometry
-            if (zone.geometry instanceof THREE.BufferGeometry)
-                geometry = zone.geometry;
-            else
-                geometry = zone.geometry.geometry;
-
-            geometry = new THREE.SphereGeometry(zone.radius, 10, 10);
-        }
-
-        material = new THREE.MeshBasicMaterial({ color: "#2194ce", wireframe: true });
-        mesh = new THREE.Mesh(geometry, material);
-        container.add(mesh);
-
-        this.addEventListener(proton, function(e) {
-            mesh.position.set(zone.x, zone.y, zone.z);
-        });
-    },
-
-    drawEmitter: function(proton, container, emitter, color) {
-        var geometry = new THREE.OctahedronGeometry(15);
-        var material = new THREE.MeshBasicMaterial({ color: color || "#aaa", wireframe: true });
-        var mesh = new THREE.Mesh(geometry, material);
-        container.add(mesh);
-
-        this.addEventListener(proton, function() {
-            mesh.position.copy(emitter.p);
-            mesh.rotation.set(emitter.rotation.x, emitter.rotation.y, emitter.rotation.z);
-        });
-    },
-
-    renderInfo: function() {
-        function getCreatedNumber(proton, type) {
-            var pool = type === "material" ? "_materialPool" : "_targetPool";
-            var renderer = proton.renderers[0];
-            return renderer[pool].cID;
-        }
-
-        function getEmitterPos(proton) {
-            var e = proton.emitters[0];
-            return Math.round(e.p.x) + "," + Math.round(e.p.y) + "," + Math.round(e.p.z);
-        }
-
-        return function(proton, style) {
-            this.addInfo(style);
-            var str = "";
-            switch (this._infoType) {
-                case 2:
-                    str += "emitter:" + proton.emitters.length + "<br>";
-                    str += "em speed:" + proton.emitters[0].cID + "<br>";
-                    str += "pos:" + getEmitterPos(proton);
-                    break;
-
-                case 3:
-                    str += proton.renderers[0].name + "<br>";
-                    str += "target:" + getCreatedNumber(proton, "target") + "<br>";
-                    str += "material:" + getCreatedNumber(proton, "material");
-                    break;
-
-                default:
-                    str += "particles:" + proton.getCount() + "<br>";
-                    str += "pool:" + proton.pool.getCount() + "<br>";
-                    str += "total:" + (proton.getCount() + proton.pool.getCount());
-            }
-            this._infoCon.innerHTML = str;
-        }
-    }(),
-
-    addInfo: function() {
-        return function(style) {
-            var self = this;
-            if (!this._infoCon) {
-                this._infoCon = document.createElement('div');
-                this._infoCon.style.cssText = [
-                    'position:fixed;bottom:0px;left:0;cursor:pointer;',
-                    'opacity:0.9;z-index:10000;padding:10px;font-size:12px;',
-                    'width:120px;height:50px;background-color:#002;color:#0ff;'
-                ].join('');
-
-                this._infoType = 1;
-                this._infoCon.addEventListener('click', function(event) {
-                    self._infoType++;
-                    if (self._infoType > 3) self._infoType = 1;
-                }, false);
-
-                var bg, color;
-                switch (style) {
-                    case 2:
-                        bg = "#201";
-                        color = "#f08";
-                        break;
-
-                    case 3:
-                        bg = "#020";
-                        color = "#0f0";
-                        break;
-
-                    default:
-                        bg = "#002";
-                        color = "#0ff";
-                }
-
-                this._infoCon.style["background-color"] = bg;
-                this._infoCon.style["color"] = color;
-            }
-
-            if (!this._infoCon.parentNode) document.body.appendChild(this._infoCon);
-        }
-    }()
-}
