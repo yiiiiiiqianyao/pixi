@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as THREE from 'three';
 import { Util } from './util.js';
-import { Span } from './span.js';
+import { Span, createSpan, createArraySpan } from './span.js';
 import { MathUtils } from './mathUtils.js';
 import { PUID } from './puid.js';
 import { ColorUtil } from './colorUtil.js';
@@ -411,76 +411,11 @@ Proton.EventDispatcher = EventDispatcher;
     Proton.Integration = Integration;
 
 
-    /**
-     * Proton.createSpan function
-     * @name get a instance of Span
-     * @param {number} a min number
-     * @param {number} b max number
-     * @param {number} c center number
-     * @return {number} return a instance of Span
-     */
-    Proton.createSpan = function(a, b, c) {
-        if (a instanceof Span) return a;
-
-        if (b === undefined) {
-            return new Span(a);
-        } else {
-            if (c === undefined)
-                return new Span(a, b);
-            else
-                return new Span(a, b, c);
-        }
-    }
+   
 
 
-     /**
-     * ArraySpan name get a random Color from a colors array
-     * @param {String|Array} colors - colors array
-     * @example 
-     * var span = new Proton.ArraySpan(["#fff","#ff0","#000"]);
-     * or
-     * var span = new Proton.ArraySpan("#ff0");
-     * @extends {Proton.Span}
-     * @constructor
-     */
 
-     function ArraySpan(colors) {
-        this._arr = Util.isArray(colors) ? colors : [colors];
-    }
 
-    Util.inherits(ArraySpan, Span);
-
-    /**
-     * getValue function
-     * @name get a random Color
-     * @return {string} a hex color
-     */
-    ArraySpan.prototype.getValue = function() {
-        var color = this._arr[(this._arr.length * Math.random()) >> 0];
-        
-        if (color === 'random' || color === 'Random')
-            return MathUtils.randomColor();
-        else
-            return color;
-    }
-
-    /**
-     * Proton.createArraySpan function
-     * @name get a instance of Span
-     * @param {number} a min number
-     * @param {number} b max number
-     * @param {number} c center number
-     * @return {number} return a instance of Span
-     */
-    Proton.createArraySpan = function(arr) {
-        if (!arr) return null;
-        if (arr instanceof Proton.ArraySpan)
-            return arr;
-        else 
-            return new Proton.ArraySpan(arr);
-    }
-
-    Proton.ArraySpan = ArraySpan;
 
     /**
      * The Behaviour class is the base for the other Behaviour
@@ -602,14 +537,14 @@ Proton.EventDispatcher = EventDispatcher;
      * The number of particles per second emission (a [particle]/b [s]);
      * @class Proton.Rate
      * @constructor
-     * @param {Array or Number or Proton.Span} numPan the number of each emission;
-     * @param {Array or Number or Proton.Span} timePan the time of each emission;
-     * for example: new Proton.Rate(new Proton.Span(10, 20), new Proton.Span(.1, .25));
+     * @param {Array or Number or Span} numPan the number of each emission;
+     * @param {Array or Number or Span} timePan the time of each emission;
+     * for example: new Proton.Rate(new Span(10, 20), new Span(.1, .25));
      */
      
     function Rate(numPan, timePan) {
-        this.numPan = Proton.createSpan(Util.initValue(numPan, 1));
-        this.timePan = Proton.createSpan(Util.initValue(timePan, 1));
+        this.numPan = createSpan(Util.initValue(numPan, 1));
+        this.timePan = createSpan(Util.initValue(timePan, 1));
 
         this.startTime = 0;
         this.nextTime = 0;
@@ -709,11 +644,11 @@ Proton.EventDispatcher = EventDispatcher;
      */
     function Life(a, b, c) {
         Life._super_.call(this);
-        this.lifePan = Proton.createSpan(a, b, c);
+        this.lifePan = createSpan(a, b, c);
     }
 
 
-    Util.inherits(Life, Proton.Initialize);
+    Util.inherits(Life, Initialize);
     Life.prototype.initialize = function(target) {
         if (this.lifePan.a === Infinity || this.lifePan.a === "infi")
             target.life = Infinity;
@@ -796,7 +731,7 @@ Proton.EventDispatcher = EventDispatcher;
     Velocity.prototype.reset = function(a, b, c) {
         //[vector,tha]
         if (a instanceof Vector3D) {
-            this.radiusPan = Proton.createSpan(1);
+            this.radiusPan = createSpan(1);
             this.dir = a.clone();
             this.tha = b * Proton.DR;
             this._useV = true;
@@ -811,7 +746,7 @@ Proton.EventDispatcher = EventDispatcher;
 
         //[radius,vector,tha]
         else {
-            this.radiusPan = Proton.createSpan(a);
+            this.radiusPan = createSpan(a);
             this.dir = b.clone().normalize();
             this.tha = c * Proton.DR;
             this._useV = true;
@@ -860,7 +795,7 @@ Proton.EventDispatcher = EventDispatcher;
      */
     function Mass(a, b, c) {
         Mass._super_.call(this);
-        this.massPan = Proton.createSpan(a, b, c);
+        this.massPan = createSpan(a, b, c);
     }
 
 
@@ -885,12 +820,12 @@ Proton.EventDispatcher = EventDispatcher;
      */
     function Radius(a, b, c) {
         Radius._super_.call(this);
-        this.radius = Proton.createSpan(a, b, c);
+        this.radius = createSpan(a, b, c);
     }
 
     Util.inherits(Radius, Proton.Initialize);
     Radius.prototype.reset = function(a, b, c) {
-        this.radius = Proton.createSpan(a, b, c);
+        this.radius = createSpan(a, b, c);
     };
 
     Radius.prototype.initialize = function(particle) {
@@ -902,7 +837,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     function Body(body, w, h) {
         Body._super_.call(this);
-        this.body = Proton.createArraySpan(body);
+        this.body = createArraySpan(body);
         this.w = w;
         this.h = Util.initValue(h, this.w);
     }
@@ -1004,7 +939,7 @@ Proton.EventDispatcher = EventDispatcher;
     Util.inherits(RandomDrift, Proton.Behaviour);
     RandomDrift.prototype.reset = function(driftX, driftY, driftZ, delay, life, easing) {
         this.randomFoce = this.normalizeForce(new Vector3D(driftX, driftY, driftZ));
-        this.delayPan = Proton.createSpan(delay || .03);
+        this.delayPan = createSpan(delay || .03);
         this.time = 0;
         life && RandomDrift._super_.prototype.reset.call(this, life, easing);
     }
@@ -1168,8 +1103,8 @@ Proton.EventDispatcher = EventDispatcher;
         else
             this._same = false;
 
-        this.a = Proton.createSpan(Util.initValue(a, 1));
-        this.b = Proton.createSpan(b);
+        this.a = createSpan(Util.initValue(a, 1));
+        this.b = createSpan(b);
         life && Alpha._super_.prototype.reset.call(this, life, easing);
     }
 
@@ -1212,8 +1147,8 @@ Proton.EventDispatcher = EventDispatcher;
         else
             this._same = false;
 
-        this.a = Proton.createSpan(Util.initValue(a, 1));
-        this.b = Proton.createSpan(b);
+        this.a = createSpan(Util.initValue(a, 1));
+        this.b = createSpan(b);
 
         life && Scale._super_.prototype.reset.call(this, life, easing);
     }
@@ -1242,7 +1177,7 @@ Proton.EventDispatcher = EventDispatcher;
      * for the other Behaviour
      *
      * @class Behaviour * @constructor 
-     * @example new Proton.Rotate(Proton.createSpan(-1,1),Proton.createSpan(-1,1),Proton.createSpan(-1,1)); 
+     * @example new Proton.Rotate(createSpan(-1,1),createSpan(-1,1),createSpan(-1,1)); 
      * @example new Proton.Rotate(); 
      * @example new Proton.Rotate("random"); 
      */
@@ -1267,9 +1202,9 @@ Proton.EventDispatcher = EventDispatcher;
             this._type = "to";
         } else {
             this._type = "add";
-            this.a = Proton.createSpan(this.a * Proton.DR);
-            this.b = Proton.createSpan(this.b * Proton.DR);
-            this.c = Proton.createSpan(this.c * Proton.DR);
+            this.a = createSpan(this.a * Proton.DR);
+            this.b = createSpan(this.b * Proton.DR);
+            this.c = createSpan(this.c * Proton.DR);
         }
 
         life && Rotate._super_.prototype.reset.call(this, life, easing);
@@ -1357,8 +1292,8 @@ Proton.EventDispatcher = EventDispatcher;
         else
             this._same = false;
 
-        this.a = Proton.createArraySpan(a);
-        this.b = Proton.createArraySpan(b);
+        this.a = createArraySpan(a);
+        this.b = createArraySpan(b);
         life && Color._super_.prototype.reset.call(this, life, easing);
     }
 
@@ -1835,7 +1770,7 @@ Proton.EventDispatcher = EventDispatcher;
     /**
      * The Ease class provides a collection of easing functions for use with Proton
      */
-    var ease = ease || {
+    const ease = {
         easeLinear: function(value) {
             return value;
         },
@@ -1950,13 +1885,7 @@ Proton.EventDispatcher = EventDispatcher;
                 return ease.easeLinear;
         }
     }
-
-
     for (var id in ease) {
         if (id !== "setEasingByName") Proton[id] = ease[id];
     }
-
     Proton.ease = ease;
-
-
-

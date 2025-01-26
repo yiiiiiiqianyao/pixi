@@ -1,3 +1,4 @@
+
 import { MathUtils } from './mathUtils.js'
 import { Util } from './util.js'
 /**
@@ -6,11 +7,11 @@ import { Util } from './util.js'
  * @param {Number} b - max number
  * @param {Number} center - the center's z value  
  * @example 
- * var span = new Proton.Span(0,30);
+ * var span = new Span(0,30);
  * or
- * var span = new Proton.Span(["#fff","#ff0","#000"]);
+ * var span = new Span(["#fff","#ff0","#000"]);
  * or
- * var span = new Proton.Span(5,1,"center");
+ * var span = new Span(5,1,"center");
  * @extends {Zone}
  * @constructor
  */
@@ -44,3 +45,71 @@ export class Span {
         }
     }
 }
+
+     /**
+     * ArraySpan name get a random Color from a colors array
+     * @param {String|Array} colors - colors array
+     * @example 
+     * var span = new ArraySpan(["#fff","#ff0","#000"]);
+     * or
+     * var span = new ArraySpan("#ff0");
+     * @extends {Span}
+     * @constructor
+     */
+
+     export class ArraySpan extends Span {
+        constructor(colors) {
+            super();
+            this._arr = Util.isArray(colors) ? colors : [colors];
+        }
+            /**
+     * getValue function
+     * @name get a random Color
+     * @return {string} a hex color
+     */
+        getValue = function() {
+            var color = this._arr[(this._arr.length * Math.random()) >> 0];
+            
+            if (color === 'random' || color === 'Random')
+                return MathUtils.randomColor();
+            else
+                return color;
+        }
+    }
+
+ /**
+     * createSpan function
+     * @name get a instance of Span
+     * @param {number} a min number
+     * @param {number} b max number
+     * @param {number} c center number
+     * @return {number} return a instance of Span
+     */
+ export function createSpan(a, b, c) {
+    if (a instanceof Span) return a;
+
+    if (b === undefined) {
+        return new Span(a);
+    } else {
+        if (c === undefined)
+            return new Span(a, b);
+        else
+            return new Span(a, b, c);
+    }
+}
+
+    /**
+     * Proton.createArraySpan function
+     * @name get a instance of Span
+     * @param {number} a min number
+     * @param {number} b max number
+     * @param {number} c center number
+     * @return {number} return a instance of Span
+     */
+    export const createArraySpan = function(arr) {
+        if (!arr) return null;
+        if (arr instanceof ArraySpan)
+            return arr;
+        else 
+            return new ArraySpan(arr);
+    }
