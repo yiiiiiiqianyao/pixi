@@ -8,6 +8,8 @@ import { Debug } from './particle/debug.js';
 import { Vector3D } from './particle/Vector3D.js';
 import { BoxZone } from './particle/BoxZone.js';
 import { ease } from './particle/ease.js';
+import { Gravity } from './particle/Behaviour/Gravity.js';
+import { CrossZone } from './particle/Behaviour/CrossZone.js';
 // https://github.com/drawcall/three.proton
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
@@ -97,15 +99,14 @@ export class SceneManager {
         emitter.addInitialize(new Proton.Life(2, 4));
         emitter.addInitialize(new Proton.Velocity(400, new Vector3D(0, 1, 0), 60));
 
-        // //emitter.addBehaviour(new Proton.RandomDrift(30, 30, 30, .05));
         emitter.addBehaviour(new Proton.Rotate("random", "random"));
         emitter.addBehaviour(new Proton.Scale(1, .1));
-        emitter.addBehaviour(new Proton.G(6));
+        emitter.addBehaviour(new Gravity(6));
 
         var zone = new BoxZone(600);
         zone.friction = 0.95;
         zone.max = 7;
-        emitter.addBehaviour(new Proton.CrossZone(zone, "bound"));
+        emitter.addBehaviour(new CrossZone(zone, "bound"));
         emitter.addBehaviour(new Proton.Color(0xff0000, 'random', Infinity, ease.easeOutQuart));
 
         // @ts-ignore
