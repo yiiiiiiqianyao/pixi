@@ -7,6 +7,7 @@ import { CustomRender } from './particle/render.js';
 import { Debug } from './particle/debug.js';
 import { Vector3D } from './particle/Vector3D.js';
 import { BoxZone } from './particle/BoxZone.js';
+import { ease } from './particle/ease.js';
 // https://github.com/drawcall/three.proton
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
@@ -105,7 +106,7 @@ export class SceneManager {
         zone.friction = 0.95;
         zone.max = 7;
         emitter.addBehaviour(new Proton.CrossZone(zone, "bound"));
-        emitter.addBehaviour(new Proton.Color(0xff0000, 'random', Infinity, Proton.easeOutQuart));
+        emitter.addBehaviour(new Proton.Color(0xff0000, 'random', Infinity, ease.easeOutQuart));
 
         // @ts-ignore
         emitter.p.x = 0;

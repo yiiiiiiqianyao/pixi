@@ -9,7 +9,9 @@ import { THREEUtil } from './THREEUtil.js';
 import { Pool } from './pool.js'
 import { Polar3D } from './Polar3D.js';
 import { Vector3D }  from './Vector3D.js';
-import { PI, DR } from './constant';
+import { PI, DR, EULER } from './constant';
+import { Integration } from './Integration.js';
+import { ease } from './ease.js';
 
 /**
  * @name Proton is a particle engine for three.js
@@ -22,13 +24,13 @@ import { PI, DR } from './constant';
 export class Proton {
     constructor(preParticles, integrationType) {
         this.preParticles = Util.initValue(preParticles, Proton.POOL_MAX);
-        this.integrationType = Util.initValue(integrationType, Proton.EULER);
+        this.integrationType = Util.initValue(integrationType, EULER);
 
         this.emitters = [];
         this.renderers = [];
 
         this.pool = new Pool();
-        Proton.integrator = new Proton.Integration(this.integrationType);
+        Proton.integrator = new Integration(this.integrationType);
     }
 
      /**
@@ -121,7 +123,7 @@ Proton.TIME_STEP = 60;
 
 //1:100
 Proton.MEASURE = 100;
-Proton.EULER = 'euler';
+
 Proton.RK2 = 'runge-kutta2';
 Proton.RK4 = 'runge-kutta4';
 Proton.VERLET = 'verlet';
@@ -290,7 +292,7 @@ Proton.EventDispatcher = EventDispatcher;
             this.useColor = false;
             this.useAlpha = false;
 
-            this.easing = Proton.ease.setEasingByName(Proton.ease.easeLinear);
+            this.easing = ease.setEasingByName(ease.easeLinear);
 
             if (init) {
                 this.p = new Vector3D();
@@ -385,37 +387,6 @@ Proton.EventDispatcher = EventDispatcher;
     Proton.Particle = Particle;
 
 
-    var Integration = function(type) {
-        this.type = Util.initValue(type, Proton.EULER);
-    }
-
-    Integration.prototype = {
-        integrate: function(particles, time, damping) {
-            this.euler(particles, time, damping);
-        },
-
-        euler: function(particle, time, damping) {
-            if (!particle.sleep) {
-                particle.old.p.copy(particle.p);
-                particle.old.v.copy(particle.v);
-                particle.a.scalar(1 / particle.mass);
-                particle.v.add(particle.a.scalar(time));
-                particle.p.add(particle.old.v.scalar(time));
-                damping && particle.v.scalar(damping);
-                particle.a.clear();
-            }
-        }
-    }
-
-    Proton.Integration = Integration;
-
-
-   
-
-
-
-
-
     /**
      * The Behaviour class is the base for the other Behaviour
      *
@@ -432,12 +403,12 @@ Proton.EventDispatcher = EventDispatcher;
         this.life = Util.initValue(life, Infinity);
 
         /**
-         * The behaviour's decaying trend, for example Proton.easeOutQuart;
+         * The behaviour's decaying trend, for example ease.easeOutQuart;
          * @property easing
          * @type {String}
          * @default Proton.easeLinear
          */
-        this.easing = Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+        this.easing = Util.initValue(easing, ease.setEasingByName(ease.easeLinear));
         this.age = 0;
         this.energy = 1;
         /**
@@ -469,7 +440,7 @@ Proton.EventDispatcher = EventDispatcher;
          */
         reset: function(life, easing) {
             this.life = Util.initValue(life, Infinity);
-            this.easing = Util.initValue(easing, Proton.ease.setEasingByName(Proton.ease.easeLinear));
+            this.easing = Util.initValue(easing, ease.setEasingByName(ease.easeLinear));
         },
         /**
          * Normalize a force by 1:100;
@@ -1245,7 +1216,6 @@ Proton.EventDispatcher = EventDispatcher;
 
     Rotate.prototype.applyBehaviour = function(particle, time, index) {
         Rotate._super_.prototype.applyBehaviour.call(this, particle, time, index);
-
         switch (this._type) {
             case "same":
                 if (!particle.rotation) particle.rotation = new Vector3D;
@@ -1765,126 +1735,3 @@ Proton.EventDispatcher = EventDispatcher;
     }
 
     Proton.FollowEmitter = FollowEmitter;
-
-    /**
-     * The Ease class provides a collection of easing functions for use with Proton
-     */
-    const ease = {
-        easeLinear: function(value) {
-            return value;
-        },
-
-        easeInQuad: function(value) {
-            return Math.pow(value, 2);
-        },
-
-        easeOutQuad: function(value) {
-            return -(Math.pow((value - 1), 2) - 1);
-        },
-
-        easeInOutQuad: function(value) {
-            if ((value /= 0.5) < 1)
-                return 0.5 * Math.pow(value, 2);
-            return -0.5 * ((value -= 2) * value - 2);
-        },
-
-        easeInCubic: function(value) {
-            return Math.pow(value, 3);
-        },
-
-        easeOutCubic: function(value) {
-            return (Math.pow((value - 1), 3) + 1);
-        },
-
-        easeInOutCubic: function(value) {
-            if ((value /= 0.5) < 1)
-                return 0.5 * Math.pow(value, 3);
-            return 0.5 * (Math.pow((value - 2), 3) + 2);
-        },
-
-        easeInQuart: function(value) {
-            return Math.pow(value, 4);
-        },
-
-        easeOutQuart: function(value) {
-            return -(Math.pow((value - 1), 4) - 1);
-        },
-
-        easeInOutQuart: function(value) {
-            if ((value /= 0.5) < 1)
-                return 0.5 * Math.pow(value, 4);
-            return -0.5 * ((value -= 2) * Math.pow(value, 3) - 2);
-        },
-
-        easeInSine: function(value) {
-            return -Math.cos(value * (PI / 2)) + 1;
-        },
-
-        easeOutSine: function(value) {
-            return Math.sin(value * (PI / 2));
-        },
-
-        easeInOutSine: function(value) {
-            return (-0.5 * (Math.cos(PI * value) - 1));
-        },
-
-        easeInExpo: function(value) {
-            return (value === 0) ? 0 : Math.pow(2, 10 * (value - 1));
-        },
-
-        easeOutExpo: function(value) {
-            return (value === 1) ? 1 : -Math.pow(2, -10 * value) + 1;
-        },
-
-        easeInOutExpo: function(value) {
-            if (value === 0)
-                return 0;
-            if (value === 1)
-                return 1;
-            if ((value /= 0.5) < 1)
-                return 0.5 * Math.pow(2, 10 * (value - 1));
-            return 0.5 * (-Math.pow(2, -10 * --value) + 2);
-        },
-
-        easeInCirc: function(value) {
-            return -(Math.sqrt(1 - (value * value)) - 1);
-        },
-
-        easeOutCirc: function(value) {
-            return Math.sqrt(1 - Math.pow((value - 1), 2));
-        },
-
-        easeInOutCirc: function(value) {
-            if ((value /= 0.5) < 1)
-                return -0.5 * (Math.sqrt(1 - value * value) - 1);
-            return 0.5 * (Math.sqrt(1 - (value -= 2) * value) + 1);
-        },
-
-        easeInBack: function(value) {
-            var s = 1.70158;
-            return (value) * value * ((s + 1) * value - s);
-        },
-
-        easeOutBack: function(value) {
-            var s = 1.70158;
-            return (value = value - 1) * value * ((s + 1) * value + s) + 1;
-        },
-
-        easeInOutBack: function(value) {
-            var s = 1.70158;
-            if ((value /= 0.5) < 1)
-                return 0.5 * (value * value * (((s *= (1.525)) + 1) * value - s));
-            return 0.5 * ((value -= 2) * value * (((s *= (1.525)) + 1) * value + s) + 2);
-        },
-
-        setEasingByName: function(easeName) {
-            if (!!ease[easeName])
-                return ease[easeName];
-            else
-                return ease.easeLinear;
-        }
-    }
-    for (var id in ease) {
-        if (id !== "setEasingByName") Proton[id] = ease[id];
-    }
-    Proton.ease = ease;
