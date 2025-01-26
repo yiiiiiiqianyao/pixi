@@ -9,6 +9,7 @@ import { THREEUtil } from './THREEUtil.js';
 import { Pool } from './pool.js'
 import { Polar3D } from './Polar3D.js';
 import { Vector3D }  from './Vector3D.js';
+import { PI, DR } from './constant';
 
 /**
  * @name Proton is a particle engine for three.js
@@ -117,8 +118,6 @@ export class Proton {
 //the max particle number in pool
 Proton.POOL_MAX = 500;
 Proton.TIME_STEP = 60;
-Proton.PI = 3.142;
-Proton.DR = Proton.PI / 180;
 
 //1:100
 Proton.MEASURE = 100;
@@ -249,7 +248,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     Particle.prototype = {
         getDirection: function() {
-            return Math.atan2(this.v.x, -this.v.y) * (180 / Proton.PI);
+            return Math.atan2(this.v.x, -this.v.y) * (180 / PI);
         },
 
         /**
@@ -733,13 +732,13 @@ Proton.EventDispatcher = EventDispatcher;
         if (a instanceof Vector3D) {
             this.radiusPan = createSpan(1);
             this.dir = a.clone();
-            this.tha = b * Proton.DR;
+            this.tha = b * DR;
             this._useV = true;
         }
 
         //[polar,tha]
         else if (a instanceof Polar3D) {
-            this.tha = b * Proton.DR;
+            this.tha = b * DR;
             this.dirVec = a.toVector3D();
             this._useV = false;
         }
@@ -748,7 +747,7 @@ Proton.EventDispatcher = EventDispatcher;
         else {
             this.radiusPan = createSpan(a);
             this.dir = b.clone().normalize();
-            this.tha = c * Proton.DR;
+            this.tha = c * DR;
             this._useV = true;
         }
     };
@@ -768,11 +767,11 @@ Proton.EventDispatcher = EventDispatcher;
 
             MathUtils.getNormal(this.dirVec, normal);
             v.copy(this.dirVec).applyAxisAngle(normal, tha);
-            v.applyAxisAngle(this.dirVec.normalize(), Math.random() * Proton.PI * 2);
+            v.applyAxisAngle(this.dirVec.normalize(), Math.random() * PI * 2);
 
             // use  axisRotate methods
             // MathUtils.axisRotate(this.v1, this.dirVec, normal, tha);
-            // MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * Proton.PI * 2);
+            // MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * PI * 2);
             target.v.copy(v);
             return this;
         };
@@ -1202,9 +1201,9 @@ Proton.EventDispatcher = EventDispatcher;
             this._type = "to";
         } else {
             this._type = "add";
-            this.a = createSpan(this.a * Proton.DR);
-            this.b = createSpan(this.b * Proton.DR);
-            this.c = createSpan(this.c * Proton.DR);
+            this.a = createSpan(this.a * DR);
+            this.b = createSpan(this.b * DR);
+            this.c = createSpan(this.c * DR);
         }
 
         life && Rotate._super_.prototype.reset.call(this, life, easing);
@@ -1235,9 +1234,9 @@ Proton.EventDispatcher = EventDispatcher;
     Rotate.prototype._setRotation = function(vec3, value) {
         vec3 = vec3 || new Vector3D;
         if (value === "random") {
-            var x = MathUtils.randomAToB(-Proton.PI, Proton.PI);
-            var y = MathUtils.randomAToB(-Proton.PI, Proton.PI);
-            var z = MathUtils.randomAToB(-Proton.PI, Proton.PI);
+            var x = MathUtils.randomAToB(-PI, PI);
+            var y = MathUtils.randomAToB(-PI, PI);
+            var z = MathUtils.randomAToB(-PI, PI);
             vec3.set(x, y, z);
         } else if (value instanceof Vector3D) {
             vec3.copy(value);
@@ -1818,15 +1817,15 @@ Proton.EventDispatcher = EventDispatcher;
         },
 
         easeInSine: function(value) {
-            return -Math.cos(value * (Proton.PI / 2)) + 1;
+            return -Math.cos(value * (PI / 2)) + 1;
         },
 
         easeOutSine: function(value) {
-            return Math.sin(value * (Proton.PI / 2));
+            return Math.sin(value * (PI / 2));
         },
 
         easeInOutSine: function(value) {
-            return (-0.5 * (Math.cos(Proton.PI * value) - 1));
+            return (-0.5 * (Math.cos(PI * value) - 1));
         },
 
         easeInExpo: function(value) {
