@@ -1,4 +1,4 @@
- import { Zone } from './index.js';
+ import { Zone } from './Zone.js';
  import { THREEUtil } from './THREEUtil.js';
  /**
      * ScreenZone is a 3d line zone

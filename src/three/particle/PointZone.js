@@ -1,4 +1,4 @@
-import { Zone  } from './index.js';
+import { Zone  } from './Zone.js';
 import { Util } from './util.js';
 /**
      * PointZone is a point zone

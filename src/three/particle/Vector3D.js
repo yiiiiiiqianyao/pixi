@@ -1,6 +1,6 @@
 import { Quaternion } from './Quaternion.js';
 
-const PI = 3.142;
+import { PI } from './constant';
 export  class Vector3D {
         constructor(x, y, z) {
             this.x = x || 0;

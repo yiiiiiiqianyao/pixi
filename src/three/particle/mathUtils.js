@@ -1,3 +1,4 @@
+import { PI } from './constant';
 export const MathUtils = {
     randomAToB: function(a, b, INT) {
         if (!INT)
@@ -14,10 +15,7 @@ export const MathUtils = {
     },
 
     degreeTransform: function(a) {
-        // TODO 待替换
-        const PI = 3.142;
         return a * PI / 180;
-        // return a * Proton.PI / 180;
     },
 
     toColor16: function getRGB(num) {
