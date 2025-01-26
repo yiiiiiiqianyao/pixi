@@ -5,6 +5,7 @@ import { Proton, BoxZone } from './particle';
 import { Span } from './particle/span.js';
 import { CustomRender } from './particle/render.js';
 import { Debug } from './particle/debug.js';
+// https://github.com/drawcall/three.proton
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
     proton!: Proton

@@ -4,6 +4,10 @@ import { Util } from './util.js';
 import { Span } from './span.js';
 import { MathUtils } from './mathUtils.js';
 import { PUID } from './puid.js';
+import { ColorUtil } from './colorUtil.js';
+import { THREEUtil } from './THREEUtil.js';
+import { Pool } from './pool.js'
+
 /**
  * @name Proton is a particle engine for three.js
  *
@@ -20,7 +24,7 @@ export class Proton {
         this.emitters = [];
         this.renderers = [];
 
-        this.pool = new Proton.Pool();
+        this.pool = new Pool();
         Proton.integrator = new Proton.Integration(this.integrationType);
     }
 
@@ -131,10 +135,6 @@ Proton.EMITTER_ADDED = 'emitterAdded';
 Proton.EMITTER_REMOVED = 'emitterRemoved';
 
 Proton.bindEmtterEvent = false;
-
-
-
-
 
 
 // EventDispatcher
@@ -383,152 +383,6 @@ Proton.EventDispatcher = EventDispatcher;
 
     Proton.Particle = Particle;
 
-
-
-
-
-    var ColorUtil = ColorUtil || {
-        getRGB: function(color) {
-            var rgb = {};
-            if (typeof color === 'number') {
-                hex = Math.floor(color);
-                rgb.r = (color >> 16 & 255) / 255;
-                rgb.g = (color >> 8 & 255) / 255;
-                rgb.b = (color & 255) / 255;
-            } else if (typeof color === 'string') {
-                var m;
-                if (m = /^(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(color)) {
-                    rgb.r = Math.min(255, parseInt(m[1], 10)) / 255;
-                    rgb.g = Math.min(255, parseInt(m[2], 10)) / 255;
-                    rgb.b = Math.min(255, parseInt(m[3], 10)) / 255;
-                } else if (m = /^\#([A-Fa-f0-9]+)$/.exec(color)) {
-                    var hex = m[1];
-                    rgb.r = parseInt(hex.charAt(0) + hex.charAt(1), 16) / 255;
-                    rgb.g = parseInt(hex.charAt(2) + hex.charAt(3), 16) / 255;
-                    rgb.b = parseInt(hex.charAt(4) + hex.charAt(5), 16) / 255;
-                }
-            } else if (color instanceof THREE.Color) {
-                rgb.r = color.r;
-                rgb.g = color.g;
-                rgb.b = color.b;
-            }
-
-            return rgb;
-        }
-    };
-
-
-    Proton.ColorUtil = ColorUtil;
-
-    var THREEUtil = {
-        toScreenPos: function() {
-            var vector = new THREE.Vector3();
-
-            return function(pos, camera, canvas) {
-                vector.copy(pos);
-                // map to normalized device coordinate (NDC) space
-                vector.project(camera);
-                // map to 2D screen space
-                vector.x = Math.round((vector.x + 1) * canvas.width / 2);
-                vector.y = Math.round((-vector.y + 1) * canvas.height / 2);
-                vector.z = 0;
-
-                return vector;
-            }
-        }(),
-
-        toSpacePos: function() {
-            var vector = new THREE.Vector3(),
-                dir = new THREE.Vector3(),
-                distance;
-
-            return function(pos, camera, canvas) {
-                vector.set((pos.x / canvas.width) * 2 - 1, -(pos.y / canvas.height) * 2 + 1, 0.5);
-                vector.unproject(camera);
-
-                dir.copy(vector.sub(camera.position).normalize());
-                distance = -camera.position.z / dir.z;
-                vector.copy(camera.position);
-                vector.add(dir.multiplyScalar(distance));
-
-                return vector;
-            }
-        }(),
-
-        getTexture: function() {
-            var store = {};
-
-            return function(img) {
-                if (img instanceof THREE.Texture) {
-                    return img;
-                } else if (typeof img === "string") {
-                    var id = PUID.hash(img);
-                    if (!store[id]) store[id] = new THREE.Texture(img);;
-                    return store[id];
-                } else if (img instanceof Image) {
-                    var id = PUID.hash(img.src);
-                    if (!store[id]) store[id] = new THREE.Texture(img);;
-                    return store[id];
-                }
-            }
-        }()
-    };
-
-    Proton.THREEUtil = THREEUtil;
-
-    function Pool() {
-        this.cID = 0;
-        this.list = {};
-    }
-
-    Pool.prototype = {
-        create: function(obj) {
-            this.cID++;
-
-            if (typeof obj === "function")
-                return new obj;
-            else
-                return obj.clone();
-        },
-
-        getCount: function() {
-            var count = 0;
-            for (var id in this.list)
-                count += this.list[id].length;
-
-            return count++;;
-        },
-
-        get: function(obj) {
-            var p, puid = obj.__puid || PUID.id(obj);
-            if (this.list[puid] && this.list[puid].length > 0)
-                p = this.list[puid].pop();
-            else
-                p = this.create(obj);
-
-            p.__puid = obj.__puid || puid;
-            return p;
-        },
-
-        expire: function(obj) {
-            return this._getList(obj.__puid).push(obj);
-        },
-
-        destroy: function() {
-            for (var id in this.list) {
-                this.list[id].length = 0;
-                delete this.list[id];
-            }
-        },
-
-        _getList: function(uid) {
-            uid = uid || "default";
-            if (!this.list[uid]) this.list[uid] = [];
-            return this.list[uid];
-        }
-    }
-
-    Proton.Pool = Pool;
 
     var Integration = function(type) {
         this.type = Util.initValue(type, Proton.EULER);
@@ -1983,13 +1837,13 @@ Proton.EventDispatcher = EventDispatcher;
     }
 
     Color.prototype.initialize = function(particle) {
-        particle.transform.colorA = Proton.ColorUtil.getRGB(this.a.getValue());
+        particle.transform.colorA = ColorUtil.getRGB(this.a.getValue());
 
         particle.useColor = true;
         if (this._same)
             particle.transform.colorB = particle.transform.colorA;
         else
-            particle.transform.colorB = Proton.ColorUtil.getRGB(this.b.getValue());
+            particle.transform.colorB = ColorUtil.getRGB(this.b.getValue());
     };
 
     Color.prototype.applyBehaviour = function(particle, time, index) {
@@ -2434,7 +2288,7 @@ Proton.EventDispatcher = EventDispatcher;
         this.mouse.x += (x - this.mouse.x) * this.ease;
         this.mouse.y += (y - this.mouse.y) * this.ease;
         
-        this.p.copy(Proton.THREEUtil.toSpacePos(this.mouse, this.camera, this.canvas, this.renderer));
+        this.p.copy(THREEUtil.toSpacePos(this.mouse, this.camera, this.canvas, this.renderer));
 
         if (this._allowEmitting){
             FollowEmitter._super_.prototype.emit.call(this, 'once');
@@ -2955,13 +2809,13 @@ Proton.EventDispatcher = EventDispatcher;
                 canvas = this.renderer.domElement;
                 vec2.x = Math.random() * canvas.width;
                 vec2.y = Math.random() * canvas.height;
-                this.vector.copy(Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas));
+                this.vector.copy(THREEUtil.toSpacePos(vec2, this.camera, canvas));
                 return this.vector;
             }
         }();
     
         _dead(particle) {
-            var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+            var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
             var canvas = this.renderer.domElement;
     
             if ((pos.y + particle.radius < -this.dis) && this.d1) {
@@ -2980,33 +2834,33 @@ Proton.EventDispatcher = EventDispatcher;
         _cross = function() {
             var vec2 = new Proton.Vector3D;
             return function(particle) {
-                var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+                var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
                 var canvas = this.renderer.domElement;
     
                 if (pos.y + particle.radius < -this.dis) {
                     vec2.x = pos.x;
                     vec2.y = canvas.height + this.dis + particle.radius;
-                    particle.p.y = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
+                    particle.p.y = THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
                 } else if (pos.y - particle.radius > canvas.height + this.dis) {
                     vec2.x = pos.x;
                     vec2.y = -this.dis - particle.radius;
-                    particle.p.y = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
+                    particle.p.y = THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
                 }
     
                 if (pos.x + particle.radius < -this.dis) {
                     vec2.y = pos.y;
                     vec2.x = canvas.width + this.dis + particle.radius;
-                    particle.p.x = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
+                    particle.p.x = THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
                 } else if (pos.x - particle.radius > canvas.width + this.dis) {
                     vec2.y = pos.y;
                     vec2.x = -this.dis - particle.radius;
-                    particle.p.x = Proton.THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
+                    particle.p.x = THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
                 }
             }
         }();
     
         _bound(particle) {
-            var pos = Proton.THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
+            var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
             var canvas = this.renderer.domElement;
     
             if (pos.y + particle.radius < -this.dis) {

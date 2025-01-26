@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { Proton } from "./index.js";
 import { PUID } from "./puid.js";
+import { Pool } from './pool.js';
 export class BaseRender {
   constructor() {
     this.name = "BaseRender";
@@ -44,8 +45,8 @@ export class MeshRender extends BaseRender {
     super();
     this.container = container;
 
-    this._targetPool = new Proton.Pool();
-    this._materialPool = new Proton.Pool();
+    this._targetPool = new Pool();
+    this._materialPool = new Pool();
     this._body = new THREE.Mesh(
       new THREE.BoxGeometry(50, 50, 50),
       new THREE.MeshLambertMaterial({ color: "#ff0000" })
@@ -131,8 +132,8 @@ export class SpriteRender extends BaseRender {
 export class CustomRender extends BaseRender {
   constructor() {
     super();
-    this.targetPool = new Proton.Pool();
-    this.materialPool = new Proton.Pool();
+    this.targetPool = new Pool();
+    this.materialPool = new Pool();
 
     this.name = "CustomRender";
   }
