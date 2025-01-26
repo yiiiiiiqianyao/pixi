@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { PointZone  } from './index.js';
+import { PointZone  } from './PointZone.js';
 import { LineZone  } from './index.js';
-import { BoxZone  } from './index.js';
+import { BoxZone  } from './BoxZone.js';
 import { SphereZone  } from './index.js';
-import { MeshZone  } from './index.js';
+import { MeshZone  } from './MeshZone.js';
 
 export const Debug = {
     addEventListener: function(proton, fun) {

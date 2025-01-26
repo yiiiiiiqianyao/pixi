@@ -7,6 +7,8 @@ import { PUID } from './puid.js';
 import { ColorUtil } from './colorUtil.js';
 import { THREEUtil } from './THREEUtil.js';
 import { Pool } from './pool.js'
+import { Polar3D } from './Polar3D.js';
+import { Vector3D }  from './Vector3D.js';
 
 /**
  * @name Proton is a particle engine for three.js
@@ -265,9 +267,9 @@ Proton.EventDispatcher = EventDispatcher;
          * @property {Number}  rotation               - The particle's rotation
          * @property {String|Number}  color               - The particle's color
          * @property {Function}  easing               - The particle's easing
-         * @property {Proton.Vector3D}  p               - The particle's position
-         * @property {Proton.Vector3D}  v               - The particle's velocity
-         * @property {Proton.Vector3D}  a               - The particle's acceleration
+         * @property {Vector3D}  p               - The particle's position
+         * @property {Vector3D}  v               - The particle's velocity
+         * @property {Vector3D}  a               - The particle's acceleration
          * @property {Array}  behaviours               - The particle's behaviours array
          * @property {Object}  transform               - The particle's transform collection
          */
@@ -292,9 +294,9 @@ Proton.EventDispatcher = EventDispatcher;
             this.easing = Proton.ease.setEasingByName(Proton.ease.easeLinear);
 
             if (init) {
-                this.p = new Proton.Vector3D();
-                this.v = new Proton.Vector3D();
-                this.a = new Proton.Vector3D();
+                this.p = new Vector3D();
+                this.v = new Vector3D();
+                this.a = new Vector3D();
                 this.old = {};
                 this.old.p = this.p.clone();
                 this.old.v = this.v.clone();
@@ -303,7 +305,7 @@ Proton.EventDispatcher = EventDispatcher;
                 this.behaviours = [];
                 this.transform = {};
                 this.color = { r: 0, g: 0, b: 0 };
-                this.rotation = new Proton.Vector3D;
+                this.rotation = new Vector3D;
             } else {
                 this.p.set(0, 0, 0);
                 this.v.set(0, 0, 0);
@@ -407,482 +409,6 @@ Proton.EventDispatcher = EventDispatcher;
     }
 
     Proton.Integration = Integration;
-
-    var Vector3D = function(x, y, z) {
-        this.x = x || 0;
-        this.y = y || 0;
-        this.z = z || 0;
-    }
-
-    Vector3D.prototype = {
-        set: function(x, y, z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            return this;
-        },
-
-        setX: function(x) {
-            this.x = x;
-            return this;
-        },
-
-        setY: function(y) {
-            this.y = y;
-            return this;
-        },
-
-        setZ: function(z) {
-            this.z = z;
-            return this;
-        },
-
-        getGradient: function() {
-            if (this.x !== 0)
-                return Math.atan2(this.y, this.x);
-            else if (this.y > 0)
-                return Proton.PI / 2;
-            else if (this.y < 0)
-                return -Proton.PI / 2;
-        },
-
-        copy: function(v) {
-            this.x = v.x;
-            this.y = v.y;
-            this.z = v.z;
-            return this;
-        },
-
-        add: function(v, w) {
-            if (w !== undefined) return this.addVectors(v, w);
-
-            this.x += v.x;
-            this.y += v.y;
-            this.z += v.z;
-
-            return this;
-
-        },
-
-        addValue: function(a, b, c) {
-            this.x += a;
-            this.y += b;
-            this.z += c;
-
-            return this;
-
-        },
-
-        addVectors: function(a, b) {
-            this.x = a.x + b.x;
-            this.y = a.y + b.y;
-            this.z = a.z + b.z;
-
-            return this;
-        },
-
-        addScalar: function(s) {
-            this.x += s;
-            this.y += s;
-            this.z += s;
-
-            return this;
-        },
-
-        sub: function(v, w) {
-            if (w !== undefined) return this.subVectors(v, w);
-
-            this.x -= v.x;
-            this.y -= v.y;
-            this.z -= v.z;
-
-            return this;
-        },
-
-        subVectors: function(a, b) {
-            this.x = a.x - b.x;
-            this.y = a.y - b.y;
-            this.z = a.z - b.z;
-            return this;
-        },
-
-        scalar: function(s) {
-            this.x *= s;
-            this.y *= s;
-            this.z *= s;
-
-            return this;
-        },
-
-        divideScalar: function(s) {
-            if (s !== 0) {
-                this.x /= s;
-                this.y /= s;
-                this.z /= s;
-            } else {
-                this.set(0, 0, 0);
-            }
-
-            return this;
-        },
-
-        negate: function() {
-            return this.scalar(-1);
-        },
-
-        dot: function(v) {
-            return this.x * v.x + this.y * v.y + this.z * v.z;
-        },
-
-        cross: function(v) {
-            var x = this.x,
-                y = this.y,
-                z = this.z;
-
-            this.x = y * v.z - z * v.y;
-            this.y = z * v.x - x * v.z;
-            this.z = x * v.y - y * v.x;
-
-            return this;
-        },
-
-        lengthSq: function() {
-            return this.x * this.x + this.y * this.y + this.z * this.z;
-        },
-
-        length: function() {
-            return Math.sqrt(this.lengthSq());
-        },
-
-        normalize: function() {
-            return this.divideScalar(this.length());
-        },
-
-        distanceTo: function(v) {
-            return Math.sqrt(this.distanceToSquared(v));
-        },
-
-        crossVectors: function(a, b) {
-
-            var ax = a.x,
-                ay = a.y,
-                az = a.z;
-            var bx = b.x,
-                by = b.y,
-                bz = b.z;
-
-            this.x = ay * bz - az * by;
-            this.y = az * bx - ax * bz;
-            this.z = ax * by - ay * bx;
-
-            return this;
-
-        },
-
-        // eulerFromDir: function() {
-        //     var quaternion, dir, up;
-
-        //     return function rotateFromDir(direction) {
-        //         if (quaternion === undefined) quaternion = new Proton.Quaternion();
-        //         if (dir === undefined) dir = new Proton.Vector3D;
-        //         if (up === undefined) up = new Proton.Vector3D(0, 0, 1);
-
-        //         //quaternion.setFromUnitVectors(up, dir.copy(direction).normalize());
-        //         console.log(quaternion.setFromUnitVectors(up, dir.copy(direction).normalize()));
-
-        //         this.applyQuaternion(quaternion.setFromUnitVectors(up, dir.copy(direction).normalize()));
-        //             console.log(this);
-        //         return this;
-        //     };
-        // }(),
-
-        eulerFromDir: function(dir) {
-            
-        },
-
-        applyEuler: function() {
-            var quaternion;
-
-            return function applyEuler(euler) {
-                if (quaternion === undefined) quaternion = new Proton.Quaternion();
-                this.applyQuaternion(quaternion.setFromEuler(euler));
-                return this;
-            };
-        }(),
-
-        applyAxisAngle: function() {
-            var quaternion;
-            return function applyAxisAngle(axis, angle) {
-                if (quaternion === undefined) quaternion = new Proton.Quaternion();
-                this.applyQuaternion(quaternion.setFromAxisAngle(axis, angle));
-                return this;
-            };
-        }(),
-
-        applyQuaternion: function(q) {
-            var x = this.x;
-            var y = this.y;
-            var z = this.z;
-
-            var qx = q.x;
-            var qy = q.y;
-            var qz = q.z;
-            var qw = q.w;
-
-            // calculate quat * vector
-
-            var ix = qw * x + qy * z - qz * y;
-            var iy = qw * y + qz * x - qx * z;
-            var iz = qw * z + qx * y - qy * x;
-            var iw = -qx * x - qy * y - qz * z;
-
-            // calculate result * inverse quat
-            this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
-            this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
-            this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
-            return this;
-        },
-
-        distanceToSquared: function(v) {
-            var dx = this.x - v.x,
-                dy = this.y - v.y,
-                dz = this.z - v.z;
-
-            return dx * dx + dy * dy + dz * dz;
-        },
-
-        lerp: function(v, alpha) {
-            this.x += (v.x - this.x) * alpha;
-            this.y += (v.y - this.y) * alpha;
-            this.z += (v.z - this.z) * alpha;
-            return this;
-        },
-
-        equals: function(v) {
-            return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
-        },
-
-        clear: function() {
-            this.x = 0.0;
-            this.y = 0.0;
-            this.z = 0.0;
-            return this;
-        },
-
-        clone: function() {
-            return new Proton.Vector3D(this.x, this.y, this.z);
-        },
-
-        toString: function() {
-            return "x:" + this.x + "y:" + this.y + "z:" + this.z;
-        }
-    };
-
-    Proton.Vector3D = Vector3D;
-
-    var Polar3D = function(radius, theta, phi) {
-        this.radius = radius || 1;
-        this.phi = phi || 0;
-        this.theta = theta || 0;
-    }
-
-    Polar3D.prototype = {
-        set: function(radius, theta, phi) {
-            this.radius = radius || 1;
-            this.phi = phi || 0;
-            this.theta = theta || 0;
-
-            return this;
-        },
-
-        setRadius: function(radius) {
-            this.radius = radius;
-            return this;
-        },
-
-        setPhi: function(phi) {
-            this.phi = phi;
-            return this;
-        },
-
-        setTheta: function(theta) {
-            this.theta = theta;
-            return this;
-        },
-
-        copy: function(p) {
-            this.radius = p.radius;
-            this.phi = p.phi;
-            this.theta = p.theta;
-            return this;
-        },
-
-        toVector3D: function() {
-            return new Proton.Vector3D(this.getX(), this.getY(), this.getZ());
-        },
-
-        getX: function() {
-            return this.radius * Math.sin(this.theta) * Math.cos(this.phi);
-        },
-
-        getY: function() {
-            return -this.radius * Math.sin(this.theta) * Math.sin(this.phi);
-        },
-
-        getZ: function() {
-            return this.radius * Math.cos(this.theta);
-        },
-
-        normalize: function() {
-            this.radius = 1;
-            return this;
-        },
-
-        equals: function(v) {
-            return ((v.radius === this.radius) && (v.phi === this.phi) && (v.theta === this.theta));
-        },
-
-        clear: function() {
-            this.radius = 0.0;
-            this.phi = 0.0;
-            this.theta = 0.0;
-            return this;
-        },
-
-        clone: function() {
-            return new Polar3D(this.radius, this.phi, this.theta);
-        }
-    };
-
-
-    Proton.Polar3D = Polar3D;
-
-    var Quaternion = function(x, y, z, w) {
-        this.x = x || 0;
-        this.y = y || 0;
-        this.z = z || 0;
-        this.w = (w !== undefined) ? w : 1;
-    };
-
-    Quaternion.prototype = {
-        set: function(x, y, z, w) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.w = w;
-            return this;
-        },
-
-        clone: function() {
-            return new Proton.Quaternion(this.x, this.y, this.z, this.w);
-        },
-
-        copy: function(quaternion) {
-            this.x = quaternion.x;
-            this.y = quaternion.y;
-            this.z = quaternion.z;
-            this.w = quaternion.w;
-            return this;
-        },
-
-        setFromEuler: function(euler) {
-            // http://www.mathworks.com/matlabcentral/fileexchange/
-            //  20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
-            //  content/SpinCalc.m
-
-            var c1 = Math.cos(euler.x / 2);
-            var c2 = Math.cos(euler.y / 2);
-            var c3 = Math.cos(euler.z / 2);
-            var s1 = Math.sin(euler.x / 2);
-            var s2 = Math.sin(euler.y / 2);
-            var s3 = Math.sin(euler.z / 2);
-
-            this.x = s1 * c2 * c3 + c1 * s2 * s3;
-            this.y = c1 * s2 * c3 - s1 * c2 * s3;
-            this.z = c1 * c2 * s3 + s1 * s2 * c3;
-            this.w = c1 * c2 * c3 - s1 * s2 * s3;
-
-            return this;
-
-        },
-
-        setFromAxisAngle: function(axis, angle) {
-            // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-            // assumes axis is normalized
-            var halfAngle = angle / 2,
-                s = Math.sin(halfAngle);
-            this.x = axis.x * s;
-            this.y = axis.y * s;
-            this.z = axis.z * s;
-            this.w = Math.cos(halfAngle);
-
-            return this;
-        },
-
-        // setFromUnitVectors: function() {
-        //     var v1, r;
-        //     var EPS = 0.000001;
-
-        //     return function(vFrom, vTo) {
-        //         if (v1 === undefined) v1 = new Proton.Vector3D();
-
-        //         r = vFrom.dot(vTo) + 1;
-        //         if (r < EPS) {
-        //             r = 0;
-        //             if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
-        //                 v1.set(-vFrom.y, vFrom.x, 0);
-        //             } else {
-        //                 v1.set(0, -vFrom.z, vFrom.y);
-        //             }
-        //         } else {
-        //             v1.crossVectors(vFrom, vTo);
-        //         }
-
-        //         this.x = v1.x;
-        //         this.y = v1.y;
-        //         this.z = v1.z;
-        //         this.w = r;
-        //         return this.normalize();
-        //     };
-        // }(),
-
-        normalize: function() {
-
-            var l = this.length();
-
-            if (l === 0) {
-
-                this.x = 0;
-                this.y = 0;
-                this.z = 0;
-                this.w = 1;
-
-            } else {
-                l = 1 / l;
-                this.x *= l;
-                this.y *= l;
-                this.z *= l;
-                this.w *= l;
-
-            }
-            return this;
-        },
-
-        length: function() {
-
-            return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
-
-        },
-
-        dot: function(v) {
-            return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
-        }
-    };
-
-    Proton.Quaternion = Quaternion;
-
-
-
 
 
     /**
@@ -1260,7 +786,7 @@ Proton.EventDispatcher = EventDispatcher;
     function Velocity(a, b, c) {
         Velocity._super_.call(this);
         this.reset(a, b, c);
-        this.dirVec = new Proton.Vector3D(0, 0, 0);
+        this.dirVec = new Vector3D(0, 0, 0);
 
         this.name = "Velocity";
     }
@@ -1269,7 +795,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     Velocity.prototype.reset = function(a, b, c) {
         //[vector,tha]
-        if (a instanceof Proton.Vector3D) {
+        if (a instanceof Vector3D) {
             this.radiusPan = Proton.createSpan(1);
             this.dir = a.clone();
             this.tha = b * Proton.DR;
@@ -1277,7 +803,7 @@ Proton.EventDispatcher = EventDispatcher;
         }
 
         //[polar,tha]
-        else if (a instanceof Proton.Polar3D) {
+        else if (a instanceof Polar3D) {
             this.tha = b * Proton.DR;
             this.dirVec = a.toVector3D();
             this._useV = false;
@@ -1298,8 +824,8 @@ Proton.EventDispatcher = EventDispatcher;
 
     Velocity.prototype.initialize = function() {
         var tha;
-        var normal = new Proton.Vector3D(0, 0, 1);
-        var v = new Proton.Vector3D(0, 0, 0);
+        var normal = new Vector3D(0, 0, 1);
+        var v = new Vector3D(0, 0, 0);
 
         return function initialize(target) {
             tha = this.tha * Math.random();
@@ -1411,7 +937,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     Util.inherits(Force, Proton.Behaviour);
     Force.prototype.reset = function(fx, fy, fz) {
-        this.force = this.normalizeForce(new Proton.Vector3D(fx, fy, fz));
+        this.force = this.normalizeForce(new Vector3D(fx, fy, fz));
         this.force.id = Math.random();
     }
 
@@ -1424,11 +950,11 @@ Proton.EventDispatcher = EventDispatcher;
 
     function Attraction(targetPosition, force, radius, life, easing) {
 		Attraction._super_.call(this, life, easing);
-		this.targetPosition = Util.initValue(targetPosition, new Proton.Vector3D);
+		this.targetPosition = Util.initValue(targetPosition, new Vector3D);
 		this.radius = Util.initValue(radius, 1000);
 		this.force = Util.initValue(this.normalizeValue(force), 100);
 		this.radiusSq = this.radius * this.radius
-		this.attractionForce = new Proton.Vector3D();
+		this.attractionForce = new Vector3D();
 		this.lengthSq = 0;
 		this.name = "Attraction";
 	}
@@ -1436,11 +962,11 @@ Proton.EventDispatcher = EventDispatcher;
 
 	Util.inherits(Attraction, Proton.Behaviour);
 	Attraction.prototype.reset = function(targetPosition, force, radius, life, easing) {
-		this.targetPosition = Util.initValue(targetPosition, new Proton.Vector3D);
+		this.targetPosition = Util.initValue(targetPosition, new Vector3D);
 		this.radius = Util.initValue(radius, 1000);
 		this.force = Util.initValue(this.normalizeValue(force), 100);
 		this.radiusSq = this.radius * this.radius
-		this.attractionForce = new Proton.Vector3D();
+		this.attractionForce = new Vector3D();
 		this.lengthSq = 0;
 		if (life)
 			Attraction._super_.prototype.reset.call(this, life, easing);
@@ -1477,7 +1003,7 @@ Proton.EventDispatcher = EventDispatcher;
 
     Util.inherits(RandomDrift, Proton.Behaviour);
     RandomDrift.prototype.reset = function(driftX, driftY, driftZ, delay, life, easing) {
-        this.randomFoce = this.normalizeForce(new Proton.Vector3D(driftX, driftY, driftZ));
+        this.randomFoce = this.normalizeForce(new Vector3D(driftX, driftY, driftZ));
         this.delayPan = Proton.createSpan(delay || .03);
         this.time = 0;
         life && RandomDrift._super_.prototype.reset.call(this, life, easing);
@@ -1545,7 +1071,7 @@ Proton.EventDispatcher = EventDispatcher;
         this.useMass = useMass;
         this.callback = callback;
         this.particles = [];
-        this.delta = new Proton.Vector3D();
+        this.delta = new Vector3D();
         life && Collision._super_.prototype.reset.call(this, life, easing);
     }
 
@@ -1759,26 +1285,26 @@ Proton.EventDispatcher = EventDispatcher;
                 break;
 
             case "to":
-                particle.transform.fR = particle.transform.fR || new Proton.Vector3D;
-                particle.transform.tR = particle.transform.tR || new Proton.Vector3D;
+                particle.transform.fR = particle.transform.fR || new Vector3D;
+                particle.transform.tR = particle.transform.tR || new Vector3D;
                 this._setRotation(particle.transform.fR, this.a);
                 this._setRotation(particle.transform.tR, this.b);
                 break;
 
             case "add":
-                particle.transform.addR = new Proton.Vector3D(this.a.getValue(), this.b.getValue(), this.c.getValue());
+                particle.transform.addR = new Vector3D(this.a.getValue(), this.b.getValue(), this.c.getValue());
                 break;
         }
     };
 
     Rotate.prototype._setRotation = function(vec3, value) {
-        vec3 = vec3 || new Proton.Vector3D;
+        vec3 = vec3 || new Vector3D;
         if (value === "random") {
             var x = MathUtils.randomAToB(-Proton.PI, Proton.PI);
             var y = MathUtils.randomAToB(-Proton.PI, Proton.PI);
             var z = MathUtils.randomAToB(-Proton.PI, Proton.PI);
             vec3.set(x, y, z);
-        } else if (value instanceof Proton.Vector3D) {
+        } else if (value instanceof Vector3D) {
             vec3.copy(value);
         }
     };
@@ -1788,7 +1314,7 @@ Proton.EventDispatcher = EventDispatcher;
 
         switch (this._type) {
             case "same":
-                if (!particle.rotation) particle.rotation = new Proton.Vector3D;
+                if (!particle.rotation) particle.rotation = new Vector3D;
                 particle.rotation.eulerFromDir(particle.v);
                 //http://stackoverflow.com/questions/21622956/how-to-convert-direction-vector-to-euler-angles
                 //console.log(particle.rotation);
@@ -1878,7 +1404,7 @@ Proton.EventDispatcher = EventDispatcher;
     Util.inherits(Spring, Proton.Behaviour);
     Spring.prototype.reset = function(x, y, z, spring, friction) {
         if (!this.pos)
-            this.pos = new Proton.Vector3D(x, y, z);
+            this.pos = new Vector3D(x, y, z);
         else
             this.pos.set(x, y, z);
         this.spring = spring || .1;
@@ -2226,7 +1752,7 @@ Proton.EventDispatcher = EventDispatcher;
         this.mouseTarget = Util.initValue(mouseTarget, window);
         this.ease = Util.initValue(ease, .7);
         this._allowEmitting = false;
-        this.mouse = new Proton.Vector3D();
+        this.mouse = new Vector3D();
         this.initEventHandler();
 
         FollowEmitter._super_.call(this, pObj);
@@ -2438,9 +1964,9 @@ Proton.EventDispatcher = EventDispatcher;
      * Zone is a base class.
      * @constructor
      */
-     class Zone {
+     export class Zone {
         constructor() {
-            this.vector = new Proton.Vector3D(0, 0, 0);
+            this.vector = new Vector3D(0, 0, 0);
             this.random = 0;
             this.crossType = "dead";
             this.log = true;
@@ -2481,14 +2007,14 @@ Proton.EventDispatcher = EventDispatcher;
      * @example 
      * var lineZone = new Proton.LineZone(0,0,0,100,100,0);
      * or
-     * var lineZone = new Proton.LineZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
+     * var lineZone = new Proton.LineZone(new Vector3D(0,0,0),new Vector3D(100,100,0));
      * @extends {Zone}
      * @constructor
      */
     export class LineZone extends Zone {
         constructor(x1, y1, z1, x2, y2, z2) {
             super();
-            if (x1 instanceof Proton.Vector3D) {
+            if (x1 instanceof Vector3D) {
                 this.x1 = x1.x;
                 this.y1 = x1.y;
                 this.z1 = x1.z;
@@ -2533,7 +2059,7 @@ Proton.EventDispatcher = EventDispatcher;
      * @param {Number} r - the Sphere's radius 
      * @example 
      * var sphereZone = new Proton.SphereZone(0,0,0,100);
-     * var sphereZone = new Proton.SphereZone(new Proton.Vector3D(0,0,0),100);
+     * var sphereZone = new Proton.SphereZone(new Vector3D(0,0,0),100);
      * @extends {Proton.Zone}
      * @constructor
      */
@@ -2580,8 +2106,8 @@ Proton.EventDispatcher = EventDispatcher;
         }
     
         _bound = function() {
-            var normal = new Proton.Vector3D,
-                v = new Proton.Vector3D,
+            var normal = new Vector3D,
+                v = new Vector3D,
                 k;
     
             return function(particle) {
@@ -2603,319 +2129,4 @@ Proton.EventDispatcher = EventDispatcher;
         }
     }
 
-    /**
-     * PointZone is a point zone
-     * @param {Number|Vector3D} x - the center's x value or a Vector3D Object
-     * @param {Number} y - the center's y value
-     * @param {Number} z - the center's z value  
-     * @example 
-     * var pointZone = new PointZone(0,30,10);
-     * or
-     * var pointZone = new PointZone(new Proton.Vector3D(0,30,10));
-     * @extends {Zone}
-     * @constructor
-     */
-    export class PointZone extends Zone {
-        constructor(a, b, c) {
-            var x, y, z;
-            super();
-            if (Util.isUndefined(a, b, c)) {
-                x = y = z = 0;
-            } else {
-                x = a;
-                y = b;
-                z = c;
-            }
     
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-        getPosition() {
-            this.vector.x = this.x;
-            this.vector.y = this.y;
-            this.vector.z = this.z;
-            return this.vector;
-        }
-    
-        crossing(particle) {
-            if (this.log) {
-                console.error('Sorry PointZone does not support crossing method');
-                this.log = false;
-            }
-        }   
-    }
-
-    /**
-     * BoxZone is a box zone
-     * @param {Number|Proton.Vector3D} x - the position's x value or a Proton.Vector3D Object
-     * @param {Number} y - the position's y value 
-     * @param {Number} z - the position's z value 
-     * @param {Number} w - the Box's width 
-     * @param {Number} h - the Box's height 
-     * @param {Number} d - the Box's depth 
-     * @example 
-     * var boxZone = new BoxZone(0,0,0,50,50,50);
-     * or
-     * var boxZone = new BoxZone(new Proton.Proton.Vector3D(0,0,0), 50, 50, 50);
-     * @extends {Proton.Zone}
-     * @constructor
-     */
-    export class BoxZone extends Zone {
-        constructor(a, b, c, d, e, f) {
-            super();
-            var x, y, z, w, h, d;
-            if (Util.isUndefined(b, c, d, e, f)) {
-                x = y = z = 0;
-                w = h = d = (a || 100);
-            } else if (Util.isUndefined(d, e, f)) {
-                x = y = z = 0;
-                w = a;
-                h = b;
-                d = c;
-            } else {
-                x = a;
-                y = b;
-                z = c;
-                w = d;
-                h = e;
-                d = f;
-            }
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.width = w;
-            this.height = h;
-            this.depth = d;
-            //
-            this.friction = 0.85;
-            this.max = 6;
-        }
-        getPosition() {
-            this.vector.x = this.x + MathUtils.randomAToB(-.5, .5) * this.width;
-            this.vector.y = this.y + MathUtils.randomAToB(-.5, .5) * this.height;
-            this.vector.z = this.z + MathUtils.randomAToB(-.5, .5) * this.depth;
-            return this.vector;
-        }
-    
-        _dead(particle) {
-            if (particle.p.x + particle.radius < this.x - this.width / 2)
-                particle.dead = true;
-            else if (particle.p.x - particle.radius > this.x + this.width / 2)
-                particle.dead = true;
-    
-            if (particle.p.y + particle.radius < this.y - this.height / 2)
-                particle.dead = true;
-            else if (particle.p.y - particle.radius > this.y + this.height / 2)
-                particle.dead = true;
-    
-            if (particle.p.z + particle.radius < this.z - this.depth / 2)
-                particle.dead = true;
-            else if (particle.p.z - particle.radius > this.z + this.depth / 2)
-                particle.dead = true;
-        }
-    
-        _bound(particle) {
-            if (particle.p.x - particle.radius < this.x - this.width / 2) {
-                particle.p.x = this.x - this.width / 2 + particle.radius;
-                particle.v.x *= -this.friction;
-                this._static(particle, "x");
-            } else if (particle.p.x + particle.radius > this.x + this.width / 2) {
-                particle.p.x = this.x + this.width / 2 - particle.radius;
-                particle.v.x *= -this.friction;
-                this._static(particle, "x");
-            }
-    
-            if (particle.p.y - particle.radius < this.y - this.height / 2) {
-                particle.p.y = this.y - this.height / 2 + particle.radius;
-                particle.v.y *= -this.friction;
-                this._static(particle, "y");
-            } else if (particle.p.y + particle.radius > this.y + this.height / 2) {
-                particle.p.y = this.y + this.height / 2 - particle.radius;
-                particle.v.y *= -this.friction;
-                this._static(particle, "y");
-            }
-    
-            if (particle.p.z - particle.radius < this.z - this.depth / 2) {
-                particle.p.z = this.z - this.depth / 2 + particle.radius;
-                particle.v.z *= -this.friction;
-                this._static(particle, "z");
-            } else if (particle.p.z + particle.radius > this.z + this.depth / 2) {
-                particle.p.z = this.z + this.depth / 2 - particle.radius;
-                particle.v.z *= -this.friction;
-                this._static(particle, "z");
-            }
-        }
-    
-        _static(particle, axis) {
-            if (particle.v[axis] * particle.a[axis] > 0) return;
-            if (Math.abs(particle.v[axis]) < Math.abs(particle.a[axis]) * 0.0167 * this.max) {
-                particle.v[axis] = 0;
-                particle.a[axis] = 0;
-            }
-        }
-    
-        _cross(particle) {
-            if (particle.p.x + particle.radius < this.x - this.width / 2 && particle.v.x <= 0)
-                particle.p.x = this.x + this.width / 2 + particle.radius;
-            else if (particle.p.x - particle.radius > this.x + this.width / 2 && particle.v.x >= 0)
-                particle.p.x = this.x - this.width / 2 - particle.radius;
-    
-            if (particle.p.y + particle.radius < this.y - this.height / 2 && particle.v.y <= 0)
-                particle.p.y = this.y + this.height / 2 + particle.radius;
-            else if (particle.p.y - particle.radius > this.y + this.height / 2 && particle.v.y >= 0)
-                particle.p.y = this.y - this.height / 2 - particle.radius;
-    
-            if (particle.p.z + particle.radius < this.z - this.depth / 2 && particle.v.z <= 0)
-                particle.p.z = this.z + this.depth / 2 + particle.radius;
-            else if (particle.p.z - particle.radius > this.z + this.depth / 2 && particle.v.z >= 0)
-                particle.p.z = this.z - this.depth / 2 - particle.radius;
-        }
-    }
-
-    /**
-     * ScreenZone is a 3d line zone
-     * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object
-     * @param {Number|Vector3D} y1 - the line's start point of y value or a Vector3D Object
-     * @param {Number} z1 - the line's start point of z value 
-     * @param {Number} x2 - the line's end point of x value 
-     * @param {Number} y2 - the line's end point of y value 
-     * @param {Number} z2 - the line's end point of z value 
-     * @example 
-     * var lineZone = new ScreenZone(0,0,0,100,100,0);
-     * or
-     * var lineZone = new ScreenZone(new Proton.Vector3D(0,0,0),new Proton.Vector3D(100,100,0));
-     * @extends {Zone}
-     * @constructor
-     */
-    export class ScreenZone extends Zone {
-        constructor(camera, renderer, dis, dir) {
-            super();
-
-            this.camera = camera;
-            this.renderer = renderer;
-            this.dis = dis || 20;
-            dir = dir || "1234";
-            for (var i = 1; i < 5; i++)
-                this["d" + i] = dir.indexOf(i + "") >= 0;
-    
-            this.name = "ScreenZone";
-        }
-        getPosition = function() {
-            var vec2 = new Proton.Vector3D,
-                canvas;
-    
-            return function() {
-                canvas = this.renderer.domElement;
-                vec2.x = Math.random() * canvas.width;
-                vec2.y = Math.random() * canvas.height;
-                this.vector.copy(THREEUtil.toSpacePos(vec2, this.camera, canvas));
-                return this.vector;
-            }
-        }();
-    
-        _dead(particle) {
-            var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
-            var canvas = this.renderer.domElement;
-    
-            if ((pos.y + particle.radius < -this.dis) && this.d1) {
-                particle.dead = true;
-            } else if ((pos.y - particle.radius > canvas.height + this.dis) && this.d3) {
-                particle.dead = true;
-            }
-    
-            if ((pos.x + particle.radius < -this.dis) && this.d4) {
-                particle.dead = true;
-            } else if ((pos.x - particle.radius > canvas.width + this.dis) && this.d2) {
-                particle.dead = true;
-            }
-        }
-    
-        _cross = function() {
-            var vec2 = new Proton.Vector3D;
-            return function(particle) {
-                var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
-                var canvas = this.renderer.domElement;
-    
-                if (pos.y + particle.radius < -this.dis) {
-                    vec2.x = pos.x;
-                    vec2.y = canvas.height + this.dis + particle.radius;
-                    particle.p.y = THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
-                } else if (pos.y - particle.radius > canvas.height + this.dis) {
-                    vec2.x = pos.x;
-                    vec2.y = -this.dis - particle.radius;
-                    particle.p.y = THREEUtil.toSpacePos(vec2, this.camera, canvas).y;
-                }
-    
-                if (pos.x + particle.radius < -this.dis) {
-                    vec2.y = pos.y;
-                    vec2.x = canvas.width + this.dis + particle.radius;
-                    particle.p.x = THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
-                } else if (pos.x - particle.radius > canvas.width + this.dis) {
-                    vec2.y = pos.y;
-                    vec2.x = -this.dis - particle.radius;
-                    particle.p.x = THREEUtil.toSpacePos(vec2, this.camera, canvas).x;
-                }
-            }
-        }();
-    
-        _bound(particle) {
-            var pos = THREEUtil.toScreenPos(particle.p, this.camera, this.renderer.domElement);
-            var canvas = this.renderer.domElement;
-    
-            if (pos.y + particle.radius < -this.dis) {
-                particle.v.y *= -1;
-            } else if (pos.y - particle.radius > canvas.height + this.dis) {
-                particle.v.y *= -1;
-            }
-    
-            if (pos.x + particle.radius < -this.dis) {
-                particle.v.y *= -1;
-            } else if (pos.x - particle.radius > canvas.width + this.dis) {
-                particle.v.y *= -1;
-            }
-        }
-    }
-
-    /**
-     * MeshZone is a threejs mesh zone
-     * @param {Geometry|Mesh} geometry - a THREE.Geometry or THREE.Mesh object
-     * @example 
-     * var geometry = new THREE.CylinderGeometry( 5, 5, 20, 32 );
-     * var cylinder = new THREE.Mesh( geometry, material );
-     * var meshZone = new MeshZone(geometry);
-     * or
-     * var meshZone = new MeshZone(cylinder);
-     * @extends {Zone}
-     * @constructor
-     */
-
-    export class MeshZone extends Zone {
-        constructor(geometry, scale) {
-            super();
-            // THREE.Geometry => THREE.BufferGeometry 在 Three.js 较新的版本中，Geometry 已被弃用，取而代之的是 BufferGeometry
-            if (geometry instanceof THREE.BufferGeometry) {
-                this.geometry = geometry;
-            } else {
-                this.geometry = geometry.geometry;
-            }
-    
-            this.scale = scale || 1;
-        }
-        getPosition = function() {
-            var vertices = this.geometry.vertices;
-            var rVector = vertices[(vertices.length * Math.random()) >> 0];
-            this.vector.x = rVector.x * this.scale;
-            this.vector.y = rVector.y * this.scale;
-            this.vector.z = rVector.z * this.scale;
-            return this.vector;
-        }
-    
-        crossing = function(particle) {
-            if (this.log) {
-                console.error('Sorry MeshZone does not support crossing method');
-                this.log = false;
-            }
-        }
-    }
-

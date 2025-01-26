@@ -1,10 +1,12 @@
 // @ts-nocheck
 import * as THREE from 'three';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Proton, BoxZone } from './particle';
+import { Proton } from './particle';
 import { Span } from './particle/span.js';
 import { CustomRender } from './particle/render.js';
 import { Debug } from './particle/debug.js';
+import { Vector3D } from './particle/Vector3D.js';
+import { BoxZone } from './particle/BoxZone.js';
 // https://github.com/drawcall/three.proton
 export class SceneManager {
     renderer: THREE.WebGLRenderer;
@@ -92,7 +94,7 @@ export class SceneManager {
         emitter.addInitialize(new Proton.Mass(1));
         emitter.addInitialize(new Proton.Radius(100));
         emitter.addInitialize(new Proton.Life(2, 4));
-        emitter.addInitialize(new Proton.Velocity(400, new Proton.Vector3D(0, 1, 0), 60));
+        emitter.addInitialize(new Proton.Velocity(400, new Vector3D(0, 1, 0), 60));
 
         // //emitter.addBehaviour(new Proton.RandomDrift(30, 30, 30, .05));
         emitter.addBehaviour(new Proton.Rotate("random", "random"));
