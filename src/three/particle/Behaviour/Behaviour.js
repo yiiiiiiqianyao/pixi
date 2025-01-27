@@ -1,6 +1,6 @@
 import { Util } from "../utils/Util.js";
 import { ease } from "../ease/ease.js";
-import { MEASURE } from "../constant";
+import { MEASURE } from "../core/constant";
 /**
  * The Behaviour class is the base for the other Behaviour
  *

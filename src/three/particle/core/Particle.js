@@ -1,7 +1,7 @@
 import { Util } from '../utils/Util.js';
 import { Vector3D } from '../math/Vector3D.js';
 import { ease } from '../ease/ease.js';
-import { PI } from '../constant';
+import { PI } from './constant';
 import { EventDispatcher } from '../events/EventDispatcher.js'
 /**
  * the Particle class

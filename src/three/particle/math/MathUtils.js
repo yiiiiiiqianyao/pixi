@@ -1,4 +1,4 @@
-import { PI } from '../constant';
+import { PI } from '../core/constant';
 export const MathUtils = {
     randomAToB: function(a, b, INT) {
         if (!INT)

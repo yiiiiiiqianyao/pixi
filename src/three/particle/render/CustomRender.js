@@ -1,5 +1,5 @@
 import { BaseRender } from "./BaseRender.js";
-import { Pool } from "../pool.js";
+import { Pool } from "../core/pool.js";
 export class CustomRender extends BaseRender {
   constructor() {
     super();

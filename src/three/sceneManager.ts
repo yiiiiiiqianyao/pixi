@@ -1,7 +1,7 @@
 // @ts-ignore
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as THREE from 'three';
-import { Proton } from './particle';
+import { Proton } from './particle/core';
 import { Span } from './particle/math/Span.js';
 import { CustomRender } from './particle/render/CustomRender';
 import { Debug } from './particle/debug/debug.js';

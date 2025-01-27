@@ -1,4 +1,4 @@
- import { PI } from '../constant'
+ import { PI } from '../core/constant'
  /**
      * The Ease class provides a collection of easing functions for use with Proton
      */

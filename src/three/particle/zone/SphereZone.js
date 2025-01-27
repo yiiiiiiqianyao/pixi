@@ -1,7 +1,7 @@
 import { Zone } from './Zone.js';
 import { Util } from '../utils/Util.js';
 import { Vector3D } from '../math/Vector3D.js';
-import { PI } from '../constant';
+import { PI } from '../core/constant';
 /**
      * SphereZone is a sphere zone
      * @param {Number|Vector3D} x - the center's x value or a Vector3D Object

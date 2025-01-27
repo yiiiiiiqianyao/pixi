@@ -1,5 +1,5 @@
 import { Behaviour } from './Behaviour.js';
-import { PI, DR } from '../constant';
+import { PI, DR } from '../core/constant';
 import { createSpan } from '../math/Span.js';
 import { MathUtils } from '../math/MathUtils.js';
 import { Vector3D } from '../math/Vector3D.js';

@@ -1,5 +1,5 @@
 import { Util } from "../utils/Util.js";
-import { EULER } from "../constant";
+import { EULER } from "../core/constant";
 export class Integration {
   constructor(type) {
     this.type = Util.initValue(type, EULER);

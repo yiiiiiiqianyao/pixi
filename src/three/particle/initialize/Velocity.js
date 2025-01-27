@@ -2,7 +2,7 @@ import { Initialize } from './Initialize.js';
 import { createSpan } from '../math/Span.js';
 import { Vector3D } from '../math/Vector3D.js';
 import { MathUtils } from '../math/MathUtils.js';
-import { DR, PI, MEASURE } from '../constant';
+import { DR, PI, MEASURE } from '../core/constant';
 import { Polar3D } from '../math/Polar3D.js';
 
 /**

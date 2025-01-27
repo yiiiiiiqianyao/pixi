@@ -1,10 +1,10 @@
 
 import { Util } from '../utils/Util'
 import { Rate } from '../initialize/Rate'
-import { Particle } from './Particle'
+import { Particle } from '../core/Particle'
 import { InitializeUtil } from '../initialize/InitializeUtil';
-import { bindEmtterEvent } from '../constant';
-import { Proton } from '../index';
+import { bindEmtterEvent } from '../core/constant';
+import { Proton } from '../core/index';
 
 export class Emitter extends Particle {
     static ID = 0;

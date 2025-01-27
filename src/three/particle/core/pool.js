@@ -1,4 +1,4 @@
-import { PUID } from './utils/PUID.js';
+import { PUID } from '../utils/PUID.js';
 
 export class Pool {
         constructor() {
