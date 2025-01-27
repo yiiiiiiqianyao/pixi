@@ -16,7 +16,7 @@ export class RandomDrift extends Behaviour {
     this.randomFoce = this.normalizeForce(new Vector3D(driftX, driftY, driftZ));
     this.delayPan = createSpan(delay || 0.03);
     this.time = 0;
-    life && super.prototype.reset.call(this, life, easing);
+    life && super.reset.call(this, life, easing);
   }
   applyBehaviour(particle, time, index) {
     super.applyBehaviour.call(this, particle, time, index);
