@@ -1,6 +1,6 @@
 
-import { MathUtils } from './mathUtils.js'
-import { Util } from './util.js'
+import { MathUtils } from './MathUtils.js'
+import { Util } from '../utils/Util.js'
 /**
  * Span Class. Get a random Number from a to b. Or from c-a to c+b
  * @param {Number|Array} a - min number

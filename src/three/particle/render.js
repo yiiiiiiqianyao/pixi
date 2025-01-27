@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Proton } from "./index.js";
-import { PUID } from "./puid.js";
+import { PUID } from "./utils/PUID.js";
 import { Pool } from './pool.js';
 export class BaseRender {
   constructor() {

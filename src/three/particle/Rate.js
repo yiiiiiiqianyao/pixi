@@ -1,5 +1,5 @@
-import { createSpan } from './span.js';
-import { Util } from './util.js';
+import { createSpan } from './math/Span.js';
+import { Util } from './utils/Util.js';
 /**
  * The number of particles per second emission (a [particle]/b [s]);
  * @class Rate

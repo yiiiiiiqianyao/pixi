@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize'
-import { Util } from '../util'
+import { Util } from '../utils/Util'
 
 export const InitializeUtil = {
   initialize(emitter, particle, initializes) {

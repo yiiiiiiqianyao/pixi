@@ -1,5 +1,5 @@
 import { EventDispatcher } from '../index'
-import { Util } from '../util'
+import { Util } from '../utils/Util'
 import { Rate } from '../Rate'
 import { Particle } from './Particle'
 import { InitializeUtil } from '../initialize/InitializeUtil';

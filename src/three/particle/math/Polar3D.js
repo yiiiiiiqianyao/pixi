@@ -1,4 +1,4 @@
-import { Vector3D } from './math/Vector3D.js';
+import { Vector3D } from './Vector3D.js';
 
 export class Polar3D {
         constructor(radius, theta, phi) {

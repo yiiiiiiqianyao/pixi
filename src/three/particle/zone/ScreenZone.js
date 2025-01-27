@@ -1,5 +1,5 @@
  import { Zone } from './Zone.js';
- import { THREEUtil } from '../THREEUtil.js';
+ import { THREEUtil } from '../utils/THREEUtil.js';
  /**
      * ScreenZone is a 3d line zone
      * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object

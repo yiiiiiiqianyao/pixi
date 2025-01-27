@@ -1,4 +1,4 @@
-import { Span } from "./span.js";
+import { Span } from "../math/Span.js";
 export const Util = {
     initValue: function(value, defaults) {
         const initValue = (value !== null && value !== undefined) ? value : defaults;

@@ -2,7 +2,7 @@
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as THREE from 'three';
 import { Proton } from './particle';
-import { Span } from './particle/span.js';
+import { Span } from './particle/math/Span.js';
 import { CustomRender } from './particle/render.js';
 import { Debug } from './particle/debug.js';
 import { Vector3D } from './particle/math/Vector3D.js';

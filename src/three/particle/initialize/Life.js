@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize.js';
-import { createSpan } from '../span.js';
+import { createSpan } from '../math/Span.js';
 /**
  * Life is init particle's Life
  * @param {Number} a - the Life's start point
