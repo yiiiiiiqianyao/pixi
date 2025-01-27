@@ -13,6 +13,7 @@ import { CrossZone } from './particle/Behaviour/CrossZone.js';
 import { Scale } from './particle/Behaviour/Scale';
 import { Rotate } from './particle/Behaviour/Rotate';
 import { Color } from './particle/Behaviour/Color';
+import { Rate } from './particle/Rate';
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -97,7 +98,7 @@ export class SceneManager {
     createEmitter(scene: THREE.Scene, proton: Proton) {
         const emitter = new Proton.Emitter();
         
-        emitter.rate = new Proton.Rate(new Span(4, 8), new Span(.2, .5));
+        emitter.rate = new Rate(new Span(4, 8), new Span(.2, .5));
         // @ts-ignore
         emitter.addInitialize(new Proton.Mass(1));
         // @ts-ignore

@@ -13,6 +13,7 @@ import { PI, DR, EULER, MEASURE } from "./constant";
 import { Integration } from "./Integration.js";
 import { ease } from "./ease.js";
 import { Behaviour } from "./Behaviour/Behaviour.js";
+import { Rate } from './Rate.js';
 
 /**
  * @name Proton is a particle engine for three.js
@@ -384,50 +385,6 @@ Proton.Particle = Particle;
 
 Proton.Behaviour = Behaviour;
 
-/**
- * The number of particles per second emission (a [particle]/b [s]);
- * @class Proton.Rate
- * @constructor
- * @param {Array or Number or Span} numPan the number of each emission;
- * @param {Array or Number or Span} timePan the time of each emission;
- * for example: new Proton.Rate(new Span(10, 20), new Span(.1, .25));
- */
-
-function Rate(numPan, timePan) {
-  this.numPan = createSpan(Util.initValue(numPan, 1));
-  this.timePan = createSpan(Util.initValue(timePan, 1));
-
-  this.startTime = 0;
-  this.nextTime = 0;
-  this.init();
-}
-
-Rate.prototype = {
-  init: function () {
-    this.startTime = 0;
-    this.nextTime = this.timePan.getValue();
-  },
-
-  getValue: function (time) {
-    this.startTime += time;
-
-    if (this.startTime >= this.nextTime) {
-      this.init();
-
-      if (this.numPan.b === 1) {
-        if (this.numPan.getValue("Float") > 0.5) return 1;
-        else return 0;
-      } else {
-        return this.numPan.getValue("Int");
-      }
-    }
-
-    return 0;
-  },
-};
-
-Proton.Rate = Rate;
-
 function Initialize() {
   this.name = "Initialize";
 }
@@ -722,7 +679,7 @@ function Emitter(pObj) {
    * @type {Rate}
    * @default Rate(1, .1)
    */
-  this.rate = new Proton.Rate(1, 0.1);
+  this.rate = new Rate(1, 0.1);
   Emitter._super_.call(this, pObj);
   /**
    * The emitter's id;
