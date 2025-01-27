@@ -1,6 +1,6 @@
 import { Behaviour } from './Behaviour.js';
 import { Util } from '../util.js';
-import { Vector3D } from '../Vector3D.js';
+import { Vector3D } from '../math/Vector3D.js';
 
 export class Attraction extends Behaviour {
     constructor(targetPosition, force, radius, life, easing) {

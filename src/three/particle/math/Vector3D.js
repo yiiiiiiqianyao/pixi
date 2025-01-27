@@ -1,7 +1,7 @@
 import { Quaternion } from './Quaternion.js';
+import { PI } from '../constant';
 
-import { PI } from './constant';
-export  class Vector3D {
+export class Vector3D {
         constructor(x, y, z) {
             this.x = x || 0;
             this.y = y || 0;

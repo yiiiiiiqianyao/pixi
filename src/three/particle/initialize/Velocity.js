@@ -1,6 +1,6 @@
 import { Initialize } from './Initialize.js';
 import { createSpan } from '../span.js';
-import { Vector3D } from '../Vector3D.js';
+import { Vector3D } from '../math/Vector3D.js';
 import { MathUtils } from '../mathUtils.js';
 import { DR, PI, MEASURE } from '../constant';
 import { Polar3D } from '../Polar3D.js';

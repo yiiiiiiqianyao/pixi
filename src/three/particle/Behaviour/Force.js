@@ -1,5 +1,5 @@
 import { Behaviour } from './Behaviour.js';
-import { Vector3D } from '../Vector3D.js'
+import { Vector3D } from '../math/Vector3D.js'
 /**
  * The Behaviour class is the base for the other Behaviour
  *

@@ -1,5 +1,5 @@
 import { Zone } from './Zone.js';
-import { Vector3D } from '../Vector3D.js';
+import { Vector3D } from '../math/Vector3D.js';
 /**
      * LineZone is a 3d line zone
      * @param {Number|Vector3D} x1 - the line's start point of x value or a Vector3D Object
