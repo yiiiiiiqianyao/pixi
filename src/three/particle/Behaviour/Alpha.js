@@ -1,9 +1,9 @@
 import { Behaviour } from './Behaviour.js';
 
 /**
- * The Alpha class is the base for the other Proton.Behaviour
+ * The Alpha class is the base for the other Behaviour
  *
- * @class Proton.Behaviour
+ * @class Behaviour
  * @constructor
  */
 
@@ -12,7 +12,7 @@ export class Alpha extends Behaviour {
     super(life, easing);
     this.reset(a, b);
     /**
-     * The Proton.Behaviour name;
+     * The Behaviour name;
      * @property name
      * @type {string}
      */

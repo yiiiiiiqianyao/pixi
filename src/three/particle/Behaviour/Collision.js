@@ -1,8 +1,8 @@
 import { Behaviour } from './Behaviour.js';
 /**
- * The Scale class is the base for the other Proton.Behaviour
+ * The Scale class is the base for the other Behaviour
  *
- * @class Proton.Behaviour
+ * @class Behaviour
  * @constructor
  */
 //can use Collision(emitter,true,function(){}) or Collision();

@@ -14,6 +14,10 @@ import { Scale } from './particle/Behaviour/Scale';
 import { Rotate } from './particle/Behaviour/Rotate';
 import { Color } from './particle/Behaviour/Color';
 import { Rate } from './particle/Rate';
+import { Life } from './particle/initialize/Life';
+import { Velocity } from './particle/initialize/Velocity';
+import { Mass } from './particle/initialize/Mass';
+import { Radius } from './particle/initialize/Radius';
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -100,13 +104,13 @@ export class SceneManager {
         
         emitter.rate = new Rate(new Span(4, 8), new Span(.2, .5));
         // @ts-ignore
-        emitter.addInitialize(new Proton.Mass(1));
+        emitter.addInitialize(new Mass(1));
         // @ts-ignore
-        emitter.addInitialize(new Proton.Radius(100));
+        emitter.addInitialize(new Radius(100));
         // @ts-ignore
-        emitter.addInitialize(new Proton.Life(2, 4));
+        emitter.addInitialize(new Life(2, 4));
         // @ts-ignore
-        emitter.addInitialize(new Proton.Velocity(400, new Vector3D(0, 1, 0), 60));
+        emitter.addInitialize(new Velocity(400, new Vector3D(0, 1, 0), 60));
 
         emitter.addBehaviour(new Rotate("random", "random"));
         emitter.addBehaviour(new Scale(1, .1));

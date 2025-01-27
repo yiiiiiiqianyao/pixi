@@ -12,7 +12,7 @@ import { Vector3D } from "./Vector3D.js";
 import { PI, DR, EULER, MEASURE } from "./constant";
 import { Integration } from "./Integration.js";
 import { ease } from "./ease.js";
-import { Behaviour } from "./Behaviour/Behaviour.js";
+import { InitializeUtil } from "./initialize/InitializeUtil.js";
 import { Rate } from './Rate.js';
 
 /**
@@ -383,277 +383,6 @@ Particle.prototype = {
 
 Proton.Particle = Particle;
 
-Proton.Behaviour = Behaviour;
-
-function Initialize() {
-  this.name = "Initialize";
-}
-
-Initialize.prototype.reset = function () {};
-
-Initialize.prototype.init = function (emitter, particle) {
-  if (particle) {
-    this.initialize(particle);
-  } else {
-    this.initialize(emitter);
-  }
-};
-
-///sub class init
-Initialize.prototype.initialize = function (target) {};
-Proton.Initialize = Initialize;
-
-var InitializeUtil = {
-  initialize(emitter, particle, initializes) {
-    var i = initializes.length;
-    while (i--) {
-      var initialize = initializes[i];
-      if (initialize instanceof Proton.Initialize)
-        initialize.init(emitter, particle);
-      else InitializeUtil.init(emitter, particle, initialize);
-    }
-
-    InitializeUtil.bindEmitter(emitter, particle);
-  },
-  init(emitter, particle, initialize) {
-    Util.setPrototypeByObj(particle, initialize);
-    Util.setVectorByObj(particle, initialize);
-  },
-  bindEmitter(emitter, particle) {
-    if (emitter.bindEmitter) {
-      particle.p.add(emitter.p);
-      particle.v.add(emitter.v);
-      particle.a.add(emitter.a);
-      particle.v.applyEuler(emitter.rotation);
-    }
-  },
-};
-
-Proton.InitializeUtil = InitializeUtil;
-
-/**
- * Life is init particle's Life
- * @param {Number} a - the Life's start point
- * @param {Number} b - the Life's end point
- * @param {String} c - span's center
- * @example
- * var life = new Proton.Life(3,5);
- * or
- * var life = new Proton.Life(Infinity);
- * @extends {Initialize}
- * @constructor
- */
-function Life(a, b, c) {
-  Life._super_.call(this);
-  this.lifePan = createSpan(a, b, c);
-}
-
-Util.inherits(Life, Initialize);
-Life.prototype.initialize = function (target) {
-  if (this.lifePan.a === Infinity || this.lifePan.a === "infi")
-    target.life = Infinity;
-  else target.life = this.lifePan.getValue();
-};
-
-Proton.Life = Life;
-
-/**
- * Position is init particle's Position
- * @param {Zone} zone - the Position zone
- * @example
- * var Position = new Proton.Position(new PointZone(30,100,0));
- * or
- * var Position = new Proton.Position(Infinity);
- * @extends {Proton.Initialize}
- * @constructor
- */
-function Position() {
-  Position._super_.call(this);
-  this.reset.apply(this, arguments);
-}
-
-Util.inherits(Position, Proton.Initialize);
-Position.prototype.reset = function () {
-  if (!this.zones) this.zones = [];
-  else this.zones.length = 0;
-
-  var args = Array.prototype.slice.call(arguments);
-  this.zones = this.zones.concat(args);
-};
-
-Position.prototype.addZone = function () {
-  var args = Array.prototype.slice.call(arguments);
-  this.zones = this.zones.concat(args);
-};
-
-Position.prototype.initialize = (function () {
-  var zone;
-  return function (target) {
-    var zone = this.zones[(Math.random() * this.zones.length) >> 0];
-    zone.getPosition();
-
-    target.p.x = zone.vector.x;
-    target.p.y = zone.vector.y;
-    target.p.z = zone.vector.z;
-  };
-})();
-
-Proton.Position = Position;
-Proton.P = Position;
-
-/**
- * Velocity is init particle's Velocity
- * @param {Number} a - the Life's start point
- * @param {Number} b - the Life's end point
- * @param {String} c - span's center
- * @example
- * var life = new Proton.Life(3,5);
- * or
- * var life = new Proton.Life(Infinity);
- * @extends {Initialize}
- * @constructor
- */
-//radius and tha
-function Velocity(a, b, c) {
-  Velocity._super_.call(this);
-  this.reset(a, b, c);
-  this.dirVec = new Vector3D(0, 0, 0);
-
-  this.name = "Velocity";
-}
-
-Util.inherits(Velocity, Proton.Initialize);
-
-Velocity.prototype.reset = function (a, b, c) {
-  //[vector,tha]
-  if (a instanceof Vector3D) {
-    this.radiusPan = createSpan(1);
-    this.dir = a.clone();
-    this.tha = b * DR;
-    this._useV = true;
-  }
-
-  //[polar,tha]
-  else if (a instanceof Polar3D) {
-    this.tha = b * DR;
-    this.dirVec = a.toVector3D();
-    this._useV = false;
-  }
-
-  //[radius,vector,tha]
-  else {
-    this.radiusPan = createSpan(a);
-    this.dir = b.clone().normalize();
-    this.tha = c * DR;
-    this._useV = true;
-  }
-};
-
-Velocity.prototype.normalize = function (vr) {
-  return vr * MEASURE;
-};
-
-Velocity.prototype.initialize = (function () {
-  var tha;
-  var normal = new Vector3D(0, 0, 1);
-  var v = new Vector3D(0, 0, 0);
-
-  return function initialize(target) {
-    tha = this.tha * Math.random();
-    this._useV && this.dirVec.copy(this.dir).scalar(this.radiusPan.getValue());
-
-    MathUtils.getNormal(this.dirVec, normal);
-    v.copy(this.dirVec).applyAxisAngle(normal, tha);
-    v.applyAxisAngle(this.dirVec.normalize(), Math.random() * PI * 2);
-
-    // use  axisRotate methods
-    // MathUtils.axisRotate(this.v1, this.dirVec, normal, tha);
-    // MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * PI * 2);
-    target.v.copy(v);
-    return this;
-  };
-})();
-
-Proton.Velocity = Velocity;
-Proton.V = Velocity;
-
-/**
- * Mass is init particle's Mass
- * @param {Number} a - the Mass's start point
- * @param {Number} b - the Mass's end point
- * @param {String} c - span's center
- * @example
- * var Mass = new Proton.Mass(3,5);
- * or
- * var Mass = new Proton.Mass(Infinity);
- * @extends {Initialize}
- * @constructor
- */
-function Mass(a, b, c) {
-  Mass._super_.call(this);
-  this.massPan = createSpan(a, b, c);
-}
-
-Util.inherits(Mass, Proton.Initialize);
-Mass.prototype.initialize = function (target) {
-  target.mass = this.massPan.getValue();
-};
-
-Proton.Mass = Mass;
-
-/**
- * Radius is init particle's Radius
- * @param {Number} a - the Radius's start point
- * @param {Number} b - the Radius's end point
- * @param {String} c - span's center
- * @example
- * var Radius = new Proton.Radius(3,5);
- * or
- * var Radius = new Proton.Radius(3,1,"center");
- * @extends {Initialize}
- * @constructor
- */
-function Radius(a, b, c) {
-  Radius._super_.call(this);
-  this.radius = createSpan(a, b, c);
-}
-
-Util.inherits(Radius, Proton.Initialize);
-Radius.prototype.reset = function (a, b, c) {
-  this.radius = createSpan(a, b, c);
-};
-
-Radius.prototype.initialize = function (particle) {
-  particle.radius = this.radius.getValue();
-  particle.transform.oldRadius = particle.radius;
-};
-
-Proton.Radius = Radius;
-
-function Body(body, w, h) {
-  Body._super_.call(this);
-  this.body = createArraySpan(body);
-  this.w = w;
-  this.h = Util.initValue(h, this.w);
-}
-Util.inherits(Body, Proton.Initialize);
-
-Body.prototype.initialize = function (particle) {
-  var body = this.body.getValue();
-  if (!!this.w) {
-    particle.body = {
-      width: this.w,
-      height: this.h,
-      body: body,
-    };
-  } else {
-    particle.body = body;
-  }
-};
-
-Proton.Body = Body;
-
-
 function Emitter(pObj) {
   this.initializes = [];
   this.particles = [];
@@ -883,7 +612,7 @@ Emitter.prototype.setupParticle = function (particle, initialize, behaviour) {
     else behaviours = [behaviour];
   }
 
-  Proton.InitializeUtil.initialize(this, particle, initializes);
+  InitializeUtil.initialize(this, particle, initializes);
   particle.addBehaviours(behaviours);
   particle.parent = this;
   this.particles.push(particle);
@@ -927,7 +656,7 @@ Util.inherits(BehaviourEmitter, Proton.Emitter);
  *
  * you can use Behaviours array:emitter.addSelfBehaviour(Behaviour1,Behaviour2,Behaviour3);
  * @method addSelfBehaviour
- * @param {Proton.Behaviour} behaviour like this new Color('random')
+ * @param {Behaviour} behaviour like this new Color('random')
  */
 BehaviourEmitter.prototype.addSelfBehaviour = function () {
   var length = arguments.length,
@@ -939,7 +668,7 @@ BehaviourEmitter.prototype.addSelfBehaviour = function () {
 /**
  * remove the Behaviour for self
  * @method removeSelfBehaviour
- * @param {Proton.Behaviour} behaviour a behaviour
+ * @param {Behaviour} behaviour a behaviour
  */
 BehaviourEmitter.prototype.removeSelfBehaviour = function (behaviour) {
   var index = this.selfBehaviours.indexOf(behaviour);

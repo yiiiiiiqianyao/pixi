@@ -3,9 +3,9 @@ import { createArraySpan } from '../span.js';
 import { MathUtils } from '../mathUtils.js';
 import { ColorUtil } from "../colorUtil.js";
 /**
- * The Scale class is the base for the other Proton.Behaviour
+ * The Scale class is the base for the other Behaviour
  *
- * @class Proton.Behaviour
+ * @class Behaviour
  * @constructor
  */
 export class Color extends Behaviour {
