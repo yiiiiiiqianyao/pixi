@@ -2,7 +2,7 @@ import { Util } from '../util.js';
 import { Vector3D } from '../Vector3D.js';
 import { ease } from '../ease.js';
 import { PI } from '../constant';
-import { EventDispatcher } from './EventDispatcher.js'
+import { EventDispatcher } from '../events/EventDispatcher.js'
 /**
  * the Particle class
  * @param {Number} pObj - the parameters of particle config;

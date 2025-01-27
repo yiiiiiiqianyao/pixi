@@ -6,7 +6,7 @@ import { Span } from './particle/span.js';
 import { CustomRender } from './particle/render.js';
 import { Debug } from './particle/debug.js';
 import { Vector3D } from './particle/Vector3D.js';
-import { BoxZone } from './particle/BoxZone.js';
+import { BoxZone } from './particle/zone/BoxZone.js';
 import { ease } from './particle/ease.js';
 import { Gravity } from './particle/Behaviour/Gravity.js';
 import { CrossZone } from './particle/Behaviour/CrossZone.js';

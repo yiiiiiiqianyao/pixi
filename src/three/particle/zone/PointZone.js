@@ -1,5 +1,5 @@
 import { Zone  } from './Zone.js';
-import { Util } from './util.js';
+import { Util } from '../util.js';
 /**
      * PointZone is a point zone
      * @param {Number|Vector3D} x - the center's x value or a Vector3D Object
