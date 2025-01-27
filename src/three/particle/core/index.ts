@@ -16,7 +16,7 @@ import { EventDispatcher } from '../events/EventDispatcher.js'
  */
 export class Proton extends EventDispatcher {
   static integrator;
-  constructor(preParticles, integrationType) {
+  constructor(preParticles?: any, integrationType?: any) {
     super();
     this.preParticles = Util.initValue(preParticles, Proton.POOL_MAX);
     this.integrationType = Util.initValue(integrationType, EULER);
@@ -70,10 +70,8 @@ export class Proton extends EventDispatcher {
     this.dispatchEvent("EMITTER_REMOVED", emitter);
   }
 
-  update($delta) {
+  update(delta = 0.0167) {
     this.dispatchEvent("PROTON_UPDATE", this);
-
-    var delta = $delta || 0.0167;
     if (delta > 0) {
       var i = this.emitters.length;
       while (i--) this.emitters[i].update(delta);
