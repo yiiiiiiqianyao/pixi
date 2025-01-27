@@ -13,7 +13,6 @@ import { PI, DR, EULER, MEASURE } from "./constant";
 import { Integration } from "./Integration.js";
 import { ease } from "./ease.js";
 import { Behaviour } from "./Behaviour/Behaviour.js";
-import { Attraction } from "./Behaviour/Attraction.js";;
 
 /**
  * @name Proton is a particle engine for three.js
@@ -697,61 +696,6 @@ Body.prototype.initialize = function (particle) {
 
 Proton.Body = Body;
 
-
-function Repulsion(targetPosition, force, radius, life, easing) {
-  Repulsion._super_.call(this, targetPosition, force, radius, life, easing);
-  this.force *= -1;
-  this.name = "Repulsion";
-}
-
-Util.inherits(Repulsion, Attraction);
-Repulsion.prototype.reset = function (
-  targetPosition,
-  force,
-  radius,
-  life,
-  easing
-) {
-  Repulsion._super_.prototype.reset.call(
-    this,
-    targetPosition,
-    force,
-    radius,
-    life,
-    easing
-  );
-  this.force *= -1;
-};
-Proton.Repulsion = Repulsion;
-
-/**
- * The Behaviour class is the base for the other Behaviour
- *
- * @class Behaviour
- * @constructor
- */
-class Spring extends Behaviour {
-  constructor(x, y, z, spring, friction, life, easing) {
-    super(life, easing);
-    Spring.prototype.reset(x, y, z, spring, friction);
-    this.name = "Spring";
-  }
-  reset(x, y, z, spring, friction) {
-    if (!this.pos) this.pos = new Vector3D(x, y, z);
-    else this.pos.set(x, y, z);
-    this.spring = spring || 0.1;
-    this.friction = friction || 0.98;
-  }
-  applyBehaviour(particle, time, index) {
-    super.applyBehaviour.call(this, particle, time, index);
-
-    particle.v.x += (this.pos.x - particle.p.x) * this.spring;
-    particle.v.y += (this.pos.y - particle.p.y) * this.spring;
-    particle.v.z += (this.pos.z - particle.p.z) * this.spring;
-  }
-}
-
-Proton.Spring = Spring;
 
 function Emitter(pObj) {
   this.initializes = [];
