@@ -4,7 +4,7 @@ import { Util } from "./utils/Util.js";
 import { Pool } from "./pool.js";
 import { EULER } from "./constant";
 import { Integration } from "./math/Integration.js";
-import { Rate } from './Rate.js';
+import { Rate } from './initialize/Rate.js';
 import { EventDispatcher } from './events/EventDispatcher.js' 
 /**
  * @name Proton is a particle engine for three.js

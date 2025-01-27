@@ -1,6 +1,6 @@
-import { EventDispatcher } from '../index'
+
 import { Util } from '../utils/Util'
-import { Rate } from '../Rate'
+import { Rate } from '../initialize/Rate'
 import { Particle } from './Particle'
 import { InitializeUtil } from '../initialize/InitializeUtil';
 import { bindEmtterEvent } from '../constant';
