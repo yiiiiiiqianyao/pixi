@@ -18,6 +18,7 @@ import { Life } from './particle/initialize/Life';
 import { Velocity } from './particle/initialize/Velocity';
 import { Mass } from './particle/initialize/Mass';
 import { Radius } from './particle/initialize/Radius';
+import { Emitter } from './particle/emitter/Emitter';
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -100,7 +101,7 @@ export class SceneManager {
     }
 
     createEmitter(scene: THREE.Scene, proton: Proton) {
-        const emitter = new Proton.Emitter();
+        const emitter = new Emitter();
         
         emitter.rate = new Rate(new Span(4, 8), new Span(.2, .5));
         // @ts-ignore
