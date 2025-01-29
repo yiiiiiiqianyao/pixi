@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { BaseRender } from "./BaseRender.js";
-import { Pool } from "./pool.js";
+import { Pool } from "../core/pool.js";
 import { PUID } from "../utils/PUID.js";
 export class MeshRender extends BaseRender {
     constructor(container) {

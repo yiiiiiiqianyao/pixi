@@ -1,6 +1,6 @@
 // @ts-ignore
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Camera, Mesh, Scene, WebGLRenderer } from "three";
+import { AmbientLight, Camera, Mesh, PointLight, Scene, WebGLRenderer } from "three";
 import { Proton } from "../particle/core";
 import { CustomRender } from "../particle/render/CustomRender";
 import { Emitter } from "../particle/emitter/Emitter";
@@ -21,6 +21,7 @@ import { Velocity } from '../particle/initialize/Velocity';
 import { Vector3D } from '../particle/math/Vector3D.js';
 
 export function initCustomRenderParticle(scene: Scene, camera: Camera, renderer: WebGLRenderer, control: OrbitControls, mesh: Mesh) {
+    initLights(scene);
     const proton = initProton(scene, mesh);
     // 渲染循环
     const animate = () => {
@@ -96,4 +97,13 @@ function createEmitter(scene: Scene, proton: Proton) {
     Debug.drawZone(proton, scene, zone);
 
     return emitter;
+}
+
+function initLights(scene: Scene) {
+    const ambientLight = new AmbientLight(0xffffff, 0.2);
+    scene.add(ambientLight);
+
+    const pointLight = new PointLight(0xffffff, 10000, 100000);
+    pointLight.position.set(0, 1, 0);
+    scene.add(pointLight);
 }
