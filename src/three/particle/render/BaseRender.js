@@ -2,7 +2,7 @@ export class BaseRender {
   constructor() {
     this.name = "BaseRender";
   }
-  init(proton) {
+  init (proton) {
     var self = this;
     this.proton = proton;
 
@@ -23,15 +23,19 @@ export class BaseRender {
     });
   }
 
-  remove(proton) {
+  remove (proton) {
     // this.proton.removeEventListener("PROTON_UPDATE", this.onProtonUpdate);
     // this.proton.removeEventListener("PARTICLE_CREATED", this.onParticleCreated);
     // this.proton.removeEventListener("PARTICLE_UPDATE", this.onParticleUpdate);
     // this.proton.removeEventListener("PARTICLE_DEAD", this.onParticleDead);
     this.proton = null;
   }
-  onParticleCreated(particle) {}
-  onParticleUpdate(particle) {}
-  onParticleDead(particle) {}
-  onProtonUpdate(proton) {}
+
+  onParticleCreated (particle) {}
+
+  onParticleUpdate (particle) {}
+
+  onParticleDead (particle) {}
+
+  onProtonUpdate (proton) {}
 }

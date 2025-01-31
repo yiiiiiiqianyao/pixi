@@ -1,19 +1,20 @@
 import * as THREE from "three";
-import { BaseRender } from "./BaseRender.js";
+import { MeshRender } from "./MeshRender.js";
 
-export class SpriteRender extends BaseRender {
+export class SpriteRender extends MeshRender{
   constructor(container) {
-    super();
-    this._body = new THREE.Sprite(
-      new THREE.SpriteMaterial({ color: 0xffffff })
-    );
+    super(container);
+
+    this._body = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0xffffff }));
     this.name = "SpriteRender";
   }
+  
   scale = function (particle) {
     particle.target.scale.set(
       particle.scale * particle.radius,
       particle.scale * particle.radius,
       1
     );
-  };
+  }
 }
+

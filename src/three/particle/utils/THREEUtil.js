@@ -13,7 +13,7 @@ export const THREEUtil = {
                 vector.x = Math.round((vector.x + 1) * canvas.width / 2);
                 vector.y = Math.round((-vector.y + 1) * canvas.height / 2);
                 vector.z = 0;
-
+                // console.log('vector', vector)
                 return vector;
             }
         }(),
@@ -31,7 +31,6 @@ export const THREEUtil = {
                 distance = -camera.position.z / dir.z;
                 vector.copy(camera.position);
                 vector.add(dir.multiplyScalar(distance));
-
                 return vector;
             }
         }(),

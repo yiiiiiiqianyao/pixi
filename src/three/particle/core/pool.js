@@ -8,10 +8,13 @@ export class Pool {
         create(obj) {
             this.cID++;
 
-            if (typeof obj === "function")
+            if (typeof obj === "function") {
                 return new obj;
-            else
+            }
+            else {
                 return obj.clone();
+            }
+                
         }
 
         getCount() {

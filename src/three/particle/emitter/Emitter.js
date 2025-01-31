@@ -1,112 +1,109 @@
-
-import { Util } from '../utils/Util'
-import { Rate } from '../initialize/Rate'
-import { Particle } from '../core/Particle'
-import { InitializeUtil } from '../initialize/InitializeUtil';
-import { bindEmtterEvent } from '../core/constant';
-import { Proton } from '../core/index';
+import { Util } from "../utils/Util";
+import { Rate } from "../initialize/Rate";
+import { Particle } from "../core/Particle";
+import { InitializeUtil } from "../initialize/InitializeUtil";
+import { bindEmtterEvent } from "../core/constant";
+import { Proton } from "../core/index";
 
 export class Emitter extends Particle {
-    static ID = 0;
-    constructor(pObj) {
-      super(pObj);
-      this.initializes = [];
-      this.particles = [];
-      this.behaviours = [];
-      this.currentEmitTime = 0;
-      this.totalEmitTimes = -1;
-  
-      /**
-       * @property {Number} damping -The friction coefficient for all particle emit by This;
-       * @default 0.006
-       */
-      this.damping = 0.006;
-      /**
-       * If bindEmitter the particles can bind this emitter's property;
-       * @property bindEmitter
-       * @type {Boolean}
-       * @default true
-       */
-      this.bindEmitter = true;
-      /**
-       * The number of particles per second emit (a [particle]/b [s]);
-       * @property rate
-       * @type {Rate}
-       * @default Rate(1, .1)
-       */
-      this.rate = new Rate(1, 0.1);
-      
-      /**
-       * The emitter's id;
-       * @property id
-       * @type {String} id
-       */
-      this.id = "emitter_" + Emitter.ID++;
-      this.cID = 0;
-      this.name = "Emitter";
-    }
-  
+  static ID = 0;
+  constructor(pObj) {
+    super(pObj);
+    this.initializes = [];
+    this.particles = [];
+    this.behaviours = [];
+    this.currentEmitTime = 0;
+    this.totalEmitTimes = -1;
+
     /**
+     * @property {Number} damping -The friction coefficient for all particle emit by This;
+     * @default 0.006
+     */
+    this.damping = 0.006;
+    /**
+     * If bindEmitter the particles can bind this emitter's property;
+     * @property bindEmitter
+     * @type {Boolean}
+     * @default true
+     */
+    this.bindEmitter = true;
+    /**
+     * The number of particles per second emit (a [particle]/b [s]);
+     * @property rate
+     * @type {Rate}
+     * @default Rate(1, .1)
+     */
+    this.rate = new Rate(1, 0.1);
+
+    /**
+     * The emitter's id;
+     * @property id
+     * @type {String} id
+     */
+    this.id = "emitter_" + Emitter.ID++;
+    this.cID = 0;
+    this.name = "Emitter";
+  }
+
+  /**
    * start emit particle
    * @method emit
    * @param {Number} totalEmitTimes total emit times;
    * @param {String} life the life of this emitter
    */
-    emit (totalEmitTimes, life) {
-      this.currentEmitTime = 0;
-      this.totalEmitTimes = Util.initValue(totalEmitTimes, Infinity);
-    
-      if (life === true || life === "life" || life === "destroy") {
-        this.life = totalEmitTimes === "once" ? 1 : this.totalEmitTimes;
-      } else if (!isNaN(life)) {
-        this.life = life;
-      }
-    
-      this.rate.init();
-    };
-    /**
+  emit(totalEmitTimes, life) {
+    this.currentEmitTime = 0;
+    this.totalEmitTimes = Util.initValue(totalEmitTimes, Infinity);
+    if (life === true || life === "life" || life === "destroy") {
+      this.life = totalEmitTimes === "once" ? 1 : this.totalEmitTimes;
+    } else if (!isNaN(life)) {
+      this.life = life;
+    }
+    this.rate.init();
+  }
+  /**
    * stop emiting
    * @method stopEmit
    */
-    stopEmit () {
-      this.totalEmitTimes = -1;
-      this.currentEmitTime = 0;
-    };
-    /**
+  stopEmit() {
+    this.totalEmitTimes = -1;
+    this.currentEmitTime = 0;
+  }
+  /**
    * remove current all particles
    * @method removeAllParticles
    */
-    removeAllParticles () {
-      var i = this.particles.length;
-      while (i--) this.particles[i].dead = true;
-    };
-  
+  removeAllParticles() {
+    var i = this.particles.length;
+    while (i--) this.particles[i].dead = true;
+  }
+
   /**
    * create single particle;
    *
    * can use emit({x:10},new Gravity(10),{'particleUpdate',fun}) or emit([{x:10},new Initialize],new Gravity(10),{'particleUpdate',fun})
    * @method removeAllParticles
    */
-  createParticle (initialize, behaviour) {
-    var particle = this.parent.pool.get(Particle);
+  createParticle(initialize, behaviour) {
+    const particle = this.parent.pool.get(Particle);
     this.setupParticle(particle, initialize, behaviour);
     this.parent && this.parent.dispatchEvent("PARTICLE_CREATED", particle);
     bindEmtterEvent && this.dispatchEvent("PARTICLE_CREATED", particle);
-  
+
     return particle;
-  };
+  }
   /**
    * add initialize to this emitter
    * @method addSelfInitialize
    */
-  addSelfInitialize (pObj) {
+  addSelfInitialize(pObj) {
     if (pObj["init"]) {
       pObj.init(this);
     } else {
       this.initAll();
     }
-  };
-  
+  }
+
   /**
    * add the Initialize to particles;
    *
@@ -114,28 +111,28 @@ export class Emitter extends Particle {
    * @method addInitialize
    * @param {Initialize} initialize like this new Radius(1, 12)
    */
-  addInitialize () {
+  addInitialize() {
     var i = arguments.length;
     while (i--) this.initializes.push(arguments[i]);
-  };
-  
+  }
+
   /**
    * remove the Initialize
    * @method removeInitialize
    * @param {Initialize} initialize a initialize
    */
-  removeInitialize (initializer) {
+  removeInitialize(initializer) {
     var index = this.initializes.indexOf(initializer);
     if (index > -1) this.initializes.splice(index, 1);
-  };
-  
+  }
+
   /**
    * remove all Initializes
    * @method removeInitializers
    */
-  removeInitializers () {
+  removeInitializers() {
     Util.destroyArray(this.initializes);
-  };
+  }
   /**
    * add the Behaviour to particles;
    *
@@ -143,43 +140,43 @@ export class Emitter extends Particle {
    * @method addBehaviour
    * @param {Behaviour} behaviour like this new Color('random')
    */
-  addBehaviour () {
+  addBehaviour() {
     var i = arguments.length;
     while (i--) this.behaviours.push(arguments[i]);
-  };
+  }
   /**
    * remove the Behaviour
    * @method removeBehaviour
    * @param {Behaviour} behaviour a behaviour
    */
-  removeBehaviour (behaviour) {
+  removeBehaviour(behaviour) {
     var index = this.behaviours.indexOf(behaviour);
     if (index > -1) this.behaviours.splice(index, 1);
-  };
+  }
   /**
    * remove all behaviours
    * @method removeAllBehaviours
    */
-  removeAllBehaviours () {
+  removeAllBehaviours() {
     Util.destroyArray(this.behaviours);
-  };
-  
-  integrate (time) {
+  }
+
+  integrate(time) {
     var damping = 1 - this.damping;
     Proton.integrator.integrate(this, time, damping);
-  
+
     var i = this.particles.length;
     while (i--) {
       var particle = this.particles[i];
       particle.update(time, i);
       Proton.integrator.integrate(particle, time, damping);
-  
+
       this.parent && this.parent.dispatchEvent("PARTICLE_UPDATE", particle);
       bindEmtterEvent && this.dispatchEvent("PARTICLE_UPDATE", particle);
     }
-  };
-  
-  emitting (time) {
+  }
+
+  emitting(time) {
     if (this.totalEmitTimes === "once") {
       var i = this.rate.getValue(99999);
       if (i > 0) this.cID = i;
@@ -193,17 +190,17 @@ export class Emitter extends Particle {
         while (i--) this.createParticle();
       }
     }
-  };
-  
-  update (time) {
+  }
+
+  update(time) {
     this.age += time;
     if (this.dead || this.age >= this.life) {
       this.destroy();
     }
-  
+
     this.emitting(time);
     this.integrate(time);
-  
+
     var particle,
       i = this.particles.length;
     while (i--) {
@@ -211,51 +208,49 @@ export class Emitter extends Particle {
       if (particle.dead) {
         this.parent && this.parent.dispatchEvent("PARTICLE_DEAD", particle);
         bindEmtterEvent && this.dispatchEvent("PARTICLE_DEAD", particle);
-  
+
         this.parent.pool.expire(particle.reset());
         this.particles.splice(i, 1);
       }
     }
-  };
-  
-  setupParticle (particle, initialize, behaviour) {
+  }
+
+  setupParticle(particle, initialize, behaviour) {
     var initializes = this.initializes;
     var behaviours = this.behaviours;
-  
+
     if (initialize) {
       if (Util.isArray(initialize)) initializes = initialize;
       else initializes = [initialize];
     }
-  
+
     if (behaviour) {
       if (Util.isArray(behaviour)) behaviours = behaviour;
       else behaviours = [behaviour];
     }
-  
+
     InitializeUtil.initialize(this, particle, initializes);
     particle.addBehaviours(behaviours);
     particle.parent = this;
     this.particles.push(particle);
-  };
-  
+  }
+
   /**
    * Destory this Emitter
    * @method destroy
    */
-  destroy () {
+  destroy() {
     this.dead = true;
     this.energy = 0;
     this.totalEmitTimes = -1;
-  
+
     if (this.particles.length === 0) {
       this.removeInitializers();
       this.removeAllBehaviours();
-  
+
       this.parent && this.parent.removeEmitter(this);
     }
-  };
   }
-  
-  
+}
+
 //   EventDispatcher.initialize(Emitter.prototype);
-  

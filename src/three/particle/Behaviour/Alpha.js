@@ -1,4 +1,7 @@
 import { Behaviour } from './Behaviour.js';
+import { createSpan } from '../math/Span.js';
+import { MathUtils } from '../math/MathUtils.js';
+import { Util } from '../utils/Util.js';
 
 /**
  * The Alpha class is the base for the other Behaviour
