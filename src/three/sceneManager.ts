@@ -19,9 +19,8 @@ export class SceneManager {
          // 创建相机
          const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000);
          camera.position.z = 500;
-        //  const control = new OrbitControls(camera, wrap);
-        //  control.enabled = false;
-        //  control.update();
+         const control = new OrbitControls(camera, wrap);
+         control.update();
  
          // 创建渲染器
          const renderer = new THREE.WebGLRenderer({
@@ -33,7 +32,9 @@ export class SceneManager {
          wrap.appendChild(renderer.domElement);
  
          // 创建几何体
-
+         const geometry = new THREE.BoxGeometry();
+         const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+         const mesh = new THREE.Mesh(geometry, material);
 
         //  custom render particle demo
         // initCustomRenderParticle(scene, camera, renderer, control, mesh);
