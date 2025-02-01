@@ -14,6 +14,8 @@ import { EventDispatcher } from '../events/EventDispatcher.js'
  */
 export class Particle extends EventDispatcher {
   static ID = 0;
+  life;
+  age;
   constructor(pOBJ) {
     super();
     /**

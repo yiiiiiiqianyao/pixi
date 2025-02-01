@@ -6,40 +6,41 @@ import { InitializeUtil } from "../initialize/InitializeUtil";
 import { bindEmtterEvent } from "../core/constant";
 import { Proton } from "../core/index";
 import { Vector3D } from '../math/Vector3D';
+import { Initialize } from "../initialize/Initialize";
+import { Behaviour } from "../Behaviour/Behaviour";
 
 export class Emitter extends Particle {
   static ID = 0;
-  rate: Rate;
-  p: Vector3D;
-  constructor(pObj?: any) {
-    super(pObj);
-    this.initializes = [];
-    this.particles = [];
-    this.behaviours = [];
-    this.currentEmitTime = 0;
-    this.totalEmitTimes = -1;
-
-    /**
+  p: Vector3D = new Vector3D();
+  initializes: Initialize[] = [];
+  particles: Particle[] = [];
+  behaviours: Behaviour[] = [];
+  currentEmitTime: number | string = 0; // 当前触发次数
+  totalEmitTimes: number | string = -1; // 总触发次数
+   /**
      * @property {Number} damping -The friction coefficient for all particle emit by This;
      * @default 0.006
      */
-    this.damping = 0.006;
-    /**
-     * If bindEmitter the particles can bind this emitter's property;
-     * @property bindEmitter
-     * @type {Boolean}
-     * @default true
-     */
-    this.bindEmitter = true;
-    /**
+  damping: number = 0.006; // 衰减系数
+  /**
+ * If bindEmitter the particles can bind this emitter's property;
+ * @property bindEmitter
+ * @type {Boolean}
+ * @default true
+ */
+  bindEmitter = true;
+      /**
      * The number of particles per second emit (a [particle]/b [s]);
      * @property rate
      * @type {Rate}
      * @default Rate(1, .1)
      */
-    this.rate = new Rate(1, 0.1);
+      rate = new Rate(1, 0.1);
+      id: string;
+      cID: number;
 
-    this.p = new Vector3D();
+  constructor(pObj?: any) {
+    super(pObj);
 
     /**
      * The emitter's id;
@@ -90,7 +91,7 @@ export class Emitter extends Particle {
    * can use emit({x:10},new Gravity(10),{'particleUpdate',fun}) or emit([{x:10},new Initialize],new Gravity(10),{'particleUpdate',fun})
    * @method removeAllParticles
    */
-  createParticle(initialize, behaviour) {
+  createParticle(initialize?: Initialize, behaviour?: Behaviour) {
     const particle = this.parent.pool.get(Particle);
     this.setupParticle(particle, initialize, behaviour);
     this.parent && this.parent.dispatchEvent("PARTICLE_CREATED", particle);
@@ -102,7 +103,7 @@ export class Emitter extends Particle {
    * add initialize to this emitter
    * @method addSelfInitialize
    */
-  addSelfInitialize(pObj) {
+  addSelfInitialize(pObj: any) {
     if (pObj["init"]) {
       pObj.init(this);
     } else {
@@ -117,7 +118,7 @@ export class Emitter extends Particle {
    * @method addInitialize
    * @param {Initialize} initialize like this new Radius(1, 12)
    */
-  addInitialize(initialize) {
+  addInitialize(initialize: Initialize) {
     // var i = arguments.length;
     // while (i--) this.initializes.push(arguments[i]);
     this.initializes.push(initialize);
@@ -128,7 +129,7 @@ export class Emitter extends Particle {
    * @method removeInitialize
    * @param {Initialize} initialize a initialize
    */
-  removeInitialize(initializer) {
+  removeInitialize(initializer: Initialize) {
     var index = this.initializes.indexOf(initializer);
     if (index > -1) this.initializes.splice(index, 1);
   }
@@ -147,7 +148,7 @@ export class Emitter extends Particle {
    * @method addBehaviour
    * @param {Behaviour} behaviour like this new Color('random')
    */
-  addBehaviour(behaviour) {
+  addBehaviour(behaviour: Behaviour) {
     // var i = arguments.length;
     // while (i--) this.behaviours.push(arguments[i]);
     this.behaviours.push(behaviour);
@@ -157,7 +158,7 @@ export class Emitter extends Particle {
    * @method removeBehaviour
    * @param {Behaviour} behaviour a behaviour
    */
-  removeBehaviour(behaviour) {
+  removeBehaviour(behaviour: Behaviour) {
     var index = this.behaviours.indexOf(behaviour);
     if (index > -1) this.behaviours.splice(index, 1);
   }
@@ -169,7 +170,7 @@ export class Emitter extends Particle {
     Util.destroyArray(this.behaviours);
   }
 
-  integrate(time) {
+  integrate(time: number) {
     var damping = 1 - this.damping;
     Proton.integrator.integrate(this, time, damping);
 
@@ -184,7 +185,7 @@ export class Emitter extends Particle {
     }
   }
 
-  emitting(time) {
+  emitting(time: number) {
     if (this.totalEmitTimes === "once") {
       var i = this.rate.getValue(99999);
       if (i > 0) this.cID = i;
@@ -200,7 +201,7 @@ export class Emitter extends Particle {
     }
   }
 
-  update(time) {
+  update(time: number) {
     this.age += time;
     if (this.dead || this.age >= this.life) {
       this.destroy();
@@ -223,18 +224,24 @@ export class Emitter extends Particle {
     }
   }
 
-  setupParticle(particle, initialize, behaviour) {
+  setupParticle(particle: Particle, initialize: Initialize, behaviour: Behaviour) {
     var initializes = this.initializes;
     var behaviours = this.behaviours;
 
     if (initialize) {
-      if (Util.isArray(initialize)) initializes = initialize;
-      else initializes = [initialize];
+      if (Util.isArray(initialize)) {
+        initializes = initialize;
+      } else {
+        initializes = [initialize];
+      }
     }
 
     if (behaviour) {
-      if (Util.isArray(behaviour)) behaviours = behaviour;
-      else behaviours = [behaviour];
+      if (Util.isArray(behaviour)) {
+        behaviours = behaviour;
+      } else {
+        behaviours = [behaviour];
+      }
     }
 
     InitializeUtil.initialize(this, particle, initializes);

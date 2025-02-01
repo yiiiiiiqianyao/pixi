@@ -38,11 +38,9 @@ export class SceneManager {
          const mesh = new THREE.Mesh(geometry, material);
 
         //  custom render particle demo
-        // initCustomRenderParticle(scene, camera, renderer, control, mesh);
+        initCustomRenderParticle(scene, camera, renderer, control, mesh);
         // initHelloWorldParticle(scene, camera, renderer, control, mesh);
-        initFollowEmitter(scene, camera, renderer);
+        // initFollowEmitter(scene, camera, renderer);
         // initEightdiagramsParticle(scene, camera, renderer);
     }
-
-
 }
