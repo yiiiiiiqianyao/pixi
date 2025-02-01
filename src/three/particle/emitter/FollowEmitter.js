@@ -1,4 +1,4 @@
-import { Emitter } from "./Emitter.js";
+import { Emitter } from "./Emitter";
 import { Util } from "../utils/Util.js";
 import { Vector3D } from "../math/Vector3D.js";
 import { THREEUtil } from "../utils/THREEUtil.js";

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Camera, Scene, WebGLRenderer, AmbientLight, PointLight, TextureLoader, SpriteMaterial, AdditiveBlending, Sprite } from "three";
+import { Camera, Scene, WebGLRenderer, AmbientLight, PointLight } from "three";
 import { Proton } from "../particle/core";
 import { Rate } from "../particle/initialize/Rate";
 import { Span } from "../particle/math/Span";
@@ -18,6 +18,7 @@ import { SpriteRender } from "../particle/render/SpriteRender";
 import { Alpha } from "../particle/Behaviour/Alpha";
 import { ScreenZone } from "../particle/zone/ScreenZone";
 import { Force } from "../particle/Behaviour/Force";
+import { createSprite } from './utils';
 
 // import { Proton, FollowEmitter, Debug, Rate, Span, Mass, Life, Body, Force, Radius, Velocity, Vector3D, Alpha, Color, Scale, CrossZone, ScreenZone, SpriteRender } from '../particle/index';
 export function initFollowEmitter(scene: Scene, camera: Camera, renderer: WebGLRenderer) {
@@ -72,15 +73,3 @@ function addProton(scene: Scene, camera: Camera, renderer: WebGLRenderer) {
         
     return proton;
 }
-
-
-  function createSprite() {
-    const map = new TextureLoader().load("/dot.png");
-    const material = new SpriteMaterial({
-      map: map,
-      color: 0xff0000,
-      blending: AdditiveBlending,
-      fog: true
-    });
-    return new Sprite(material);
-  }

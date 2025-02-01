@@ -1,4 +1,4 @@
-import { Emitter } from './Emitter.js';
+import { Emitter } from './Emitter';
 /**
  * The FollowEmitter class inherits from Emitter
  *

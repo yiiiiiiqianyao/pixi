@@ -67,15 +67,10 @@ function initProton(scene: Scene, mesh: Mesh) {
 
 function createEmitter(scene: Scene, proton: Proton) {
     const emitter = new Emitter();
-    
     emitter.rate = new Rate(new Span(4, 8), new Span(.2, .5));
-    // @ts-ignore
     emitter.addInitialize(new Mass(1));
-    // @ts-ignore
     emitter.addInitialize(new Radius(100));
-    // @ts-ignore
     emitter.addInitialize(new Life(2, 4));
-    // @ts-ignore
     emitter.addInitialize(new Velocity(400, new Vector3D(0, 1, 0), 60));
 
     emitter.addBehaviour(new Rotate("random", "random"));
@@ -88,14 +83,10 @@ function createEmitter(scene: Scene, proton: Proton) {
     emitter.addBehaviour(new CrossZone(zone, "bound"));
     emitter.addBehaviour(new Color(0xff0000, 'random', Infinity, ease.easeOutQuart));
 
-    // @ts-ignore
     emitter.p.x = 0;
-    // @ts-ignore
     emitter.p.y = 0;
-    // @ts-ignore
     emitter.emit();
     Debug.drawZone(proton, scene, zone);
-
     return emitter;
 }
 

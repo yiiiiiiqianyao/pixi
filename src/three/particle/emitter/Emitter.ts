@@ -1,13 +1,17 @@
+// @ts-nocheck
 import { Util } from "../utils/Util";
 import { Rate } from "../initialize/Rate";
 import { Particle } from "../core/Particle";
 import { InitializeUtil } from "../initialize/InitializeUtil";
 import { bindEmtterEvent } from "../core/constant";
 import { Proton } from "../core/index";
+import { Vector3D } from '../math/Vector3D';
 
 export class Emitter extends Particle {
   static ID = 0;
-  constructor(pObj) {
+  rate: Rate;
+  p: Vector3D;
+  constructor(pObj?: any) {
     super(pObj);
     this.initializes = [];
     this.particles = [];
@@ -35,6 +39,8 @@ export class Emitter extends Particle {
      */
     this.rate = new Rate(1, 0.1);
 
+    this.p = new Vector3D();
+
     /**
      * The emitter's id;
      * @property id
@@ -51,7 +57,7 @@ export class Emitter extends Particle {
    * @param {Number} totalEmitTimes total emit times;
    * @param {String} life the life of this emitter
    */
-  emit(totalEmitTimes, life) {
+  emit(totalEmitTimes?: any, life?: any) {
     this.currentEmitTime = 0;
     this.totalEmitTimes = Util.initValue(totalEmitTimes, Infinity);
     if (life === true || life === "life" || life === "destroy") {
@@ -111,9 +117,10 @@ export class Emitter extends Particle {
    * @method addInitialize
    * @param {Initialize} initialize like this new Radius(1, 12)
    */
-  addInitialize() {
-    var i = arguments.length;
-    while (i--) this.initializes.push(arguments[i]);
+  addInitialize(initialize) {
+    // var i = arguments.length;
+    // while (i--) this.initializes.push(arguments[i]);
+    this.initializes.push(initialize);
   }
 
   /**
@@ -140,9 +147,10 @@ export class Emitter extends Particle {
    * @method addBehaviour
    * @param {Behaviour} behaviour like this new Color('random')
    */
-  addBehaviour() {
-    var i = arguments.length;
-    while (i--) this.behaviours.push(arguments[i]);
+  addBehaviour(behaviour) {
+    // var i = arguments.length;
+    // while (i--) this.behaviours.push(arguments[i]);
+    this.behaviours.push(behaviour);
   }
   /**
    * remove the Behaviour

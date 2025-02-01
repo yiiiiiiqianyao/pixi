@@ -5,6 +5,7 @@ import { Proton } from './particle/core';
 import { initCustomRenderParticle } from "./demos/CustomRender";
 import { initHelloWorldParticle } from "./demos/Helloworld";
 import { initFollowEmitter } from "./demos/Followemitter";
+import { initEightdiagramsParticle } from "./demos/Eightdiagrams";
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -40,6 +41,7 @@ export class SceneManager {
         // initCustomRenderParticle(scene, camera, renderer, control, mesh);
         // initHelloWorldParticle(scene, camera, renderer, control, mesh);
         initFollowEmitter(scene, camera, renderer);
+        // initEightdiagramsParticle(scene, camera, renderer);
     }
 
 
