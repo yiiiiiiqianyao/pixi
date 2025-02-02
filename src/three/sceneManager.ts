@@ -46,7 +46,7 @@ export class SceneManager {
          const mesh = new THREE.Mesh(geometry, material);
 
         //  custom render particle demo
-        // initCustomRenderParticle(scene, camera, renderer, control, mesh);
+        initCustomRenderParticle(scene, camera, renderer, control, mesh);
         // initHelloWorldParticle(scene, camera, renderer, control, mesh);
         // initFollowEmitter(scene, camera, renderer);
         // initEightdiagramsParticle(scene, camera, renderer);
@@ -57,6 +57,6 @@ export class SceneManager {
         // initSpriteRenderColor(scene, camera, renderer, control);
         // initSpriteRenderG(scene, camera, renderer, control);
         // initSpriteRenderPointZone(scene, camera, renderer, control);
-        initSpriteRenderSnow(scene, camera, renderer, control);
+        // initSpriteRenderSnow(scene, camera, renderer, control);
     }
 }
