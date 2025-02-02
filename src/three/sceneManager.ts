@@ -8,6 +8,7 @@ import { initFollowEmitter } from "./demos/Followemitter";
 import { initEightdiagramsParticle } from "./demos/Eightdiagrams";
 import { initMeshRenderCollision } from "./demos/MeshrenderCollision";
 import { initMeshRenderEmitter } from "./demos/MeshrenderEmitter";
+import { initMeshZone } from "./demos/Meshzone";
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -45,6 +46,7 @@ export class SceneManager {
         // initFollowEmitter(scene, camera, renderer);
         // initEightdiagramsParticle(scene, camera, renderer);
         // initMeshRenderCollision(scene, camera, renderer, control);
-        initMeshRenderEmitter(scene, camera, renderer, control);
+        // initMeshRenderEmitter(scene, camera, renderer, control);
+        initMeshZone(scene, camera, renderer, control);
     }
 }

@@ -21,16 +21,30 @@ export class MeshZone extends Zone {
         } else {
             this.geometry = geometry.geometry;
         }
-
+        this.vertices = this.getVertices();
         this.scale = scale || 1;
     }
-    getPosition = function() {
-        var vertices = this.geometry.vertices;
+    getPosition() {
+        // var vertices = this.geometry.vertices;
+        var vertices = this.vertices;
         var rVector = vertices[(vertices.length * Math.random()) >> 0];
         this.vector.x = rVector.x * this.scale;
         this.vector.y = rVector.y * this.scale;
         this.vector.z = rVector.z * this.scale;
         return this.vector;
+    }
+
+    getVertices() {
+        const positionAttribute = this.geometry.attributes.position;
+        const vertexCount = positionAttribute.count;
+        const vertices = [];
+        for (let i = 0; i < vertexCount; i++) {
+            const x = positionAttribute.getX(i);
+            const y = positionAttribute.getY(i);
+            const z = positionAttribute.getZ(i);
+            vertices.push(new THREE.Vector3(x, y, z));
+        }
+        return vertices;
     }
 
     crossing = function(particle) {

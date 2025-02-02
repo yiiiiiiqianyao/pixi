@@ -1,4 +1,8 @@
 import { Behaviour } from './Behaviour.js';
+import { createSpan } from '../math/Span.js';
+import { MathUtils } from '../math/MathUtils.js';
+import { Vector3D } from '../math/Vector3D.js';
+
 /**
  * The Behaviour class is the base for the other Behaviour
  *

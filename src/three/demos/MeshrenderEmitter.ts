@@ -57,9 +57,7 @@ function createEmitter(scene: Scene, proton: Proton) {
     emitter.addInitialize(new Radius(100));
     emitter.addInitialize(new Life(2, 4));
     emitter.addInitialize(new Body(createBox()));
-
     emitter.addInitialize(new Velocity(300, new Vector3D(0, 1, 0), 50));
-
     emitter.addBehaviour(new Rotate("random", "random"));
     emitter.addBehaviour(new Scale(1, .1));
     

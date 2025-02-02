@@ -1,18 +1,13 @@
 import * as THREE from 'three';
 // @ts-ignore
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { BoxGeometry, Camera, Mesh, MeshLambertMaterial, PlaneGeometry, MeshPhongMaterial, Scene, SphereGeometry, WebGLRenderer, AmbientLight, PointLight, SpotLight, Vector3 } from "three";
+import { Camera, Mesh, Scene, WebGLRenderer, AmbientLight, PointLight } from "three";
 import { Proton } from "../particle/core";
 import { Emitter } from "../particle/emitter/Emitter";
 import { Rate } from "../particle/initialize/Rate";
 import { Span } from "../particle/math/Span";
-import { Rotate } from "../particle/Behaviour/Rotate";
 import { Scale } from "../particle/Behaviour/Scale";
-import { BoxZone } from "../particle/zone/BoxZone";
 import { Gravity } from "../particle/Behaviour/Gravity";
-import { CrossZone } from "../particle/Behaviour/CrossZone";
-import { Color } from "../particle/Behaviour/Color";
-import { ease } from "../particle/ease/ease";
 import { Debug } from "../particle/debug/debug";
 import { Mass } from '../particle/initialize/Mass';
 import { Radius } from '../particle/initialize/Radius';
