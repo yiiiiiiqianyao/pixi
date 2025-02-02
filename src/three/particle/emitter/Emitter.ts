@@ -12,6 +12,7 @@ import { Behaviour } from "../Behaviour/Behaviour";
 export class Emitter extends Particle {
   static ID = 0;
   p: Vector3D = new Vector3D();
+  rotation = new Vector3D();
   initializes: Initialize[] = [];
   particles: Particle[] = [];
   behaviours: Behaviour[] = [];

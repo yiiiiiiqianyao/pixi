@@ -6,6 +6,8 @@ import { initCustomRenderParticle } from "./demos/CustomRender";
 import { initHelloWorldParticle } from "./demos/Helloworld";
 import { initFollowEmitter } from "./demos/Followemitter";
 import { initEightdiagramsParticle } from "./demos/Eightdiagrams";
+import { initMeshRenderCollision } from "./demos/MeshrenderCollision";
+import { initMeshRenderEmitter } from "./demos/MeshrenderEmitter";
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -38,9 +40,11 @@ export class SceneManager {
          const mesh = new THREE.Mesh(geometry, material);
 
         //  custom render particle demo
-        initCustomRenderParticle(scene, camera, renderer, control, mesh);
+        // initCustomRenderParticle(scene, camera, renderer, control, mesh);
         // initHelloWorldParticle(scene, camera, renderer, control, mesh);
         // initFollowEmitter(scene, camera, renderer);
         // initEightdiagramsParticle(scene, camera, renderer);
+        // initMeshRenderCollision(scene, camera, renderer, control);
+        initMeshRenderEmitter(scene, camera, renderer, control);
     }
 }

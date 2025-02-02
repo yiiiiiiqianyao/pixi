@@ -6,6 +6,7 @@ import { EULER } from "./constant";
 import { Integration } from "../math/Integration.js";
 import { Rate } from '../initialize/Rate.js';
 import { EventDispatcher } from '../events/EventDispatcher.js' 
+import { Emitter } from "../emitter/Emitter.js";
 /**
  * @name Proton is a particle engine for three.js
  *
@@ -16,6 +17,7 @@ import { EventDispatcher } from '../events/EventDispatcher.js'
  */
 export class Proton extends EventDispatcher {
   static integrator;
+  emitters: Emitter[];
   constructor(preParticles?: any, integrationType?: any) {
     super();
     this.preParticles = Util.initValue(preParticles, Proton.POOL_MAX);

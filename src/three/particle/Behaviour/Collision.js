@@ -1,4 +1,6 @@
 import { Behaviour } from './Behaviour.js';
+import { Vector3D } from '../math/Vector3D.js';
+
 /**
  * The Scale class is the base for the other Behaviour
  *
