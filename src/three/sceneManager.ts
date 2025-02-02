@@ -13,6 +13,7 @@ import { initSpriteRenderBase } from "./demos/SpriterenderBase";
 import { initSpriteRenderColor } from "./demos/SpriterenderColor";
 import { initSpriteRenderG } from "./demos/SpriterenderG";
 import { initSpriteRenderPointZone } from "./demos/SpriterenderPointzone";
+import { initSpriteRenderSnow } from "./demos/SpriterenderSnow";
 
 // https://github.com/drawcall/three.proton
 export class SceneManager {
@@ -55,6 +56,7 @@ export class SceneManager {
         // initSpriteRenderBase(scene, camera, renderer, control);
         // initSpriteRenderColor(scene, camera, renderer, control);
         // initSpriteRenderG(scene, camera, renderer, control);
-        initSpriteRenderPointZone(scene, camera, renderer, control);
+        // initSpriteRenderPointZone(scene, camera, renderer, control);
+        initSpriteRenderSnow(scene, camera, renderer, control);
     }
 }

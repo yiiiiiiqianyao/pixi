@@ -16,7 +16,9 @@ export class Position extends Initialize {
   constructor(z) {
     super();
     // this.reset.apply(this, arguments);
-    this.zones = this.zones.concat(z);
+    if(z) {
+      this.zones = this.zones.concat(z);
+    }
   }
   reset () {
     if (!this.zones) {
