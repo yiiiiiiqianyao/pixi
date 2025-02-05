@@ -1,4 +1,4 @@
-import { Vector3D } from "../math/Vector3D.js";
+import { Vector3D } from "../math/Vector3D";
 /**
  * Zone is a base class.
  * @constructor

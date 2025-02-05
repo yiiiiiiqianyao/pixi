@@ -8,14 +8,12 @@ import { Rate } from "../particle/initialize/Rate";
 import { Span } from "../particle/math/Span";
 import { Scale } from "../particle/Behaviour/Scale";
 import { Gravity } from "../particle/Behaviour/Gravity";
-import { Debug } from "../particle/debug/debug";
 import { Mass } from '../particle/initialize/Mass';
 import { Radius } from '../particle/initialize/Radius';
 import { Life } from '../particle/initialize/Life';
 import { Velocity } from '../particle/initialize/Velocity';
-import { Vector3D } from '../particle/math/Vector3D.js';
+import { Vector3D } from '../particle/math/Vector3D';
 import { MeshRender } from "../particle/render/MeshRender";
-import { Position } from "../particle/initialize/Position";
 import { Body } from "../particle/initialize/Body";
 import { Collision } from '../particle/Behaviour/Collision';
 export function initMeshRenderCollision(scene: Scene, camera: Camera, renderer: WebGLRenderer, control: OrbitControls) {

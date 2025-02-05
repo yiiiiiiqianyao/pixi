@@ -18,7 +18,7 @@ import { Mass } from '../particle/initialize/Mass';
 import { Radius } from '../particle/initialize/Radius';
 import { Life } from '../particle/initialize/Life';
 import { Velocity } from '../particle/initialize/Velocity';
-import { Vector3D } from '../particle/math/Vector3D.js';
+import { Vector3D } from '../particle/math/Vector3D';
 
 export function initCustomRenderParticle(scene: Scene, camera: Camera, renderer: WebGLRenderer, control: OrbitControls, mesh: Mesh) {
     initLights(scene);

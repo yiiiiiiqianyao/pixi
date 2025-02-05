@@ -1,6 +1,6 @@
 import { Zone } from './Zone.js';
 import { Util } from '../utils/Util';
-import { Vector3D } from '../math/Vector3D.js';
+import { Vector3D } from '../math/Vector3D';
 import { PI } from '../core/constant';
 /**
      * SphereZone is a sphere zone

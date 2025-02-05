@@ -9,12 +9,15 @@ import { ColorUtil } from "../utils/ColorUtil.js";
  * @constructor
  */
 export class Color extends Behaviour {
-  constructor(a, b, life, easing) {
+  _same: any;
+  a: any;
+  b: any;
+  constructor(a?: any, b?: any, life?: any, easing?: any) {
     super(life, easing);
     this.reset(a, b);
     this.name = "Color";
   }
-  reset(a, b, life, easing) {
+  reset(a?: any, b?: any, life?: any, easing?: any) {
     if (b === null || b === undefined) this._same = true;
     else this._same = false;
 
@@ -22,14 +25,14 @@ export class Color extends Behaviour {
     this.b = createArraySpan(b);
     life && super.reset.call(this, life, easing);
   }
-  initialize(particle) {
+  initialize(particle: any) {
     particle.transform.colorA = ColorUtil.getRGB(this.a.getValue());
 
     particle.useColor = true;
     if (this._same) particle.transform.colorB = particle.transform.colorA;
     else particle.transform.colorB = ColorUtil.getRGB(this.b.getValue());
   }
-  applyBehaviour(particle, time, index) {
+  applyBehaviour(particle: any, time: number, index: number) {
     super.applyBehaviour.call(this, particle, time, index);
 
     if (!this._same) {

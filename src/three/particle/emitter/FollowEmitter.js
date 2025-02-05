@@ -1,6 +1,6 @@
 import { Emitter } from "./Emitter";
 import { Util } from "../utils/Util";
-import { Vector3D } from "../math/Vector3D.js";
+import { Vector3D } from "../math/Vector3D";
 import { THREEUtil } from "../utils/THREEUtil.js";
 
 /**

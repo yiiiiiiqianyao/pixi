@@ -11,7 +11,7 @@ import { Mass } from '../particle/initialize/Mass';
 import { Radius } from '../particle/initialize/Radius';
 import { Life } from '../particle/initialize/Life';
 import { Velocity } from '../particle/initialize/Velocity';
-import { Vector3D } from '../particle/math/Vector3D.js';
+import { Vector3D } from '../particle/math/Vector3D';
 import { Body } from "../particle/initialize/Body";
 import { FollowEmitter } from "../particle/emitter/FollowEmitter";
 import { SpriteRender } from "../particle/render/SpriteRender";

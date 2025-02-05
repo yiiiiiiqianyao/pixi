@@ -1,6 +1,6 @@
 import { Zone } from "./Zone.js";
 import { THREEUtil } from "../utils/THREEUtil.js";
-import { Vector3D } from '../math/Vector3D.js';
+import { Vector3D } from '../math/Vector3D';
 
 /**
  * ScreenZone is a 3d line zone

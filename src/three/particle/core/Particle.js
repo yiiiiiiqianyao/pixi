@@ -1,5 +1,5 @@
 import { Util } from '../utils/Util';
-import { Vector3D } from '../math/Vector3D.js';
+import { Vector3D } from '../math/Vector3D';
 import { ease } from '../ease/ease.js';
 import { PI } from './constant';
 import { EventDispatcher } from '../events/EventDispatcher.js'
