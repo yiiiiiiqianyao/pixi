@@ -21,6 +21,10 @@ export class Particle extends EventDispatcher {
   v;
   p;
   mass;
+  target;
+  radius;
+  scale;
+  rotation;
   constructor(pOBJ) {
     super();
     /**
