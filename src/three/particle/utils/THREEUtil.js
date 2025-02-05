@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { PUID } from './PUID.js';
+import { PUID } from './PUID';
 
 export const THREEUtil = {
         toScreenPos: function() {
