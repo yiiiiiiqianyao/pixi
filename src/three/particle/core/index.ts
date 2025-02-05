@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { Util } from "../utils/Util";
 import { Pool } from "./pool";
 import { EULER } from "./constant";
-import { Integration } from "../math/Integration.js";
+import { Integration } from "../math/Integration";
 import { Rate } from '../initialize/Rate.js';
 import { EventDispatcher } from '../events/EventDispatcher.js' 
 import { Emitter } from "../emitter/Emitter.js";

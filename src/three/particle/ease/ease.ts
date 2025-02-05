@@ -1,12 +1,12 @@
- import { PI } from '../core/constant'
- /**
-     * The Ease class provides a collection of easing functions for use with Proton
-     */
+import { PI } from '../core/constant'
+/**
+* The Ease class provides a collection of easing functions for use with Proton
+*/
 
- export type EaseFunc = (v: number) => number;
+export type EaseFunc = (v: number) => number;
 
 
- export class ease {
+export class ease {
     static easeLinear(value: number) {
         return value;
     }

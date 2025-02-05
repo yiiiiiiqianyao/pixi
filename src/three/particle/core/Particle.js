@@ -16,6 +16,11 @@ export class Particle extends EventDispatcher {
   static ID = 0;
   life;
   age;
+  old;
+  a;
+  v;
+  p;
+  mass;
   constructor(pOBJ) {
     super();
     /**

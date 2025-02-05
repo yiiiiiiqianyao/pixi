@@ -2,7 +2,7 @@
 import { PI } from '../core/constant';
 import { Vector3D } from './Vector3D';
 export class MathUtils {
-    static randomAToB(a: number, b: number, INT: number) {
+    static randomAToB(a: number, b: number, INT?: number) {
         if (!INT) {
             return a + Math.random() * (b - a);
         }

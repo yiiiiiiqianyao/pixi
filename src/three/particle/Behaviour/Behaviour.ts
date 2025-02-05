@@ -58,7 +58,7 @@ export class Behaviour {
    * @param {Number} this behaviour's life
    * @param {String} this behaviour's easing
    */
-  reset(life: number, easing: EaseFunc) {
+  reset(life?: number, easing?: EaseFunc | any) {
     this.life = Util.initValue(life, Infinity) as number;
     this.easing = Util.initValue(easing, ease.easeLinear) as EaseFunc;
   }

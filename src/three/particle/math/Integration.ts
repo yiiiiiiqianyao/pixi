@@ -1,14 +1,17 @@
 import { Util } from "../utils/Util";
 import { EULER } from "../core/constant";
+import { Particle } from "../core/Particle";
+
 export class Integration {
-  constructor(type) {
+  type: string;
+  constructor(type: string) {
     this.type = Util.initValue(type, EULER);
   }
-  integrate(particles, time, damping) {
-    this.euler(particles, time, damping);
+  integrate(particle: Particle, time: number, damping: number) {
+    this.euler(particle, time, damping);
   }
 
-  euler(particle, time, damping) {
+  euler(particle: Particle, time: number, damping: number) {
     if (!particle.sleep) {
       particle.old.p.copy(particle.p);
       particle.old.v.copy(particle.v);

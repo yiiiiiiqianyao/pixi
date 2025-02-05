@@ -1,10 +1,9 @@
 
-import { EaseFunc } from "../ease/ease";
 import { Span } from "../math/Span";
 export class Util {
-    static initValue(value?: number | EaseFunc, defaults?: number | EaseFunc) {
+    static initValue(value?: any, defaults?: any) {
         const initValue = (value !== null && value !== undefined) ? value : defaults;
-        return initValue || 0;
+        return initValue;
     }
     static destroyArray(array: any[]) {
         array.length = 0;

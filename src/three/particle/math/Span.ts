@@ -89,7 +89,7 @@ export class Span {
      * @param {number} c center number
      * @return {number} return a instance of Span
      */
- export function createSpan(a, b, c) {
+ export function createSpan(a: number, b?: number, c?: number) {
     if (a instanceof Span) return a;
 
     if (b === undefined) {

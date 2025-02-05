@@ -1,7 +1,9 @@
 import { Behaviour } from './Behaviour';
-import { createSpan } from '../math/Span';
+import { createSpan, Span } from '../math/Span';
 import { MathUtils } from '../math/MathUtils';
 import { Vector3D } from '../math/Vector3D';
+import { Particle } from '../core/Particle';
+import { EaseFunc } from '../ease/ease';
 
 /**
  * The Behaviour class is the base for the other Behaviour
@@ -10,19 +12,22 @@ import { Vector3D } from '../math/Vector3D';
  * @constructor
  */
 export class RandomDrift extends Behaviour {
-  constructor(driftX, driftY, driftZ, delay, life, easing) {
+  time: number;
+  randomFoce!: Vector3D;
+  delayPan!: Span;
+  constructor(driftX?: number, driftY?: number, driftZ?: number, delay?: number, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(driftX, driftY, driftZ, delay);
     this.time = 0;
     this.name = "RandomDrift";
   }
-  reset(driftX, driftY, driftZ, delay, life, easing) {
+  reset(driftX?: number, driftY?: number, driftZ?: number, delay?: number, life?: number, easing?: EaseFunc) {
     this.randomFoce = this.normalizeForce(new Vector3D(driftX, driftY, driftZ));
     this.delayPan = createSpan(delay || 0.03);
     this.time = 0;
     life && super.reset.call(this, life, easing);
   }
-  applyBehaviour(particle, time, index) {
+  applyBehaviour(particle: Particle, time: number, index: number) {
     super.applyBehaviour.call(this, particle, time, index);
 
     this.time += time;
