@@ -4,6 +4,10 @@ import { Vector3D } from "../math/Vector3D";
  * @constructor
  */
 export class Zone {
+  vector: Vector3D;
+  random: number;
+  crossType: string;
+  log: boolean;
   constructor() {
     this.vector = new Vector3D(0, 0, 0);
     this.random = 0;
@@ -14,7 +18,7 @@ export class Zone {
     return null;
   }
 
-  crossing(particle) {
+  crossing(particle: any) {
     switch (this.crossType) {
       case "bound":
         this._bound(particle);
@@ -30,7 +34,7 @@ export class Zone {
     }
   }
 
-  _dead(particle) {}
-  _bound(particle) {}
-  _cross(particle) {}
+  _dead(particle: any) {}
+  _bound(particle: any) {}
+  _cross(particl: any) {}
 }

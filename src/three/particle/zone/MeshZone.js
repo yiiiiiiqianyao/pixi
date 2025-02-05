@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Zone } from './Zone.js';
+import { Zone } from './Zone';
     /**
      * MeshZone is a threejs mesh zone
      * @param {Geometry|Mesh} geometry - a THREE.Geometry or THREE.Mesh object

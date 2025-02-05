@@ -1,4 +1,4 @@
-import { Zone } from '../zone/Zone.js';
+import { Zone } from '../zone/Zone';
 import { Initialize } from './Initialize.js';
 
 /**

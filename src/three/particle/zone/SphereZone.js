@@ -1,4 +1,4 @@
-import { Zone } from './Zone.js';
+import { Zone } from './Zone';
 import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D';
 import { PI } from '../core/constant';

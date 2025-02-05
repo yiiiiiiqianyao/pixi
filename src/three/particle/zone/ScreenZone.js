@@ -1,4 +1,4 @@
-import { Zone } from "./Zone.js";
+import { Zone } from "./Zone";
 import { THREEUtil } from "../utils/THREEUtil";
 import { Vector3D } from '../math/Vector3D';
 

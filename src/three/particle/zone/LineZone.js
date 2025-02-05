@@ -1,4 +1,4 @@
-import { Zone } from './Zone.js';
+import { Zone } from './Zone';
 import { Vector3D } from '../math/Vector3D';
 /**
      * LineZone is a 3d line zone
