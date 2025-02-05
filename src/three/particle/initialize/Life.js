@@ -1,4 +1,4 @@
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 import { createSpan } from '../math/Span';
 /**
  * Life is init particle's Life

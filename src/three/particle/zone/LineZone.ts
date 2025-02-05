@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Zone } from './Zone';
 import { Vector3D } from '../math/Vector3D';
 /**

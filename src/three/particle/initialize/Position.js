@@ -1,5 +1,5 @@
 import { Zone } from '../zone/Zone';
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 
 /**
  * Position is init particle's Position

@@ -1,4 +1,4 @@
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 import { createSpan } from '../math/Span';
 /**
  * Mass is init particle's Mass

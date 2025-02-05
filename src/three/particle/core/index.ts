@@ -5,8 +5,8 @@ import { Pool } from "./pool";
 import { EULER } from "./constant";
 import { Integration } from "../math/Integration";
 import { Rate } from '../initialize/Rate.js';
-import { EventDispatcher } from '../events/EventDispatcher.js' 
-import { Emitter } from "../emitter/Emitter.js";
+import { EventDispatcher } from '../events/EventDispatcher' 
+import { Emitter } from "../emitter/Emitter";
 /**
  * @name Proton is a particle engine for three.js
  *

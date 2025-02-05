@@ -1,7 +1,8 @@
+// @ts-nocheck
 export class EventDispatcher {
 
   _listeners = null;
-  initialize = function () {};
+  initialize = function () { };
   addEventListener(type, listener) {
     if (!this._listeners) {
       this._listeners = {};

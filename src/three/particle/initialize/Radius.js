@@ -1,4 +1,4 @@
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 import { createSpan } from '../math/Span';
 /**
  * Radius is init particle's Radius

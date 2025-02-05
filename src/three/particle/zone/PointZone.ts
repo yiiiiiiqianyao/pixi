@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Zone  } from './Zone';
 import { Util } from '../utils/Util';
 /**

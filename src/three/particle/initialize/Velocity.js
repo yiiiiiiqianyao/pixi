@@ -1,4 +1,4 @@
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 import { createSpan } from '../math/Span';
 import { Vector3D } from '../math/Vector3D';
 import { MathUtils } from '../math/MathUtils';

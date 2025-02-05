@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Zone } from "./Zone";
 import { THREEUtil } from "../utils/THREEUtil";
 import { Vector3D } from '../math/Vector3D';
@@ -18,7 +19,7 @@ import { Vector3D } from '../math/Vector3D';
  * @constructor
  */
 export class ScreenZone extends Zone {
-  constructor(camera, renderer, dis, dir) {
+  constructor(camera, renderer, dis?: number, dir?: string) {
     super();
 
     this.camera = camera;

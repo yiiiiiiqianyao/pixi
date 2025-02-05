@@ -1,4 +1,4 @@
-import { Initialize } from './Initialize.js';
+import { Initialize } from './Initialize';
 import { createArraySpan } from '../math/Span';
 import { Util } from '../utils/Util';
 
