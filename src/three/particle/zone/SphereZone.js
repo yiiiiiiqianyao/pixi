@@ -1,5 +1,5 @@
 import { Zone } from './Zone.js';
-import { Util } from '../utils/Util.js';
+import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D.js';
 import { PI } from '../core/constant';
 /**

@@ -9,9 +9,6 @@ import { Rotate } from "../particle/Behaviour/Rotate";
 import { Scale } from "../particle/Behaviour/Scale";
 import { BoxZone } from "../particle/zone/BoxZone";
 import { Gravity } from "../particle/Behaviour/Gravity";
-import { CrossZone } from "../particle/Behaviour/CrossZone";
-import { Color } from "../particle/Behaviour/Color";
-import { ease } from "../particle/ease/ease";
 import { Debug } from "../particle/debug/debug";
 import { Mass } from '../particle/initialize/Mass';
 import { Radius } from '../particle/initialize/Radius';
@@ -96,11 +93,8 @@ function createEmitter(obj: any) {
     emitter.addBehaviour(new Scale(1, 0.1));
     // Gravity
     emitter.addBehaviour(new Gravity(3));
-    // @ts-ignore
     emitter.p.x = obj.p.x;
-    // @ts-ignore
     emitter.p.y = obj.p.y;
-    // @ts-ignore
     emitter.emit();
     return emitter;
 }

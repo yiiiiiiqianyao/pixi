@@ -230,7 +230,7 @@ export class Emitter extends Particle {
     var behaviours = this.behaviours;
 
     if (initialize) {
-      if (Util.isArray(initialize)) {
+      if (Array.isArray(initialize)) {
         initializes = initialize;
       } else {
         initializes = [initialize];
@@ -238,7 +238,7 @@ export class Emitter extends Particle {
     }
 
     if (behaviour) {
-      if (Util.isArray(behaviour)) {
+      if (Array.isArray(behaviour)) {
         behaviours = behaviour;
       } else {
         behaviours = [behaviour];

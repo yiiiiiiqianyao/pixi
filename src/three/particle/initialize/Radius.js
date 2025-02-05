@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize.js';
-import { createSpan } from '../math/Span.js';
+import { createSpan } from '../math/Span';
 /**
  * Radius is init particle's Radius
  * @param {Number} a - the Radius's start point

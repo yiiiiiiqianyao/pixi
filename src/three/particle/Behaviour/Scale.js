@@ -1,6 +1,6 @@
 import { Behaviour } from './Behaviour.js';
-import { Util } from '../utils/Util.js';
-import { createSpan } from '../math/Span.js';
+import { Util } from '../utils/Util';
+import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils.js';
 /**
  * The Scale class is the base for the other Behaviour

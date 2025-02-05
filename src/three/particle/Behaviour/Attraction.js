@@ -1,5 +1,5 @@
 import { Behaviour } from './Behaviour.js';
-import { Util } from '../utils/Util.js';
+import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D.js';
 
 export class Attraction extends Behaviour {

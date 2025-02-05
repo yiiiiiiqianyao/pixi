@@ -1,4 +1,4 @@
-import { Util } from "../utils/Util.js";
+import { Util } from "../utils/Util";
 import { ease } from "../ease/ease.js";
 import { MEASURE } from "../core/constant";
 /**

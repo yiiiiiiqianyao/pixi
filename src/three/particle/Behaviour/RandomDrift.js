@@ -1,5 +1,5 @@
 import { Behaviour } from './Behaviour.js';
-import { createSpan } from '../math/Span.js';
+import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils.js';
 import { Vector3D } from '../math/Vector3D.js';
 

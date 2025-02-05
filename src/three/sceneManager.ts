@@ -55,8 +55,8 @@ export class SceneManager {
         // initMeshZone(scene, camera, renderer, control);
         // initSpriteRenderBase(scene, camera, renderer, control);
         // initSpriteRenderColor(scene, camera, renderer, control);
-        initSpriteRenderG(scene, camera, renderer, control);
+        // initSpriteRenderG(scene, camera, renderer, control);
         // initSpriteRenderPointZone(scene, camera, renderer, control);
-        // initSpriteRenderSnow(scene, camera, renderer, control);
+        initSpriteRenderSnow(scene, camera, renderer, control);
     }
 }

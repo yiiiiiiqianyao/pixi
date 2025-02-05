@@ -1,5 +1,5 @@
 import { Behaviour } from "./Behaviour.js";
-import { Util } from "../utils/Util.js";
+import { Util } from "../utils/Util";
 
 export class CrossZone extends Behaviour {
   constructor(a, b, life, easing) {

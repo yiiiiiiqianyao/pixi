@@ -1,4 +1,4 @@
-import { Util } from "../utils/Util.js";
+import { Util } from "../utils/Util";
 import { EULER } from "../core/constant";
 export class Integration {
   constructor(type) {

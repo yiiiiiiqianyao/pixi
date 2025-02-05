@@ -1,5 +1,5 @@
 import { Behaviour } from './Behaviour.js';
-import { createArraySpan } from '../math/Span.js';
+import { createArraySpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils.js';
 import { ColorUtil } from "../utils/ColorUtil.js";
 /**

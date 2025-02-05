@@ -1,5 +1,5 @@
 import { Zone } from './Zone.js';
-import { Util } from '../utils/Util.js'
+import { Util } from '../utils/Util'
 import { MathUtils } from '../math/MathUtils.js';
 /**
      * BoxZone is a box zone

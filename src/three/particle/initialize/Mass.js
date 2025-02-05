@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize.js';
-import { createSpan } from '../math/Span.js';
+import { createSpan } from '../math/Span';
 /**
  * Mass is init particle's Mass
  * @param {Number} a - the Mass's start point

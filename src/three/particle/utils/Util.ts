@@ -1,27 +1,24 @@
-import { Span } from "../math/Span.js";
-export const Util = {
-    initValue: function(value, defaults) {
+import { Span } from "../math/Span";
+export class Util {
+    static initValue(value?: number, defaults?: number) {
         const initValue = (value !== null && value !== undefined) ? value : defaults;
         return initValue;
-    },
-    isArray: function(value) {
-        return Object.prototype.toString.call(value) === '[object Array]';
-    },
-    destroyArray: function(array) {
+    }
+    static destroyArray(array: any[]) {
         array.length = 0;
-    },
-    destroyObject: function(obj) {
+    }
+    static destroyObject(obj: Record<any, any>) {
         for (var o in obj) delete obj[o];
-    },
-    isUndefined: function() {
+    }
+    static isUndefined() {
         for (var id in arguments) {
             var arg = arguments[id];
             if (arg !== undefined)
                 return false;
         }
         return true;
-    },
-    setVectorByObj: function(target, pOBJ) {
+    }
+    static setVectorByObj(target: any, pOBJ: any) {
         if (pOBJ["x"] !== undefined) target.p.x = pOBJ["x"];
         if (pOBJ["y"] !== undefined) target.p.y = pOBJ["y"];
         if (pOBJ["z"] !== undefined) target.p.z = pOBJ["z"];
@@ -41,9 +38,9 @@ export const Util = {
         if (pOBJ["position"] !== undefined) target.p.copy(pOBJ["position"]);
         if (pOBJ["velocity"] !== undefined) target.v.copy(pOBJ["velocity"]);
         if (pOBJ["accelerate"] !== undefined) target.a.copy(pOBJ["accelerate"]);
-    },
+    }
     //set prototype
-    setPrototypeByObj: function(target, proObj, filters) {
+    static setPrototypeByObj(target: any, proObj: any, filters: any) {
         for (var key in proObj) {
             if (target.hasOwnProperty(key)) {
                 if (filters) {
@@ -55,24 +52,11 @@ export const Util = {
         }
 
         return target;
-    },
-    _getValue: function(pan) {
+    }
+    static _getValue(pan: any) {
         if (pan instanceof Span)
             return pan.getValue();
         else
             return pan;
-    },
-    inherits: function(subClass, superClass) {
-        subClass._super_ = superClass;
-        if (Object['create']) {
-            subClass.prototype = Object.create(superClass.prototype, {
-                constructor: { value: subClass }
-            });
-        } else {
-            var F = function() {};
-            F.prototype = superClass.prototype;
-            subClass.prototype = new F();
-            subClass.prototype.constructor = subClass;
-        }
     }
 };

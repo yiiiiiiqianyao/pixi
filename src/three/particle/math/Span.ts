@@ -1,6 +1,6 @@
-
+// @ts-nocheck
 import { MathUtils } from './MathUtils.js'
-import { Util } from '../utils/Util.js'
+import { Util } from '../utils/Util'
 /**
  * Span Class. Get a random Number from a to b. Or from c-a to c+b
  * @param {Number|Array} a - min number
@@ -16,10 +16,14 @@ import { Util } from '../utils/Util.js'
  * @constructor
  */
 export class Span {
-    constructor(a, b, center) {
+    _isArray: boolean;
+    a: number;
+    b: number;
+    _center
+    constructor(a: number, b?: number, center?: number) {
         this._isArray = false;
 
-        if (Util.isArray(a)) {
+        if (Array.isArray(a)) {
             this._isArray = true;
             this.a = a;
         } else {
@@ -34,7 +38,7 @@ export class Span {
      * @param {number} INT or int
      * @return {number} a random Number
      */
-    getValue(INT) {
+    getValue(INT?: number) {
         if (this._isArray) {
             return this.a[(this.a.length * Math.random()) >> 0];
         } else {
@@ -60,7 +64,7 @@ export class Span {
      export class ArraySpan extends Span {
         constructor(colors) {
             super();
-            this._arr = Util.isArray(colors) ? colors : [colors];
+            this._arr = Array.isArray(colors) ? colors : [colors];
         }
             /**
      * getValue function

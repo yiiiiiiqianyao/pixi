@@ -1,6 +1,6 @@
 import { Initialize } from './Initialize.js';
-import { createArraySpan } from '../math/Span.js';
-import { Util } from '../utils/Util.js';
+import { createArraySpan } from '../math/Span';
+import { Util } from '../utils/Util';
 
 export class Body extends Initialize {
     constructor(body, w, h) {

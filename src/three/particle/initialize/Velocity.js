@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize.js';
-import { createSpan } from '../math/Span.js';
+import { createSpan } from '../math/Span';
 import { Vector3D } from '../math/Vector3D.js';
 import { MathUtils } from '../math/MathUtils.js';
 import { DR, PI, MEASURE } from '../core/constant';
