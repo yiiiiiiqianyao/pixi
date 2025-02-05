@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { MathUtils } from './MathUtils.js'
+import { MathUtils } from './MathUtils'
 import { Util } from '../utils/Util'
 /**
  * Span Class. Get a random Number from a to b. Or from c-a to c+b

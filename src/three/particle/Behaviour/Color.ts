@@ -1,7 +1,7 @@
 import { Behaviour } from './Behaviour.js';
 import { createArraySpan } from '../math/Span';
-import { MathUtils } from '../math/MathUtils.js';
-import { ColorUtil } from "../utils/ColorUtil.js";
+import { MathUtils } from '../math/MathUtils';
+import { ColorUtil } from "../utils/ColorUtil";
 /**
  * The Scale class is the base for the other Behaviour
  *

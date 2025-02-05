@@ -1,6 +1,6 @@
 import { Zone } from './Zone.js';
 import { Util } from '../utils/Util'
-import { MathUtils } from '../math/MathUtils.js';
+import { MathUtils } from '../math/MathUtils';
 /**
      * BoxZone is a box zone
      * @param {Number|Vector3D} x - the position's x value or a Vector3D Object

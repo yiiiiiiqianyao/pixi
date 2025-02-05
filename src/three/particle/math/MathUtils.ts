@@ -1,36 +1,41 @@
+
 import { PI } from '../core/constant';
-export const MathUtils = {
-    randomAToB: function(a, b, INT) {
-        if (!INT)
+import { Vector3D } from './Vector3D';
+export class MathUtils {
+    static randomAToB(a: number, b: number, INT: number) {
+        if (!INT) {
             return a + Math.random() * (b - a);
-        else
+        }
+        else {
             return ((Math.random() * (b - a)) >> 0) + a;
-    },
-    randomFloating: function(center, f, INT) {
+        }
+
+    }
+    static randomFloating(center: number, f: number, INT: number) {
         return MathUtils.randomAToB(center - f, center + f, INT);
-    },
+    }
 
-    randomZone: function(display) {
+    static randomZone(display: any) {
 
-    },
+    }
 
-    degreeTransform: function(a) {
+    static degreeTransform(a: number) {
         return a * PI / 180;
-    },
+    }
 
-    toColor16: function getRGB(num) {
+    static toColor16(num: number) {
         return "#" + num.toString(16);
-    },
+    }
 
-    randomColor: function() {
+    static randomColor() {
         return '#' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).slice(-6);
-    },
+    }
 
-    lerp: function(a, b, energy) {
+    static lerp(a: number, b: number, energy: number) {
         return b + (a - b) * energy
-    },
+    }
 
-    getNormal: function(v, n) {
+    static getNormal(v: Vector3D, n: Vector3D) {
         if (v.x === 0 && v.y === 0) {
             if (v.z === 0)
                 n.set(1, 0, 1);
@@ -44,14 +49,14 @@ export const MathUtils = {
         }
 
         return n.normalize();
-    },
+    }
 
     /** 
      * Rodrigues' Rotation Formula 
      * https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
      * v′ = vcos(θ) + k(k⋅v)(1−cos(θ)) + (k*v)sin(θ)
      */
-    axisRotate: function(v0, v, k, tha) {
+    static axisRotate(v0: Vector3D, v: Vector3D, k: Vector3D, tha: number) {
         var cos = Math.cos(tha);
         var sin = Math.sin(tha);
         var p = k.dot(v) * (1 - cos);

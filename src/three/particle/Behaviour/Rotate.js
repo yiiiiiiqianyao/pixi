@@ -1,7 +1,7 @@
 import { Behaviour } from './Behaviour.js';
 import { PI, DR } from '../core/constant';
 import { createSpan } from '../math/Span';
-import { MathUtils } from '../math/MathUtils.js';
+import { MathUtils } from '../math/MathUtils';
 import { Vector3D } from '../math/Vector3D';
 /* The Rotate class is the base
  * for the other Behaviour

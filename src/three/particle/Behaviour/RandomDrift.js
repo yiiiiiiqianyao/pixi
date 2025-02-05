@@ -1,6 +1,6 @@
 import { Behaviour } from './Behaviour.js';
 import { createSpan } from '../math/Span';
-import { MathUtils } from '../math/MathUtils.js';
+import { MathUtils } from '../math/MathUtils';
 import { Vector3D } from '../math/Vector3D';
 
 /**
