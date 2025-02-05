@@ -1,6 +1,8 @@
 import { Util } from "../utils/Util";
-import { ease } from "../ease/ease.js";
+import { ease, EaseFunc } from "../ease/ease";
 import { MEASURE } from "../core/constant";
+import { Vector3D } from "../math/Vector3D";
+import { Particle } from "../core/Particle";
 /**
  * The Behaviour class is the base for the other Behaviour
  *
@@ -8,14 +10,22 @@ import { MEASURE } from "../core/constant";
  * @constructor
  */
 export class Behaviour {
-  constructor(life, easing) {
+  static id: number;
+  name: string;
+  id: string;
+  life: number;
+  dead: boolean;
+  age: number;
+  energy: number;
+  easing: EaseFunc;
+  constructor(life?: number, easing?: EaseFunc) {
     /**
      * The behaviour's id;
      * @property id
      * @type {String} id
      */
     this.id = "Behaviour_" + Behaviour.id++;
-    this.life = Util.initValue(life, Infinity);
+    this.life = Util.initValue(life, Infinity) as number;
 
     /**
      * The behaviour's decaying trend, for example ease.easeOutQuart;
@@ -23,7 +33,7 @@ export class Behaviour {
      * @type {String}
      * @default easeLinear
      */
-    this.easing = Util.initValue(easing, ease.setEasingByName(ease.easeLinear));
+    this.easing = Util.initValue(easing, ease.easeLinear) as EaseFunc;
     this.age = 0;
     this.energy = 1;
     /**
@@ -48,9 +58,9 @@ export class Behaviour {
    * @param {Number} this behaviour's life
    * @param {String} this behaviour's easing
    */
-  reset(life, easing) {
-    this.life = Util.initValue(life, Infinity);
-    this.easing = Util.initValue(easing, ease.setEasingByName(ease.easeLinear));
+  reset(life: number, easing: EaseFunc) {
+    this.life = Util.initValue(life, Infinity) as number;
+    this.easing = Util.initValue(easing, ease.easeLinear) as EaseFunc;
   }
   /**
    * Normalize a force by 1:100;
@@ -58,7 +68,7 @@ export class Behaviour {
    * @method normalizeForce
    * @param {Vector2D} force
    */
-  normalizeForce(force) {
+  normalizeForce(force: Vector3D) {
     return force.scalar(MEASURE);
   }
 
@@ -68,7 +78,7 @@ export class Behaviour {
    * @method normalizeValue
    * @param {Number} value
    */
-  normalizeValue(value) {
+  normalizeValue(value: number) {
     return value * MEASURE;
   }
 
@@ -78,7 +88,7 @@ export class Behaviour {
    * @method initialize
    * @param {Particle} particle
    */
-  initialize(particle) {}
+  initialize(particle: Particle) {}
 
   /**
    * Apply this behaviour for all particles every time
@@ -88,7 +98,7 @@ export class Behaviour {
    * @param {Number} the integrate time 1/ms
    * @param {Int} the particle index
    */
-  applyBehaviour(particle, time, index) {
+  applyBehaviour(particle: Particle, time: number, index: number) {
     if (this.dead) return;
 
     this.age += time;

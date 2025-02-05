@@ -2,74 +2,78 @@
  /**
      * The Ease class provides a collection of easing functions for use with Proton
      */
- export const ease = {
-    easeLinear: function(value) {
+
+ export type EaseFunc = (v: number) => number;
+
+
+ export class ease {
+    static easeLinear(value: number) {
         return value;
-    },
+    }
 
-    easeInQuad: function(value) {
+    static easeInQuad(value: number) {
         return Math.pow(value, 2);
-    },
+    }
 
-    easeOutQuad: function(value) {
+    static easeOutQuad(value: number) {
         return -(Math.pow((value - 1), 2) - 1);
-    },
+    }
 
-    easeInOutQuad: function(value) {
+    static easeInOutQuad(value: number) {
         if ((value /= 0.5) < 1)
             return 0.5 * Math.pow(value, 2);
         return -0.5 * ((value -= 2) * value - 2);
-    },
+    }
 
-    easeInCubic: function(value) {
+    static easeInCubic(value: number) {
         return Math.pow(value, 3);
-    },
+    }
 
-    easeOutCubic: function(value) {
+    static easeOutCubic(value: number) {
         return (Math.pow((value - 1), 3) + 1);
-    },
+    }
 
-    easeInOutCubic: function(value) {
+    static easeInOutCubic(value: number) {
         if ((value /= 0.5) < 1)
             return 0.5 * Math.pow(value, 3);
         return 0.5 * (Math.pow((value - 2), 3) + 2);
-    },
+    }
 
-    easeInQuart: function(value) {
+    static easeInQuart(value: number) {
         return Math.pow(value, 4);
-    },
+    }
 
-    easeOutQuart: function(value) {
+    static easeOutQuart(value: number) {
         return -(Math.pow((value - 1), 4) - 1);
-    },
+    }
 
-    easeInOutQuart: function(value) {
+    static easeInOutQuart(value: number) {
         if ((value /= 0.5) < 1)
             return 0.5 * Math.pow(value, 4);
         return -0.5 * ((value -= 2) * Math.pow(value, 3) - 2);
-    },
+    }
 
-    easeInSine: function(value) {
+    static easeInSine(value: number) {
         return -Math.cos(value * (PI / 2)) + 1;
-    },
+    }
 
-    easeOutSine: function(value) {
+    static easeOutSine(value: number) {
         return Math.sin(value * (PI / 2));
-    },
+    }
 
-    easeInOutSine: function(value) {
+    static easeInOutSine(value: number) {
         return (-0.5 * (Math.cos(PI * value) - 1));
-    },
+    }
 
-    easeInExpo: function(value) {
+    static easeInExpo(value: number) {
         return (value === 0) ? 0 : Math.pow(2, 10 * (value - 1));
-    },
+    }
 
-    easeOutExpo: function(value) {
+    static easeOutExpo(value: number) {
         return (value === 1) ? 1 : -Math.pow(2, -10 * value) + 1;
-    },
+    }
 
-    easeInOutExpo: function(value) {
+    static easeInOutExpo(value: number) {
         if (value === 0)
             return 0;
         if (value === 1)
@@ -77,48 +81,38 @@
         if ((value /= 0.5) < 1)
             return 0.5 * Math.pow(2, 10 * (value - 1));
         return 0.5 * (-Math.pow(2, -10 * --value) + 2);
-    },
+    }
 
-    easeInCirc: function(value) {
+    static easeInCirc(value: number) {
         return -(Math.sqrt(1 - (value * value)) - 1);
-    },
+    }
 
-    easeOutCirc: function(value) {
+    static easeOutCirc(value: number) {
         return Math.sqrt(1 - Math.pow((value - 1), 2));
-    },
+    }
 
-    easeInOutCirc: function(value) {
+    static easeInOutCirc(value: number) {
         if ((value /= 0.5) < 1)
             return -0.5 * (Math.sqrt(1 - value * value) - 1);
         return 0.5 * (Math.sqrt(1 - (value -= 2) * value) + 1);
-    },
+    }
 
-    easeInBack: function(value) {
+    static easeInBack(value: number) {
         var s = 1.70158;
         return (value) * value * ((s + 1) * value - s);
-    },
+    }
 
-    easeOutBack: function(value) {
+    static easeOutBack(value: number) {
         var s = 1.70158;
         return (value = value - 1) * value * ((s + 1) * value + s) + 1;
-    },
+    }
 
-    easeInOutBack: function(value) {
+    static easeInOutBack(value: number) {
         var s = 1.70158;
         if ((value /= 0.5) < 1)
             return 0.5 * (value * value * (((s *= (1.525)) + 1) * value - s));
         return 0.5 * ((value -= 2) * value * (((s *= (1.525)) + 1) * value + s) + 2);
-    },
-
-    setEasingByName: function(easeName) {
-        if (!!ease[easeName])
-            return ease[easeName];
-        else
-            return ease.easeLinear;
     }
 }
 
-const EaseCache = {};
-for (var id in ease) {
-    if (id !== "setEasingByName") EaseCache[id] = ease[id];
-}
+

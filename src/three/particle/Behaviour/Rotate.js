@@ -1,4 +1,4 @@
-import { Behaviour } from './Behaviour.js';
+import { Behaviour } from './Behaviour';
 import { PI, DR } from '../core/constant';
 import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils';

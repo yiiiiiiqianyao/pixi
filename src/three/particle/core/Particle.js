@@ -1,6 +1,6 @@
 import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D';
-import { ease } from '../ease/ease.js';
+import { ease } from '../ease/ease';
 import { PI } from './constant';
 import { EventDispatcher } from '../events/EventDispatcher.js'
 /**
@@ -71,7 +71,7 @@ export class Particle extends EventDispatcher {
     this.useColor = false;
     this.useAlpha = false;
 
-    this.easing = ease.setEasingByName(ease.easeLinear);
+    this.easing = ease.easeLinear;
 
     if (init) {
       this.p = new Vector3D();
