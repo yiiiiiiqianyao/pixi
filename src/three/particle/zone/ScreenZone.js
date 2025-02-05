@@ -1,5 +1,5 @@
 import { Zone } from "./Zone.js";
-import { THREEUtil } from "../utils/THREEUtil.js";
+import { THREEUtil } from "../utils/THREEUtil";
 import { Vector3D } from '../math/Vector3D';
 
 /**
