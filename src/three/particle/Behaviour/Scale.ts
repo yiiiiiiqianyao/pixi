@@ -1,7 +1,9 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { Util } from '../utils/Util';
 import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils';
+import { EaseFunc } from '../ease/ease';
 /**
  * The Scale class is the base for the other Behaviour
  *
@@ -10,7 +12,7 @@ import { MathUtils } from '../math/MathUtils';
  */
 
 export class Scale extends Behaviour {
-  constructor(a, b, life, easing) {
+  constructor(a, b?: any, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(a, b);
     this.name = "Scale";

@@ -1,4 +1,4 @@
-import { Quaternion } from './Quaternion.js';
+import { Quaternion } from './Quaternion';
 import { PI } from '../core/constant';
 
 export class Vector3D {

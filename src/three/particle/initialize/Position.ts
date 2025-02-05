@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Zone } from '../zone/Zone';
 import { Initialize } from './Initialize';
 
@@ -13,7 +14,7 @@ import { Initialize } from './Initialize';
  */
 export class Position extends Initialize {
   zones = [];
-  constructor(z) {
+  constructor(z?: Zone) {
     super();
     // this.reset.apply(this, arguments);
     if(z) {
@@ -31,8 +32,8 @@ export class Position extends Initialize {
     // var args = Array.prototype.slice.call(arguments);
     this.zones = this.zones.concat(...arguments);
   };
-  addZone() {
-    const args = Array.prototype.slice.call(arguments);
+  addZone(...zones: Zone[]) {
+    const args = Array.prototype.slice.call(zones);
     this.zones = this.zones.concat(args);
   };
 
