@@ -1,7 +1,7 @@
 // @ts-nocheck
 import * as THREE from "three";
 import { Util } from "../utils/Util";
-import { Pool } from "./pool.js";
+import { Pool } from "./pool";
 import { EULER } from "./constant";
 import { Integration } from "../math/Integration.js";
 import { Rate } from '../initialize/Rate.js';

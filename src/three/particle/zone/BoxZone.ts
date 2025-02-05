@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { Zone } from './Zone';
 import { Util } from '../utils/Util'
 import { MathUtils } from '../math/MathUtils';
+import { Particle } from '../core/Particle';
 /**
      * BoxZone is a box zone
      * @param {Number|Vector3D} x - the position's x value or a Vector3D Object
@@ -17,7 +19,15 @@ import { MathUtils } from '../math/MathUtils';
      * @constructor
      */
 export class BoxZone extends Zone {
-    constructor(a, b, c, d, e, f) {
+    x: number;
+    y: number;
+    z: number;
+    width: number;
+    height: number;
+    depth: number;
+    friction: number;
+    max: number;
+    constructor(a?: number, b?: number, c?: number, d?: number, e?: number, f?: number) {
         super();
         var x, y, z, w, h, d;
         if (Util.isUndefined(b, c, d, e, f)) {
@@ -53,7 +63,7 @@ export class BoxZone extends Zone {
         return this.vector;
     }
 
-    _dead(particle) {
+    _dead(particle: Particle) {
         if (particle.p.x + particle.radius < this.x - this.width / 2)
             particle.dead = true;
         else if (particle.p.x - particle.radius > this.x + this.width / 2)

@@ -3,7 +3,7 @@ import { createSpan } from '../math/Span';
 import { Vector3D } from '../math/Vector3D';
 import { MathUtils } from '../math/MathUtils';
 import { DR, PI, MEASURE } from '../core/constant';
-import { Polar3D } from '../math/Polar3D.js';
+import { Polar3D } from '../math/Polar3D';
 
 /**
  * Velocity is init particle's Velocity
