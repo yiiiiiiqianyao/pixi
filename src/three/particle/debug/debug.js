@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { PointZone } from "../zone/PointZone.js";
 import { LineZone } from "../zone/LineZone.js";
 import { BoxZone } from "../zone/BoxZone.js";
-import { SphereZone } from "../zone/SphereZone.js";
+import { SphereZone } from "../zone/SphereZone";
 import { MeshZone } from "../zone/MeshZone.js";
 
 export const Debug = {

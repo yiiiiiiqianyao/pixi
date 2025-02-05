@@ -10,8 +10,8 @@ export class Util {
     static destroyObject(obj: Record<any, any>) {
         for (var o in obj) delete obj[o];
     }
-    static isUndefined() {
-        for (var id in arguments) {
+    static isUndefined(...items: any[]) {
+        for (var id in items) {
             var arg = arguments[id];
             if (arg !== undefined)
                 return false;

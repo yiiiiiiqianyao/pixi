@@ -29,6 +29,7 @@ export function initCustomRenderParticle(scene: Scene, camera: Camera, renderer:
         proton.update();
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
+        Debug.renderInfo(proton, 3);
     };
 
     animate();

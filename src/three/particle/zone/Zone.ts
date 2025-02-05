@@ -14,7 +14,7 @@ export class Zone {
     this.crossType = "dead";
     this.log = true;
   }
-  getPosition() {
+  getPosition(): any {
     return null;
   }
 
