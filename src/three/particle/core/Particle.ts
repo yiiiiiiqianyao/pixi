@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D';
 import { ease } from '../ease/ease';
@@ -26,6 +27,14 @@ export class Particle extends EventDispatcher {
   scale;
   rotation;
   transform;
+  useAlpha;
+  color;
+  useColor;
+  behaviours;
+  body;
+  sleep;
+  alpha;
+
   constructor(pOBJ) {
     super();
     /**

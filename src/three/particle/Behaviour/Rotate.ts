@@ -1,8 +1,10 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { PI, DR } from '../core/constant';
 import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils';
 import { Vector3D } from '../math/Vector3D';
+import { EaseFunc } from '../ease/ease';
 /* The Rotate class is the base
  * for the other Behaviour
  *
@@ -13,7 +15,7 @@ import { Vector3D } from '../math/Vector3D';
  */
 
 export class Rotate extends Behaviour {
-  constructor(x, y, z, life, easing) {
+  constructor(x, y, z?: any, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(x, y, z);
     this.name = "Rotate";

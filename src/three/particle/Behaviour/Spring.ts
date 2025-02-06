@@ -1,5 +1,7 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { Vector3D } from '../math/Vector3D';
+import { EaseFunc } from '../ease/ease';
 
 /**
  * The Behaviour class is the base for the other Behaviour
@@ -8,12 +10,12 @@ import { Vector3D } from '../math/Vector3D';
  * @constructor
  */
 export class Spring extends Behaviour {
-    constructor(x, y, z, spring, friction, life, easing) {
+    constructor(x, y, z, spring?: number, friction?: number, life?: number, easing?: EaseFunc) {
       super(life, easing);
-      Spring.prototype.reset(x, y, z, spring, friction);
+      this.reset(x, y, z, spring, friction);
       this.name = "Spring";
     }
-    reset(x, y, z, spring, friction) {
+    reset(x, y, z, spring?: number, friction?: number) {
       if (!this.pos) this.pos = new Vector3D(x, y, z);
       else this.pos.set(x, y, z);
       this.spring = spring || 0.1;

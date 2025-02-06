@@ -1,4 +1,5 @@
 
+// @ts-nocheck
 import { Attraction } from "./Attraction.js";
 
 export class Repulsion extends Attraction {
@@ -7,13 +8,7 @@ export class Repulsion extends Attraction {
     this.force *= -1;
     this.name = "Repulsion";
   }
-  reset(
-    targetPosition,
-    force,
-    radius,
-    life,
-    easing
-  ) {
+  reset(targetPosition, force, radius, life, easing) {
     super.reset.call(
       this,
       targetPosition,
@@ -24,5 +19,5 @@ export class Repulsion extends Attraction {
     );
     this.force *= -1;
   }
-  
+
 }
