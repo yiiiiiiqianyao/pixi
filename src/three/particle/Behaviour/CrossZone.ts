@@ -1,14 +1,18 @@
 import { Behaviour } from "./Behaviour";
 import { Util } from "../utils/Util";
+import { Zone } from "../zone/Zone";
+import { EaseFunc } from "../ease/ease";
+import { Particle } from "../core/Particle";
 
 export class CrossZone extends Behaviour {
-  constructor(a, b, life, easing) {
+  zone!: Zone;
+  constructor(a: any, b: any, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(a, b);
     ///dead /bound /cross
     this.name = "CrossZone";
   }
-  reset(a, b, life, easing) {
+  reset(a: any, b: any, life?: number, easing?: EaseFunc) {
     var zone, crossType;
     if (typeof a === "string") {
       crossType = a;
@@ -22,7 +26,7 @@ export class CrossZone extends Behaviour {
     this.zone.crossType = Util.initValue(crossType, "dead");
     if (life) super.reset.call(this, life, easing);
   }
-  applyBehaviour(particle, time, index) {
+  applyBehaviour(particle: Particle, time: number, index: number) {
     super.applyBehaviour.call(this, particle, time, index);
     this.zone.crossing.call(this.zone, particle);
   }

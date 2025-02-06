@@ -2,6 +2,7 @@ import { Quaternion } from './Quaternion';
 import { PI } from '../core/constant';
 
 export class Vector3D {
+    id!: number;
     x: number;
     y: number;
     z: number;
