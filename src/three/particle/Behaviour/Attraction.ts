@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { Util } from '../utils/Util';
 import { Vector3D } from '../math/Vector3D';

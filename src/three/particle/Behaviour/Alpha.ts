@@ -1,7 +1,9 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { createSpan } from '../math/Span';
 import { MathUtils } from '../math/MathUtils';
 import { Util } from '../utils/Util';
+import { EaseFunc } from '../ease/ease';
 
 /**
  * The Alpha class is the base for the other Behaviour
@@ -11,7 +13,7 @@ import { Util } from '../utils/Util';
  */
 
 export class Alpha extends Behaviour {
-  constructor(a, b, life, easing) {
+  constructor(a, b, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(a, b);
     /**

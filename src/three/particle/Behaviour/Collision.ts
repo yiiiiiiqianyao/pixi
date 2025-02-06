@@ -1,5 +1,8 @@
+// @ts-nocheck
 import { Behaviour } from './Behaviour';
 import { Vector3D } from '../math/Vector3D';
+import { EaseFunc } from '../ease/ease';
+import { Emitter } from '../emitter/Emitter';
 
 /**
  * The Scale class is the base for the other Behaviour
@@ -9,7 +12,7 @@ import { Vector3D } from '../math/Vector3D';
  */
 //can use Collision(emitter,true,function(){}) or Collision();
 export class Collision extends Behaviour {
-  constructor(emitter, useMass, callback, life, easing) {
+  constructor(emitter: Emitter, useMass?: any, callback?: any, life?: number, easing?: EaseFunc) {
     super(life, easing);
     this.reset(emitter, useMass, callback);
     this.name = "Collision";
