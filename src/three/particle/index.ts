@@ -3,6 +3,8 @@
 import * as THREE from 'three';
 export class Proton extends EventDispatcher {
   static integrator;
+  emitters: Emitter[];
+  renderers: any[];
   constructor(preParticles?: any, integrationType?: any) {
     super();
     this.preParticles = Util.initValue(preParticles, Proton.POOL_MAX);
@@ -2175,6 +2177,7 @@ Proton.Spring = Spring;
 export class Emitter extends Particle {
   static ID = 0;
   rate;
+  p;
   constructor(pObj) {
     super(pObj);
     this.initializes = [];

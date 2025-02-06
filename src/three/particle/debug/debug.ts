@@ -1,18 +1,22 @@
+// @ts-nocheck
 import * as THREE from "three";
 import { PointZone } from "../zone/PointZone";
 import { LineZone } from "../zone/LineZone";
 import { BoxZone } from "../zone/BoxZone";
 import { SphereZone } from "../zone/SphereZone";
 import { MeshZone } from "../zone/MeshZone";
+import { Proton } from "../core";
+import { Emitter } from "../emitter/Emitter";
+import { Color } from "../Behaviour/Color";
 
-export const Debug = {
-  addEventListener: function (proton, fun) {
+export class Debug {
+  static addEventListener(proton: Proton, fun: Function) {
     proton.addEventListener("PROTON_UPDATE", function (e) {
       fun(e);
     });
-  },
+  }
 
-  drawZone: function (proton, container, zone) {
+  static drawZone(proton: Proton, container, zone) {
     var geometry, material, mesh;
 
     if (zone instanceof PointZone) {
@@ -41,9 +45,9 @@ export const Debug = {
     this.addEventListener(proton, function (e) {
       mesh.position.set(zone.x, zone.y, zone.z);
     });
-  },
+  }
 
-  drawEmitter: function (proton, container, emitter, color) {
+  static drawEmitter(proton: Proton, container: any, emitter: Emitter, color?: Color) {
     var geometry = new THREE.OctahedronGeometry(15);
     var material = new THREE.MeshBasicMaterial({
       color: color || "#aaa",
@@ -60,90 +64,86 @@ export const Debug = {
         emitter.rotation.z
       );
     });
-  },
+  }
 
-  renderInfo: (function () {
-    function getCreatedNumber(proton, type) {
+  static renderInfo(proton: Proton, style: any) {
+    function getCreatedNumber(proton: Proton, type) {
       var pool = type === "material" ? "_materialPool" : "_targetPool";
       var renderer = proton.renderers[0];
       return renderer[pool].cID;
     }
 
-    function getEmitterPos(proton) {
+    function getEmitterPos(proton: Proton) {
       var e = proton.emitters[0];
       return (
         Math.round(e.p.x) + "," + Math.round(e.p.y) + "," + Math.round(e.p.z)
       );
     }
 
-    return function (proton, style) {
-      this.addInfo(style);
-      var str = "";
-      switch (this._infoType) {
+    this.addInfo(style);
+    var str = "";
+    switch (this._infoType) {
+      case 2:
+        str += "emitter:" + proton.emitters.length + "<br>";
+        str += "em speed:" + proton.emitters[0].cID + "<br>";
+        str += "pos:" + getEmitterPos(proton);
+        break;
+
+      case 3:
+        str += proton.renderers[0].name + "<br>";
+        str += "target:" + getCreatedNumber(proton, "target") + "<br>";
+        str += "material:" + getCreatedNumber(proton, "material");
+        break;
+
+      default:
+        str += "particles:" + proton.getCount() + "<br>";
+        str += "pool:" + proton.pool.getCount() + "<br>";
+        str += "total:" + (proton.getCount() + proton.pool.getCount());
+    }
+    this._infoCon.innerHTML = str;
+  }
+
+  static addInfo(style: any) {
+    var self = this;
+    if (!this._infoCon) {
+      this._infoCon = document.createElement("div");
+      this._infoCon.style.cssText = [
+        "position:fixed;bottom:0px;left:0;cursor:pointer;",
+        "opacity:0.9;z-index:10000;padding:10px;font-size:12px;",
+        "width:120px;height:50px;background-color:#002;color:#0ff;",
+      ].join("");
+
+      this._infoType = 1;
+      this._infoCon.addEventListener(
+        "click",
+        function (event) {
+          self._infoType++;
+          if (self._infoType > 3) self._infoType = 1;
+        },
+        false
+      );
+
+      var bg, color;
+      switch (style) {
         case 2:
-          str += "emitter:" + proton.emitters.length + "<br>";
-          str += "em speed:" + proton.emitters[0].cID + "<br>";
-          str += "pos:" + getEmitterPos(proton);
+          bg = "#201";
+          color = "#f08";
           break;
 
         case 3:
-          str += proton.renderers[0].name + "<br>";
-          str += "target:" + getCreatedNumber(proton, "target") + "<br>";
-          str += "material:" + getCreatedNumber(proton, "material");
+          bg = "#020";
+          color = "#0f0";
           break;
 
         default:
-          str += "particles:" + proton.getCount() + "<br>";
-          str += "pool:" + proton.pool.getCount() + "<br>";
-          str += "total:" + (proton.getCount() + proton.pool.getCount());
-      }
-      this._infoCon.innerHTML = str;
-    };
-  })(),
-
-  addInfo: (function () {
-    return function (style) {
-      var self = this;
-      if (!this._infoCon) {
-        this._infoCon = document.createElement("div");
-        this._infoCon.style.cssText = [
-          "position:fixed;bottom:0px;left:0;cursor:pointer;",
-          "opacity:0.9;z-index:10000;padding:10px;font-size:12px;",
-          "width:120px;height:50px;background-color:#002;color:#0ff;",
-        ].join("");
-
-        this._infoType = 1;
-        this._infoCon.addEventListener(
-          "click",
-          function (event) {
-            self._infoType++;
-            if (self._infoType > 3) self._infoType = 1;
-          },
-          false
-        );
-
-        var bg, color;
-        switch (style) {
-          case 2:
-            bg = "#201";
-            color = "#f08";
-            break;
-
-          case 3:
-            bg = "#020";
-            color = "#0f0";
-            break;
-
-          default:
-            bg = "#002";
-            color = "#0ff";
-        }
-
-        this._infoCon.style["background-color"] = bg;
-        this._infoCon.style["color"] = color;
+          bg = "#002";
+          color = "#0ff";
       }
 
-      if (!this._infoCon.parentNode) document.body.appendChild(this._infoCon);
-    };
-  })(),
+      this._infoCon.style["background-color"] = bg;
+      this._infoCon.style["color"] = color;
+    }
+
+    if (!this._infoCon.parentNode) document.body.appendChild(this._infoCon);
+  }
 };
