@@ -1,5 +1,6 @@
 import { Initialize } from './Initialize';
-import { createSpan } from '../math/Span';
+import { createSpan, Span } from '../math/Span';
+import { Particle } from '../core/Particle';
 /**
  * Life is init particle's Life
  * @param {Number} a - the Life's start point
@@ -13,11 +14,12 @@ import { createSpan } from '../math/Span';
  * @constructor
  */
 export class Life extends Initialize {
-  constructor(a, b, c) {
+  lifePan: Span;
+  constructor(a?: any, b?: any, c?: any) {
     super();
     this.lifePan = createSpan(a, b, c);
   }
-  initialize = function (target) {
+  initialize(target: Particle) {
     if (this.lifePan.a === Infinity || this.lifePan.a === "infi")
       target.life = Infinity;
     else target.life = this.lifePan.getValue();

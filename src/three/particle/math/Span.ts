@@ -17,10 +17,10 @@ import { Util } from '../utils/Util'
  */
 export class Span {
     _isArray: boolean;
-    a: number;
+    a: number | string;
     b: number;
     _center
-    constructor(a: number, b?: number, center?: number) {
+    constructor(a: number | string, b?: number, center?: number) {
         this._isArray = false;
 
         if (Array.isArray(a)) {
@@ -110,7 +110,7 @@ export class Span {
      * @param {number} c center number
      * @return {number} return a instance of Span
      */
-    export const createArraySpan = function(arr) {
+    export function createArraySpan(arr?: ArraySpan | any[]) {
         if (!arr) return null;
         if (arr instanceof ArraySpan)
             return arr;

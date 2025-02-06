@@ -41,7 +41,7 @@ export class Util {
         if (pOBJ["accelerate"] !== undefined) target.a.copy(pOBJ["accelerate"]);
     }
     //set prototype
-    static setPrototypeByObj(target: any, proObj: any, filters: any) {
+    static setPrototypeByObj(target: any, proObj: any, filters?: any) {
         for (var key in proObj) {
             if (target.hasOwnProperty(key)) {
                 if (filters) {
