@@ -1,7 +1,9 @@
+// @ts-nocheck
 import { Emitter } from "./Emitter";
 import { Util } from "../utils/Util";
 import { Vector3D } from "../math/Vector3D";
 import { THREEUtil } from "../utils/THREEUtil";
+import { EaseFunc } from "../ease/ease";
 
 /**
  * The FollowEmitter class inherits from Emitter
@@ -16,7 +18,7 @@ import { THREEUtil } from "../utils/THREEUtil";
  * @param {Object} pObj the parameters object;
  */
 export class FollowEmitter extends Emitter {
-  constructor(mouseTarget, ease, pObj) {
+  constructor(mouseTarget?: HTMLElement, ease?: EaseFunc, pObj?: any) {
     super(pObj);
     this.mouseTarget = Util.initValue(mouseTarget, window);
     this.ease = Util.initValue(ease, 0.7);
