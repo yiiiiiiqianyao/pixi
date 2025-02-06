@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize';
-import { createSpan } from '../math/Span';
+import { createSpan, Span } from '../math/Span';
 import { Vector3D } from '../math/Vector3D';
 import { MathUtils } from '../math/MathUtils';
 import { DR, PI, MEASURE } from '../core/constant';
@@ -19,14 +19,19 @@ import { Polar3D } from '../math/Polar3D';
  */
 //radius and tha
 export class Velocity extends Initialize {
-  constructor(a, b, c) {
+  dirVec: Vector3D;
+  dir!: Vector3D;
+  tha!: number;
+  _useV!: boolean;
+  radiusPan!: Span;
+  constructor(a?: any, b?: any, c?: any) {
     super();
     this.reset(a, b, c);
     this.dirVec = new Vector3D(0, 0, 0);
   
     this.name = "Velocity";
   }
-  reset = function (a, b, c) {
+  reset(a?: any, b?: any, c?: any) {
     //[vector,tha]
     if (a instanceof Vector3D) {
       this.radiusPan = createSpan(1);
@@ -50,16 +55,15 @@ export class Velocity extends Initialize {
       this._useV = true;
     }
   };
-  normalize = function (vr) {
+  normalize(vr: any) {
     return vr * MEASURE;
   };
-  initialize = (function () {
+  initialize(target: any) {
     var tha;
     var normal = new Vector3D(0, 0, 1);
     var v = new Vector3D(0, 0, 0);
   
-    return function initialize(target) {
-      tha = this.tha * Math.random();
+    tha = this.tha * Math.random();
       this._useV && this.dirVec.copy(this.dir).scalar(this.radiusPan.getValue());
   
       MathUtils.getNormal(this.dirVec, normal);
@@ -71,6 +75,5 @@ export class Velocity extends Initialize {
       // MathUtils.axisRotate(this.v2, this.v1, this.dirVec.normalize(), Math.random() * PI * 2);
       target.v.copy(v);
       return this;
-    };
-  })();
+  };
 }

@@ -6,7 +6,7 @@ export class Initialize {
   constructor() {
     this.name = "Initialize";
   }
-  reset() { };
+  reset(...props: any) { };
   init(emitter: Emitter, particle: Particle) {
     if (particle) {
       this.initialize(particle);

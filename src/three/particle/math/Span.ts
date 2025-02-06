@@ -38,7 +38,7 @@ export class Span {
      * @param {number} INT or int
      * @return {number} a random Number
      */
-    getValue(INT?: number) {
+    getValue(INT?: number | string) {
         if (this._isArray) {
             return this.a[(this.a.length * Math.random()) >> 0];
         } else {
@@ -89,7 +89,7 @@ export class Span {
      * @param {number} c center number
      * @return {number} return a instance of Span
      */
- export function createSpan(a: number, b?: number, c?: number) {
+ export function createSpan(a: number, b?: number, c?: any) {
     if (a instanceof Span) return a;
 
     if (b === undefined) {

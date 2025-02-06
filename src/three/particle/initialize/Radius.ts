@@ -1,5 +1,6 @@
 import { Initialize } from './Initialize';
-import { createSpan } from '../math/Span';
+import { createSpan, Span } from '../math/Span';
+import { Particle } from '../core/Particle';
 /**
  * Radius is init particle's Radius
  * @param {Number} a - the Radius's start point
@@ -13,14 +14,15 @@ import { createSpan } from '../math/Span';
  * @constructor
  */
 export class Radius extends Initialize {
-  constructor(a, b, c){
+  radius: Span;
+  constructor(a: any, b?: number, c?: number){
     super();
     this.radius = createSpan(a, b, c);
   }
-  reset  (a, b, c) {
+  reset(a?: any, b?: any, c?: any) {
     this.radius = createSpan(a, b, c);
   };
-  initialize = function (particle) {
+  initialize(particle: Particle) {
     particle.radius = this.radius.getValue();
     particle.transform.oldRadius = particle.radius;
   };

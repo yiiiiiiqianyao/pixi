@@ -1,5 +1,5 @@
 import { Initialize } from './Initialize';
-import { createSpan } from '../math/Span';
+import { createSpan, Span } from '../math/Span';
 /**
  * Mass is init particle's Mass
  * @param {Number} a - the Mass's start point
@@ -13,11 +13,12 @@ import { createSpan } from '../math/Span';
  * @constructor
  */
 export class Mass extends Initialize {
-  constructor(a, b, c) {
+  massPan: Span;
+  constructor(a: number, b?: number, c?: string) {
     super();
     this.massPan = createSpan(a, b, c);
   }
-  initialize = function (target) {
+  initialize(target: any) {
     target.mass = this.massPan.getValue();
   };
 }
